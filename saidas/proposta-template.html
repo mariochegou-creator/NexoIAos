@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta Comercial — NEXO IA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0a0f;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .logo h1 { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .logo h1 span { color: #6366f1; }
+    .logo p { font-size: 0.8rem; color: #475569; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .meta { text-align: right; }
+    .meta p { font-size: 0.8rem; color: #475569; margin-bottom: 4px; }
+    .meta strong { color: #94a3b8; }
+
+    /* Hero */
+    .hero { margin-bottom: 48px; }
+
+    .hero .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #6366f1;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: #64748b;
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    /* Section */
+    .section { margin-bottom: 48px; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    /* Problem */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .problem-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+
+    .problem-card .icon { font-size: 1.2rem; margin-bottom: 8px; }
+    .problem-card h4 { font-size: 0.875rem; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; }
+    .problem-card p { font-size: 0.8rem; color: #475569; line-height: 1.5; }
+
+    /* Packages */
+    .packages {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .package {
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .package.featured {
+      border-color: #6366f135;
+    }
+
+    .package-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      background: #0f172a;
+    }
+
+    .package.featured .package-header {
+      background: linear-gradient(135deg, #6366f110, #0f172a);
+    }
+
+    .package-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .package-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: #1e293b;
+    }
+
+    .package.featured .package-icon {
+      background: #6366f120;
+    }
+
+    .package-title h3 { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
+    .package-title p { font-size: 0.8rem; color: #475569; margin-top: 2px; }
+
+    .package-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-base { background: #1e293b; color: #64748b; }
+    .badge-featured { background: #6366f120; color: #818cf8; border: 1px solid #6366f130; }
+
+    .package-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-check {
+      width: 18px;
+      height: 18px;
+      background: #10b98120;
+      border: 1px solid #10b98130;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feature-check svg {
+      width: 9px;
+      height: 9px;
+      stroke: #34d399;
+    }
+
+    .feature-text h4 { font-size: 0.875rem; font-weight: 600; color: #cbd5e1; }
+    .feature-text p { font-size: 0.8rem; color: #475569; margin-top: 2px; line-height: 1.4; }
+
+    /* Dashboard metrics */
+    .metrics-intro {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      padding: 16px 20px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+    }
+
+    .metrics-intro strong { color: #94a3b8; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .metric-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .metric-card:hover { border-color: #334155; }
+
+    .metric-card .m-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .metric-card h4 { font-size: 0.8rem; font-weight: 600; color: #cbd5e1; margin-bottom: 4px; }
+    .metric-card p { font-size: 0.72rem; color: #475569; line-height: 1.4; }
+
+    .metric-card.custom {
+      border-style: dashed;
+      border-color: #6366f130;
+    }
+
+    .metric-card.custom h4 { color: #818cf8; }
+    .metric-card.custom p { color: #6366f160; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 24px;
+      position: relative;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 1px;
+      background: #1e293b;
+    }
+
+    .tl-dot {
+      width: 30px;
+      height: 30px;
+      background: #6366f115;
+      border: 1px solid #6366f130;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #818cf8;
+      flex-shrink: 0;
+    }
+
+    .tl-content h4 { font-size: 0.9rem; font-weight: 600; color: #cbd5e1; padding-top: 5px; margin-bottom: 4px; }
+    .tl-content p { font-size: 0.8rem; color: #475569; line-height: 1.5; }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .price-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .price-card.highlight {
+      border-color: #6366f130;
+      background: linear-gradient(135deg, #6366f108, #0f172a);
+    }
+
+    .price-label { font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .price-label.accent { color: #6366f1; }
+
+    .amount { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 4px; }
+    .amount span { font-size: 1rem; font-weight: 400; color: #475569; }
+
+    .price-desc { font-size: 0.8rem; color: #475569; margin-top: 8px; line-height: 1.5; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      background: #6366f115;
+      border: 1px solid #6366f125;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #818cf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step p { font-size: 0.875rem; color: #94a3b8; }
+    .step strong { color: #e2e8f0; }
+
+    /* CTA */
+    .cta {
+      margin-top: 48px;
+      background: linear-gradient(135deg, #6366f115, #0ea5e910);
+      border: 1px solid #6366f125;
+      border-radius: 14px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .cta h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .cta p { font-size: 0.875rem; color: #64748b; margin-bottom: 20px; }
+
+    .cta-contact { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .contact-item { font-size: 0.875rem; color: #818cf8; font-weight: 500; }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p { font-size: 0.75rem; color: #334155; }
+    .footer span { color: #6366f1; }
+
+    @media (max-width: 600px) {
+      .problem-grid, .pricing-grid, .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .hero h2 { font-size: 1.5rem; }
+      .header { flex-direction: column; gap: 16px; }
+      .meta { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <h1>NEXO <span>IA</span></h1>
+      <p>Consultoria de Inteligência Artificial</p>
+    </div>
+    <div class="meta">
+      <p>Proposta para <strong>[Nome do Cliente]</strong></p>
+      <p>Data: <strong>[DD/MM/AAAA]</strong></p>
+      <p>Válida por <strong>7 dias</strong></p>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="label">Proposta Comercial</div>
+    <h2>Presença digital + visão<br>do seu negócio em tempo real.</h2>
+    <p>Um site profissional que representa sua empresa — e, se quiser, um dashboard personalizado que mostra tudo que está acontecendo no seu negócio em um só lugar.</p>
+  </div>
+
+  <!-- Problema -->
+  <div class="section">
+    <div class="section-label">O problema que resolvemos</div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">🌐</div>
+        <h4>Sem presença profissional</h4>
+        <p>Clientes pesquisam online antes de comprar. Se você não aparece bem, a concorrência aparece no lugar.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">📊</div>
+        <h4>Decisões no escuro</h4>
+        <p>Faturamento, estoque, despesas — tudo espalhado em caderno, planilha, cabeça. Nada em tempo real.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">⏱</div>
+        <h4>Tempo perdido em relatório</h4>
+        <p>Horas toda semana juntando números que deveriam estar disponíveis em segundos.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🔍</div>
+        <h4>Sem visibilidade do que funciona</h4>
+        <p>Sem dados claros, é difícil saber o que cortar, o que aumentar e onde está o dinheiro.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- O que entregamos -->
+  <div class="section">
+    <div class="section-label">O que entregamos</div>
+    <div class="packages">
+
+      <!-- Pacote base -->
+      <div class="package">
+        <div class="package-header">
+          <div class="package-title">
+            <div class="package-icon">🌐</div>
+            <div>
+              <h3>Site Profissional</h3>
+              <p>Incluído em todos os planos</p>
+            </div>
+          </div>
+          <div class="package-badge badge-base">Base</div>
+        </div>
+        <div class="package-body">
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Design personalizado</h4>
+              <p>Com a cara do seu negócio — cores, identidade visual, conteúdo. Até 5 seções.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Adaptado para celular</h4>
+              <p>Funciona perfeitamente em qualquer dispositivo.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Formulário de contato + botão WhatsApp</h4>
+              <p>Cliente te encontra e entra em contato com um clique.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Domínio + hospedagem incluídos</h4>
+              <p>Tudo configurado. Você não precisa mexer em nada técnico.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pacote dashboard -->
+      <div class="package featured">
+        <div class="package-header">
+          <div class="package-title">
+            <div class="package-icon">📊</div>
+            <div>
+              <h3>Dashboard do Negócio</h3>
+              <p>Add-on opcional — personalizado pra você</p>
+            </div>
+          </div>
+          <div class="package-badge badge-featured">Diferencial</div>
+        </div>
+        <div class="package-body">
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Visão completa do negócio em tempo real</h4>
+              <p>Faturamento, despesas, estoque — tudo num painel que você acessa pelo celular ou computador.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Métricas escolhidas por você</h4>
+              <p>Não é um painel genérico. Montamos as métricas que fazem sentido para o seu tipo de negócio.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Alertas automáticos</h4>
+              <p>Estoque baixo, meta atingida, queda de faturamento — você é avisado antes do problema virar crise.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+            <div class="feature-text">
+              <h4>Conectado às suas fontes de dados</h4>
+              <p>Integra com o que você já usa — planilhas, sistema de caixa, plataformas de venda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Métricas disponíveis -->
+  <div class="section">
+    <div class="section-label">Exemplos de métricas no dashboard</div>
+    <div class="metrics-intro">
+      <strong>Você escolhe o que quer ver.</strong> Na reunião de briefing, definimos juntos quais métricas fazem mais sentido para o seu negócio. Abaixo alguns exemplos do que podemos configurar:
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="m-icon">💰</div>
+        <h4>Faturamento</h4>
+        <p>Diário, semanal e mensal com comparativo</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">📉</div>
+        <h4>Despesas</h4>
+        <p>Fixas e variáveis por categoria</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">📦</div>
+        <h4>Estoque</h4>
+        <p>Níveis atuais e alertas de reposição</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">👥</div>
+        <h4>Clientes</h4>
+        <p>Novos, recorrentes e ticket médio</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-icon">🎯</div>
+        <h4>Metas</h4>
+        <p>Progresso em tempo real vs. objetivo</p>
+      </div>
+      <div class="metric-card custom">
+        <div class="m-icon">✏️</div>
+        <h4>+ Personalizado</h4>
+        <p>Qualquer métrica específica do seu negócio</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prazo -->
+  <div class="section">
+    <div class="section-label">Como funciona o processo</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-content">
+          <h4>Briefing (Dia 1)</h4>
+          <p>Conversa de 45 min pra entender o negócio, definir as métricas do dashboard e alinhar o visual do site.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-content">
+          <h4>Desenvolvimento (Dias 2–12)</h4>
+          <p>Construção do site e configuração do dashboard com as fontes de dados do seu negócio.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-content">
+          <h4>Revisão e ajustes (Dias 13–14)</h4>
+          <p>Você revisa tudo, dá feedback e fazemos os ajustes antes de publicar.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot">4</div>
+        <div class="tl-content">
+          <h4>Entrega e treinamento (Dia 15)</h4>
+          <p>Site no ar, dashboard funcionando e treinamento de como acompanhar tudo pelo celular.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Investimento -->
+  <div class="section">
+    <div class="section-label">Investimento</div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-label">Implementação</div>
+        <div class="amount">R$700 <span>único</span></div>
+        <div class="price-desc">Desenvolvimento do site + dashboard, configuração das integrações, publicação e treinamento. Valor varia conforme a complexidade do dashboard — confirmado no briefing.</div>
+      </div>
+      <div class="price-card highlight">
+        <div class="price-label accent">Manutenção mensal</div>
+        <div class="amount">R$300 <span>/mês</span></div>
+        <div class="price-desc">Hospedagem, suporte técnico, atualizações do site e do dashboard. Inclui adição de novas métricas conforme o negócio evolui.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Próximos passos -->
+  <div class="section">
+    <div class="section-label">Próximos passos</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong>Aprovação da proposta</strong> — confirmação por mensagem ou email</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong>Pagamento da implementação</strong> — via Pix</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong>Briefing agendado</strong> — chamada de 45 min pra definir site + métricas do dashboard</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong>Entrega em até 15 dias</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>Pronto pra ter o negócio nas mãos?</h3>
+    <p>Qualquer dúvida antes de decidir, é só chamar. Sem pressão, sem enrolação.</p>
+    <div class="cta-contact">
+      <div class="contact-item">WhatsApp: [seu número]</div>
+      <div class="contact-item">Email: [seu email]</div>
+      <div class="contact-item">Instagram: @nexo.ia</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>NEXO IA — Proposta Comercial · Válida por 7 dias</p>
+    <p>Gerado com <span>MazyOS</span></p>
+  </div>
+
+</div>
+</body>
+</html>

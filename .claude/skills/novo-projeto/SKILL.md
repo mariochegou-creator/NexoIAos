@@ -72,7 +72,38 @@ Esse projeto herda automaticamente o tom de voz, marca e contexto do negócio de
 [Vazio — preencher com regras que valem só pra esse projeto, conforme for descobrindo]
 ```
 
-### Passo 5 — Resumo
+### Passo 5 — Criar .nexo-status.md e registrar no dashboard
+
+Criar o arquivo `.nexo-status.md` dentro da pasta do projeto com os dados coletados na entrevista:
+
+```markdown
+---
+supabase_id: 
+status: prospect
+valor: 0
+servicos: [entregas mencionadas na entrevista]
+proximo_passo: Enviar proposta
+resp: Mario Brandao
+obs: 
+---
+```
+
+Em seguida, executar o registro no Supabase via curl (credenciais em `_config/nexo-db.md`):
+
+```bash
+curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients" \
+  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0" \
+  -H "Content-Type: application/json" \
+  -H "Prefer: return=representation" \
+  -d "{\"nome\":\"NOME_DO_CLIENTE\",\"status\":\"prospect\",\"valor\":0,\"servicos\":\"SERVICOS\",\"resp\":\"Mario Brandao\",\"proximo_passo\":\"Enviar proposta\"}"
+```
+
+Salvar o `id` retornado no campo `supabase_id` do `.nexo-status.md`.
+
+Se o curl falhar, criar o arquivo `.nexo-status.md` mesmo assim — o `/sync` conseguirá criar o registro depois.
+
+### Passo 6 — Resumo
 
 Responder pro usuário:
 
@@ -80,9 +111,12 @@ Responder pro usuário:
 Pasta criada: [caminho]
 ✓ CLAUDE.md do projeto
 ✓ briefing.md
+✓ .nexo-status.md
 ✓ Subpastas: [lista]
+✓ Cliente registrado no dashboard NEXO IA
 
-Quando for trabalhar nesse projeto, abre o terminal já dentro da pasta — assim eu carrego o CLAUDE.md específico junto com o da raiz.
+Quando for trabalhar nesse projeto, abre o terminal já dentro da pasta.
+Use /sync a qualquer momento para atualizar o dashboard com o estado atual.
 ```
 
 ## Regras

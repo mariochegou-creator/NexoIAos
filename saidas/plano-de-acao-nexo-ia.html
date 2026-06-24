@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plano de Ação — NEXO IA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0a0f;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .logo-area h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .logo-area h1 span {
+      color: #6366f1;
+    }
+
+    .logo-area p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      background: #6366f115;
+      border: 1px solid #6366f130;
+      color: #818cf8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Intro */
+    .intro {
+      margin-bottom: 56px;
+    }
+
+    .intro h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .intro p {
+      font-size: 1rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      max-width: 620px;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 56px;
+    }
+
+    .phase {
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .phase:hover {
+      border-color: #334155;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #0f172a;
+    }
+
+    .phase-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .phase-1 .phase-number { background: #6366f120; color: #818cf8; border: 1px solid #6366f130; }
+    .phase-2 .phase-number { background: #0ea5e920; color: #38bdf8; border: 1px solid #0ea5e930; }
+    .phase-3 .phase-number { background: #10b98120; color: #34d399; border: 1px solid #10b98130; }
+
+    .phase-meta { flex: 1; }
+    .phase-meta h3 { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
+    .phase-meta span { font-size: 0.8rem; color: #64748b; }
+
+    .phase-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .phase-1 .phase-tag { background: #6366f115; color: #818cf8; }
+    .phase-2 .phase-tag { background: #0ea5e915; color: #38bdf8; }
+    .phase-3 .phase-tag { background: #10b98115; color: #34d399; }
+
+    .phase-body {
+      padding: 20px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .action-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .action-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      min-width: 20px;
+      padding-top: 2px;
+    }
+
+    .action-content h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+    }
+
+    .action-content p {
+      font-size: 0.85rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Priority table */
+    .priority-section {
+      margin-bottom: 56px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .table-wrap {
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #0f172a;
+    }
+
+    thead th {
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody tr {
+      border-top: 1px solid #1e293b;
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover {
+      background: #0f172a50;
+    }
+
+    tbody td {
+      padding: 14px 20px;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+
+    tbody td:first-child {
+      width: 44px;
+    }
+
+    .priority-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #6366f120;
+      border: 1px solid #6366f130;
+      color: #818cf8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-label {
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    .who-tag {
+      background: #1e293b;
+      color: #94a3b8;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+    }
+
+    .time-label {
+      color: #6366f1;
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, #6366f110, #0ea5e910);
+      border: 1px solid #6366f125;
+      border-radius: 14px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .cta-box h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .cta-box p {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .cta-stat {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .cta-stat .number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #818cf8;
+      line-height: 1;
+    }
+
+    .cta-stat .label {
+      font-size: 0.75rem;
+      color: #475569;
+      margin-top: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p {
+      font-size: 0.78rem;
+      color: #334155;
+    }
+
+    .footer span {
+      color: #6366f1;
+    }
+
+    @media print {
+      body { background: #fff; color: #1e293b; }
+      .phase { border-color: #e2e8f0; }
+      .phase-header { background: #f8fafc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-area">
+        <h1>NEXO <span>IA</span></h1>
+        <p>Consultoria de Inteligência Artificial</p>
+      </div>
+      <div class="badge">Plano de Ação — 30 dias</div>
+    </div>
+
+    <!-- Intro -->
+    <div class="intro">
+      <h2>Do zero ao primeiro cliente<br>no menor tempo possível.</h2>
+      <p>O gargalo da NEXO IA hoje é prospecção. Esse plano resolve isso em 3 semanas — com oferta clara, presença mínima viável e abordagem direta a negócios locais.</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+
+      <!-- Fase 1 -->
+      <div class="phase phase-1">
+        <div class="phase-header">
+          <div class="phase-number">1</div>
+          <div class="phase-meta">
+            <h3>Fundação</h3>
+            <span>Semana 1 — Sem isso, não tem prospecção eficaz</span>
+          </div>
+          <div class="phase-tag">Dias 1–7</div>
+        </div>
+        <div class="phase-body">
+          <div class="action-item">
+            <div class="action-num">01</div>
+            <div class="action-content">
+              <h4>Definir 1 oferta de entrada, não 10</h4>
+              <p>Sites + automações + dashboards é muita coisa pra quem não te conhece. Escolha um produto simples, preço acessível e resultado rápido. Ex: "Automação de atendimento via WhatsApp por R$X/mês". É isso que você vai vender primeiro.</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">02</div>
+            <div class="action-content">
+              <h4>Criar identidade visual básica</h4>
+              <p>Logo, paleta de cores e fonte. Canva ou Looka resolvem em 1-2h. Não precisa ser perfeito — precisa existir pra dar credibilidade.</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">03</div>
+            <div class="action-content">
+              <h4>Subir a presença mínima viável</h4>
+              <p>Instagram comercial com bio clara (o que faz, pra quem, como contratar) + 3 posts iniciais: quem somos, o que resolvemos, um exemplo de resultado. Link na bio com formulário de contato.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fase 2 -->
+      <div class="phase phase-2">
+        <div class="phase-header">
+          <div class="phase-number">2</div>
+          <div class="phase-meta">
+            <h3>Prospecção Ativa</h3>
+            <span>Semana 2 — Ir atrás, não esperar</span>
+          </div>
+          <div class="phase-tag">Dias 8–14</div>
+        </div>
+        <div class="phase-body">
+          <div class="action-item">
+            <div class="action-num">04</div>
+            <div class="action-content">
+              <h4>Montar lista de 50 prospects locais</h4>
+              <p>Clínicas, salões, restaurantes, lojas, prestadores de serviço na sua cidade. Google Maps + Instagram local resolvem em algumas horas. Fernando e Lucas dividem a lista.</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">05</div>
+            <div class="action-content">
+              <h4>Criar script de abordagem</h4>
+              <p>Uma mensagem curta pra WhatsApp ou DM — não vendendo, abrindo conversa. Exemplo: "Oi [Nome], vi que você tem [negócio X]. Trabalho com automação de atendimento pra negócios locais. Posso te mostrar como funciona em 15 minutos?"</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">06</div>
+            <div class="action-content">
+              <h4>Meta: 10 reuniões agendadas</h4>
+              <p>Contato direto, sem esperar o Instagram crescer. Cada reunião é uma oportunidade de fechar ou aprender o que ajustar na oferta.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fase 3 -->
+      <div class="phase phase-3">
+        <div class="phase-header">
+          <div class="phase-number">3</div>
+          <div class="phase-meta">
+            <h3>Converter e Documentar</h3>
+            <span>Semanas 3–4 — Fechar, entregar, repetir</span>
+          </div>
+          <div class="phase-tag">Dias 15–30</div>
+        </div>
+        <div class="phase-body">
+          <div class="action-item">
+            <div class="action-num">07</div>
+            <div class="action-content">
+              <h4>Ter proposta template pronta antes das reuniões</h4>
+              <p>Um documento padrão que adapta rápido. Apresentação clara: problema, solução, resultado esperado, investimento e próximos passos.</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">08</div>
+            <div class="action-content">
+              <h4>Fechar os primeiros 2–3 clientes</h4>
+              <p>Mesmo com desconto no início. O objetivo é ter casos reais pra mostrar. Um resultado concreto vale mais que cem promessas.</p>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-num">09</div>
+            <div class="action-content">
+              <h4>Documentar cada entrega como caso de sucesso</h4>
+              <p>Antes/depois, tempo economizado, problema resolvido. É o combustível da próxima rodada de prospecção e da credibilidade da NEXO IA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Priority Table -->
+    <div class="priority-section">
+      <div class="section-title">Comece agora — prioridade imediata</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ação</th>
+              <th>Responsável</th>
+              <th>Tempo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="priority-dot">1</div></td>
+              <td><span class="action-label">Definir oferta de entrada + preço</span></td>
+              <td><span class="who-tag">Fernando + Lucas</span></td>
+              <td><span class="time-label">1h</span></td>
+            </tr>
+            <tr>
+              <td><div class="priority-dot">2</div></td>
+              <td><span class="action-label">Criar identidade visual básica</span></td>
+              <td><span class="who-tag">Um dos dois</span></td>
+              <td><span class="time-label">2h</span></td>
+            </tr>
+            <tr>
+              <td><div class="priority-dot">3</div></td>
+              <td><span class="action-label">Subir Instagram com 3 posts</span></td>
+              <td><span class="who-tag">Um dos dois</span></td>
+              <td><span class="time-label">3h</span></td>
+            </tr>
+            <tr>
+              <td><div class="priority-dot">4</div></td>
+              <td><span class="action-label">Montar lista de 50 prospects locais</span></td>
+              <td><span class="who-tag">Fernando + Lucas</span></td>
+              <td><span class="time-label">2h</span></td>
+            </tr>
+            <tr>
+              <td><div class="priority-dot">5</div></td>
+              <td><span class="action-label">Criar script de abordagem pronto</span></td>
+              <td><span class="who-tag">Fernando</span></td>
+              <td><span class="time-label">1h</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CTA Box -->
+    <div class="cta-box">
+      <div>
+        <h3>No ar e prospectando em menos de 2 dias.</h3>
+        <p>Esse é o tempo total pra concluir as 5 ações prioritárias e estar<br>com a NEXO IA operando sua primeira rodada de prospecção ativa.</p>
+      </div>
+      <div class="cta-stat">
+        <div class="number">9h</div>
+        <div class="label">de trabalho focado</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>NEXO IA — Plano de Ação 30 dias</p>
+      <p>Gerado com <span>MazyOS</span></p>
+    </div>
+
+  </div>
+</body>
+</html>
