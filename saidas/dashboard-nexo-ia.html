@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -64,25 +65,94 @@
     /* ── HEADER ── */
     #app { display: none; }
     header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px;
-      background: rgba(5,14,31,0.96); backdrop-filter: blur(16px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300; height: 60px;
+      background: rgba(5,14,31,0.97); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; padding: 0 24px; gap: 20px;
+      display: flex; align-items: center; padding: 0 20px; gap: 14px;
     }
     .h-logo { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.08em; white-space: nowrap; }
     .h-logo span { color: var(--text); }
     .h-badge { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); background: rgba(0,200,232,0.07); border: 1px solid var(--border); border-radius: 10px; padding: 2px 8px; }
-    .h-tabs { display: flex; gap: 2px; flex: 1; overflow-x: auto; }
-    .h-tab { background: none; border: none; color: var(--muted); padding: 7px 13px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-    .h-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-    .h-tab.active { color: var(--cyan); background: var(--cyan-dim); }
-    .h-sep { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+    .h-spacer { flex: 1; }
     .h-user { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
     .h-av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #050e1f; flex-shrink: 0; }
     .h-uname { font-size: 13px; font-weight: 600; }
     .h-urole { font-size: 11px; color: var(--muted); }
-    .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-family: inherit; }
     .btn-logout:hover { border-color: var(--border-h); color: var(--text); }
+
+    /* ── HAMBURGER ── */
+    .btn-hamburger {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      cursor: pointer; padding: 8px 10px; transition: all 0.2s; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+    }
+    .btn-hamburger:hover { border-color: var(--border-h); }
+    .btn-hamburger span { display: block; width: 16px; height: 2px; background: var(--muted); border-radius: 1px; transition: all 0.25s ease; }
+    .btn-hamburger:hover span { background: var(--text); }
+    .btn-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); background: var(--cyan); }
+    .btn-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .btn-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); background: var(--cyan); }
+
+    /* ── SIDEBAR ── */
+    #sidebar-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: rgba(2,6,14,0.55);
+      backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #sidebar-overlay.open { opacity: 1; pointer-events: all; }
+
+    #sidebar {
+      position: fixed; top: 0; left: -290px; bottom: 0; z-index: 401;
+      width: 268px;
+      background: rgba(5,10,20,0.98);
+      border-right: 1px solid rgba(0,200,232,0.12);
+      display: flex; flex-direction: column;
+      transition: left 0.32s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 6px 0 40px rgba(0,0,0,0.6);
+    }
+    #sidebar.open { left: 0; }
+
+    .sb-head {
+      height: 60px; padding: 0 16px 0 20px;
+      border-bottom: 1px solid rgba(0,200,232,0.08);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .sb-logo { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.08em; }
+    .sb-logo span { color: var(--text); }
+    .sb-close {
+      background: none; border: 1px solid transparent; border-radius: 7px;
+      color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px 8px;
+      transition: all 0.2s; font-family: inherit; line-height: 1;
+    }
+    .sb-close:hover { color: var(--text); border-color: var(--border); }
+
+    .sb-nav { flex: 1; padding: 10px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+    .sb-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px; border-radius: 10px; cursor: pointer;
+      border: none; background: none; color: var(--muted); font-size: 13.5px; font-weight: 500;
+      transition: all 0.18s; width: 100%; text-align: left; font-family: inherit;
+      position: relative;
+    }
+    .sb-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .sb-item.active { color: var(--cyan); background: rgba(0,200,232,0.08); font-weight: 600; }
+    .sb-item.active::before { content:''; position:absolute; left:0; top:20%; bottom:20%; width:3px; background:var(--cyan); border-radius:0 2px 2px 0; }
+    .sb-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+
+    .sb-footer { padding: 12px 10px; border-top: 1px solid rgba(0,200,232,0.08); flex-shrink: 0; }
+    .sb-user { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; margin-bottom: 4px; background: rgba(0,200,232,0.03); }
+    .sb-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #050e1f; flex-shrink: 0; }
+    .sb-uname { font-size: 13px; font-weight: 600; color: var(--text); }
+    .sb-urole { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .sb-logout-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+      border: none; background: none; color: var(--muted); font-size: 13px; font-weight: 500;
+      transition: all 0.18s; width: 100%; font-family: inherit;
+    }
+    .sb-logout-btn:hover { color: var(--red); background: rgba(239,68,68,0.06); }
 
     /* ── LAYOUT ── */
     main { padding-top: 60px; }
@@ -131,7 +201,27 @@
     .ov-meta-dot { width:6px; height:6px; border-radius:50%; }
     .ov-goal-btn { background:none; border:none; color:var(--muted); font-size:11px; cursor:pointer; padding:0; margin-left:4px; transition:color .15s; }
     .ov-goal-btn:hover { color:var(--cyan); }
-    .ov-ring-wrap { position:relative; z-index:1; flex-shrink:0; }
+    .ov-ring-wrap {
+      position:relative; z-index:1; flex-shrink:0;
+      perspective:600px; cursor:pointer; width:140px; height:140px;
+    }
+    .ov-ring-wrap:hover { filter:drop-shadow(0 0 14px rgba(0,200,232,0.35)); }
+    .ring-flipper {
+      width:100%; height:100%; position:relative;
+      transform-style:preserve-3d;
+      animation:ringCycle 7s ease-in-out infinite;
+    }
+    .ov-ring-wrap:hover .ring-flipper { animation-play-state:paused; }
+    .ring-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+    .ring-back { transform:rotateY(180deg); }
+    @keyframes ringCycle {
+      0%   { transform:rotateY(0deg); }
+      40%  { transform:rotateY(0deg); }
+      52%  { transform:rotateY(180deg); }
+      75%  { transform:rotateY(180deg); }
+      87%  { transform:rotateY(360deg); }
+      100% { transform:rotateY(360deg); }
+    }
     .ring-track { fill:none; stroke:rgba(0,200,232,.08); stroke-width:10; }
     .ring-fill { fill:none; stroke:var(--cyan); stroke-width:10; stroke-linecap:round; stroke-dasharray:339.3; stroke-dashoffset:339.3; transform:rotate(-90deg); transform-origin:70px 70px; transition:stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1); filter:drop-shadow(0 0 6px rgba(0,200,232,.5)); }
     .ov-kpi { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; position:relative; overflow:hidden; transition:border .2s,transform .2s; }
@@ -340,10 +430,7 @@
       header { padding:0 14px; gap:10px; }
       .h-badge { display:none; }
       .h-uname, .h-urole { display:none; }
-      .h-sep { display:none; }
-      .h-tabs { gap:0; }
-      .h-tab { padding:6px 9px; font-size:12px; }
-      .btn-logout { padding:5px 9px; font-size:11px; }
+      .btn-logout { display:none; }
 
       /* layout */
       .inner { padding:16px 14px; }
@@ -364,6 +451,7 @@
       }
       .ov-mrr-val { font-size:34px; }
       .ov-mrr-val .prefix { font-size:18px; }
+      .ov-ring-wrap { width:100px; height:100px; }
       .ov-ring-wrap svg { width:100px; height:100px; }
       .ring-fill { transform-origin:50px 50px; }
       .ov-kpi-val { font-size:26px; }
@@ -400,10 +488,8 @@
     }
 
     @media (max-width:480px) {
-      /* header: show only logo + tabs + avatar */
+      /* header: compact */
       .h-logo { font-size:0.85rem; }
-      .h-tab { padding:5px 7px; font-size:11px; }
-      .btn-logout { display:none; }
 
       /* overview: stack to single column */
       .ov-grid { grid-template-columns:1fr; }
@@ -421,6 +507,230 @@
 
       /* finance result card rows */
       .mrr-big { font-size:30px; }
+    }
+
+    /* ══ ANALYTICS OVERLAY ══ */
+    #analytics-overlay {
+      position:fixed; inset:0; z-index:2000;
+      background:linear-gradient(135deg,#020b18 0%,#050e1f 45%,#04111e 100%);
+      display:flex; flex-direction:column;
+      opacity:0; pointer-events:none;
+      transition:opacity 0.3s ease;
+      overflow:auto;
+    }
+    #analytics-overlay.open { opacity:1; pointer-events:all; }
+
+    .an-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 28px; border-bottom:1px solid rgba(0,200,232,0.1); flex-shrink:0;
+    }
+    .an-header-left { display:flex; align-items:center; gap:14px; }
+    .an-logo { font-size:20px; font-weight:900; letter-spacing:-0.02em; color:#e2e8f0; }
+    .an-logo span { color:#00c8e8; }
+    .an-subtitle { font-size:12px; color:#475569; font-weight:500; }
+    .an-header-right { display:flex; align-items:center; gap:10px; }
+    .an-btn-stories {
+      padding:8px 16px; border:1px solid rgba(0,200,232,0.3); border-radius:8px;
+      background:transparent; color:#00c8e8; font-size:12px; font-weight:600;
+      cursor:pointer; transition:all 0.2s; font-family:inherit; letter-spacing:0.04em;
+    }
+    .an-btn-stories:hover { background:rgba(0,200,232,0.1); }
+    .an-close {
+      width:36px; height:36px; border:1px solid rgba(0,200,232,0.15); border-radius:8px;
+      background:transparent; color:#64748b; font-size:22px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:all 0.2s; font-family:inherit;
+    }
+    .an-close:hover { color:#e2e8f0; border-color:rgba(0,200,232,0.3); }
+
+    .an-body { flex:1; padding:24px 28px; display:flex; flex-direction:column; gap:18px; }
+
+    .an-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .an-kpi-card {
+      background:rgba(13,30,53,0.7); border:1px solid rgba(0,200,232,0.1); border-radius:14px;
+      padding:18px 20px; position:relative; overflow:hidden;
+    }
+    .an-kpi-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(0,200,232,0.04) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .an-kpi-label { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#475569; margin-bottom:10px; }
+    .an-kpi-val { font-size:28px; font-weight:900; color:#e2e8f0; line-height:1; letter-spacing:-0.03em; }
+    .an-kpi-val.c-cyan { color:#00c8e8; }
+    .an-kpi-val.c-green { color:#22c55e; }
+    .an-kpi-val.c-purple { color:#a78bfa; }
+    .an-kpi-val.c-orange { color:#f97316; }
+    .an-kpi-sub { font-size:11px; color:#475569; margin-top:5px; }
+    .an-kpi-tag {
+      display:inline-flex; align-items:center; gap:3px;
+      font-size:10px; font-weight:700; letter-spacing:0.05em; padding:2px 8px; border-radius:5px; margin-top:8px;
+    }
+    .an-kpi-tag.up { background:rgba(34,197,94,0.15); color:#22c55e; }
+    .an-kpi-tag.down { background:rgba(239,68,68,0.15); color:#ef4444; }
+    .an-kpi-tag.neutral { background:rgba(100,116,139,0.15); color:#94a3b8; }
+
+    .an-charts-row { display:grid; gap:14px; }
+    .an-charts-row.cols-6-4 { grid-template-columns:6fr 4fr; }
+    .an-charts-row.cols-5-5 { grid-template-columns:1fr 1fr; }
+    .an-chart-card {
+      background:rgba(13,30,53,0.7); border:1px solid rgba(0,200,232,0.1); border-radius:14px;
+      padding:20px 20px 16px; display:flex; flex-direction:column;
+    }
+    .an-chart-title { font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#475569; margin-bottom:14px; }
+    .an-chart-wrap { flex:1; position:relative; min-height:170px; }
+
+    .an-suggestions { display:flex; flex-direction:column; gap:10px; }
+    .an-suggestion-item {
+      display:flex; align-items:flex-start; gap:10px;
+      background:rgba(0,200,232,0.03); border:1px solid rgba(0,200,232,0.09);
+      border-radius:10px; padding:12px 14px;
+    }
+    .an-sug-icon { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .an-sug-text { font-size:13px; color:#94a3b8; line-height:1.55; }
+    .an-sug-text strong { color:#cbd5e1; }
+
+    .an-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:14px; color:#475569; font-size:14px; }
+    .an-spinner { width:36px; height:36px; border:3px solid rgba(0,200,232,0.15); border-top-color:#00c8e8; border-radius:50%; animation:spin 0.8s linear infinite; }
+
+    /* ══ STORIES CARD ══ */
+    #stories-overlay {
+      position:fixed; inset:0; z-index:3000;
+      background:rgba(2,8,18,0.88);
+      display:none; align-items:center; justify-content:center;
+      backdrop-filter:blur(10px); flex-direction:column; gap:12px;
+    }
+    #stories-overlay.open { display:flex; }
+    .story-card {
+      width:360px; background:linear-gradient(160deg,#030c1c 0%,#071828 55%,#040e1c 100%);
+      border-radius:24px; border:1px solid rgba(0,200,232,0.18); padding:36px 28px 28px;
+      position:relative; overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,0.8), 0 0 60px rgba(0,200,232,0.06);
+    }
+    .story-card::before {
+      content:''; position:absolute; top:-100px; left:-80px; width:320px; height:320px;
+      background:radial-gradient(circle,rgba(0,200,232,0.09) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .story-card::after {
+      content:''; position:absolute; bottom:-80px; right:-60px; width:240px; height:240px;
+      background:radial-gradient(circle,rgba(123,92,204,0.07) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .story-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; }
+    .story-logo { font-size:20px; font-weight:900; color:#e2e8f0; letter-spacing:-0.02em; }
+    .story-logo span { color:#00c8e8; }
+    .story-period { font-size:12px; color:#475569; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+    .story-mrr-section { margin-bottom:28px; }
+    .story-mrr-label { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#00c8e8; opacity:0.75; margin-bottom:6px; }
+    .story-mrr-val { font-size:54px; font-weight:900; color:#fff; letter-spacing:-0.04em; line-height:1; margin-bottom:8px; }
+    .story-mrr-val .prefix { font-size:26px; font-weight:600; vertical-align:super; margin-right:3px; color:#94a3b8; }
+    .story-mrr-growth { font-size:13px; font-weight:600; }
+    .story-metrics { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px; }
+    .story-metric { background:rgba(0,200,232,0.05); border:1px solid rgba(0,200,232,0.1); border-radius:12px; padding:14px 16px; }
+    .story-metric-val { font-size:24px; font-weight:800; color:#e2e8f0; letter-spacing:-0.02em; }
+    .story-metric-label { font-size:11px; color:#475569; margin-top:3px; font-weight:500; }
+    .story-divider { height:1px; background:linear-gradient(90deg,rgba(0,200,232,0.15),transparent); margin-bottom:18px; }
+    .story-footer { display:flex; align-items:center; justify-content:space-between; }
+    .story-brand { font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#00c8e8; opacity:0.5; }
+    .story-tagline { font-size:10px; color:#334155; font-style:italic; }
+    .story-close-btn {
+      position:absolute; top:14px; right:14px; width:30px; height:30px;
+      border:1px solid rgba(0,200,232,0.15); border-radius:8px; background:transparent;
+      color:#475569; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit;
+    }
+    .story-hint { color:#334155; font-size:12px; }
+
+    @media (max-width:900px) {
+      .an-kpis { grid-template-columns:repeat(2,1fr); }
+      .an-charts-row.cols-6-4 { grid-template-columns:1fr; }
+      .an-charts-row.cols-5-5 { grid-template-columns:1fr; }
+    }
+    @media (max-width:600px) {
+      .an-body { padding:14px; gap:12px; }
+      .an-header { padding:14px 16px; }
+      .an-kpis { gap:10px; }
+      .an-kpi-val { font-size:22px; }
+      .story-card { width:92vw; }
+      .story-mrr-val { font-size:42px; }
+    }
+
+    /* ── INFLUENCER ── */
+    .inf-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+    .inf-kpi { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px 22px; position:relative; overflow:hidden; }
+    .inf-kpi::after { content:''; position:absolute; top:0; right:0; width:60px; height:60px; border-radius:0 14px 0 60px; opacity:.07; }
+    .inf-kpi:nth-child(1)::after { background:var(--cyan); }
+    .inf-kpi:nth-child(2)::after { background:var(--orange); }
+    .inf-kpi:nth-child(3)::after { background:var(--green); }
+    .inf-kpi:nth-child(4)::after { background:var(--purple); }
+    .inf-kpi-label { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .inf-kpi-val { font-size:34px; font-weight:900; line-height:1; letter-spacing:-.02em; }
+    .inf-kpi-sub { font-size:11px; color:var(--muted); margin-top:5px; }
+
+    .inf-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; margin-bottom:28px; }
+    .inf-card {
+      background:linear-gradient(140deg,var(--surface) 0%,var(--surface2) 100%);
+      border:1px solid var(--border); border-radius:16px; padding:22px;
+      display:flex; align-items:center; gap:16px; position:relative; overflow:hidden;
+      transition:border .2s, transform .2s;
+    }
+    .inf-card:hover { border-color:var(--border-h); transform:translateY(-2px); }
+    .inf-card::before { content:''; position:absolute; top:-60px; right:-60px; width:160px; height:160px; background:radial-gradient(circle,rgba(0,200,232,0.07) 0%,transparent 70%); pointer-events:none; }
+    .inf-card-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--purple)); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; color:#050e1f; flex-shrink:0; box-shadow:0 0 20px rgba(0,200,232,0.2); }
+    .inf-card-info { flex:1; min-width:0; }
+    .inf-card-name { font-size:15px; font-weight:700; margin-bottom:3px; }
+    .inf-card-nicho { font-size:12px; color:var(--muted); margin-bottom:4px; }
+    .inf-card-ig { font-size:12px; color:var(--cyan); opacity:.75; font-family:'JetBrains Mono',monospace; }
+    .inf-card-stats { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+    .inf-stat { display:flex; flex-direction:column; align-items:flex-end; gap:1px; }
+    .inf-stat-val { font-size:14px; font-weight:700; color:var(--text); }
+    .inf-stat-lbl { font-size:10px; color:var(--muted); }
+    .inf-card-status { position:absolute; top:14px; right:14px; font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:6px; }
+    .inf-card-status.ativo { background:rgba(34,197,94,.1); color:var(--green); border:1px solid rgba(34,197,94,.2); }
+    .inf-card-status.inativo { background:rgba(100,116,139,.1); color:var(--muted); border:1px solid rgba(100,116,139,.15); }
+
+    .inf-section-title { font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin:6px 0 12px; display:flex; align-items:center; gap:10px; }
+    .inf-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+    .inf-jobs-list { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+    .inf-job-item {
+      background:var(--surface); border:1px solid var(--border); border-radius:12px;
+      padding:16px 20px; display:grid; grid-template-columns:200px 1fr auto;
+      align-items:center; gap:20px; transition:border .2s;
+    }
+    .inf-job-item:hover { border-color:rgba(0,200,232,0.2); }
+    .inf-job-influencer { font-size:12px; font-weight:700; color:var(--cyan); margin-bottom:4px; }
+    .inf-job-desc { font-size:13px; color:var(--text); margin-bottom:3px; font-weight:500; line-height:1.4; }
+    .inf-job-client { font-size:11px; color:var(--muted); }
+    .inf-job-stages { display:flex; align-items:center; gap:0; }
+    .inf-stage-wrap { display:flex; align-items:center; }
+    .inf-stage { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+    .inf-stage-dot {
+      width:28px; height:28px; border-radius:50%;
+      border:2px solid rgba(0,200,232,0.2); background:transparent;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:800; transition:all .2s;
+    }
+    .inf-stage.done .inf-stage-dot { background:var(--cyan); border-color:var(--cyan); color:#050e1f; }
+    .inf-stage:hover .inf-stage-dot { border-color:var(--cyan); box-shadow:0 0 8px rgba(0,200,232,0.3); }
+    .inf-stage-label { font-size:9px; color:var(--muted); white-space:nowrap; font-weight:500; }
+    .inf-stage.done .inf-stage-label { color:var(--cyan); }
+    .inf-stage-line { width:20px; height:2px; background:rgba(0,200,232,0.15); margin-bottom:14px; flex-shrink:0; }
+    .inf-stage-line.done { background:var(--cyan); opacity:.5; }
+    .inf-stage.pago-stage.done .inf-stage-dot { background:var(--green); border-color:var(--green); }
+    .inf-stage.pago-stage.done .inf-stage-label { color:var(--green); }
+    .inf-job-valor { font-size:14px; font-weight:700; color:var(--text); white-space:nowrap; text-align:right; }
+
+    .inf-empty { text-align:center; padding:60px 20px; color:var(--muted); }
+    .inf-empty-icon { font-size:40px; margin-bottom:12px; }
+    .inf-empty-text { font-size:14px; }
+
+    @media (max-width:960px) { .inf-kpis { grid-template-columns:1fr 1fr; } }
+    @media (max-width:768px) {
+      .inf-kpis { grid-template-columns:1fr 1fr; gap:10px; }
+      .inf-kpi-val { font-size:26px; }
+      .inf-job-item { grid-template-columns:1fr; gap:12px; }
+      .inf-job-stages { flex-wrap:wrap; }
+      .inf-stage-line { width:12px; }
+      .inf-cards { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -447,16 +757,41 @@
 <!-- ══ APP ══ -->
 <div id="app">
   <header>
+    <button class="btn-hamburger" id="btn-hamburger" onclick="openSidebar()">
+      <span></span><span></span><span></span>
+    </button>
     <div class="h-logo">NEXO<span>IA</span></div>
     <span class="h-badge">interno</span>
-    <div class="h-tabs" id="h-tabs"></div>
-    <div class="h-sep"></div>
+    <div class="h-spacer"></div>
     <div class="h-user">
       <div class="h-av" id="h-av"></div>
       <div><div class="h-uname" id="h-uname"></div><div class="h-urole" id="h-urole"></div></div>
     </div>
     <button class="btn-logout" onclick="doLogout()">Sair</button>
   </header>
+
+  <!-- ══ SIDEBAR ══ -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <nav id="sidebar">
+    <div class="sb-head">
+      <div class="sb-logo">NEXO<span>IA</span></div>
+      <button class="sb-close" onclick="closeSidebar()">×</button>
+    </div>
+    <div class="sb-nav" id="sb-nav"></div>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-av" id="sb-av"></div>
+        <div>
+          <div class="sb-uname" id="sb-uname"></div>
+          <div class="sb-urole" id="sb-urole"></div>
+        </div>
+      </div>
+      <button class="sb-logout-btn" onclick="doLogout()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M10 11l3-3-3-3M13 8H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sair da conta
+      </button>
+    </div>
+  </nav>
 
   <main>
     <section id="tab-overview" class="tab-content active">
@@ -472,8 +807,8 @@
         <div class="ov-grid">
           <div class="ov-hero">
             <div class="ov-hero-left">
-              <div class="ov-hero-label">MRR Atual</div>
-              <div class="ov-mrr-val"><span class="prefix">R$</span><span id="ov-mrr-num">0</span></div>
+              <div class="ov-hero-label" onclick="openAnalytics()" style="cursor:pointer;user-select:none" title="Ver analytics completo">MRR Atual &nbsp;<span style="font-size:9px;opacity:0.55;letter-spacing:0.08em">▶ ANALYTICS</span></div>
+              <div class="ov-mrr-val" onclick="openAnalytics()" style="cursor:pointer" title="Ver analytics completo"><span class="prefix">R$</span><span id="ov-mrr-num">0</span></div>
               <div class="ov-progress-wrap">
                 <div class="ov-progress-label">
                   <span>Meta mensal <button class="ov-goal-btn" onclick="openGoalModal()" title="Editar meta">✎</button></span>
@@ -486,13 +821,32 @@
                 <div class="ov-meta-item"><div class="ov-meta-dot" style="background:var(--cyan)"></div><span id="ov-goal-txt">Meta: R$ 0</span></div>
               </div>
             </div>
-            <div class="ov-ring-wrap">
-              <svg width="140" height="140" viewBox="0 0 140 140">
-                <circle class="ring-track" cx="70" cy="70" r="54"/>
-                <circle class="ring-fill" id="ov-ring" cx="70" cy="70" r="54"/>
-                <text id="ov-ring-pct" x="70" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="22" font-weight="900" fill="#e2e8f0">0%</text>
-                <text x="70" y="85" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#64748b">da meta</text>
-              </svg>
+            <div class="ov-ring-wrap" onclick="openAnalytics()" title="Ver analytics completo">
+              <div class="ring-flipper" id="ring-flipper">
+                <!-- Frente: % da meta -->
+                <div class="ring-face ring-front">
+                  <svg width="140" height="140" viewBox="0 0 140 140">
+                    <circle class="ring-track" cx="70" cy="70" r="54"/>
+                    <circle class="ring-fill" id="ov-ring" cx="70" cy="70" r="54"/>
+                    <text id="ov-ring-pct" x="70" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="22" font-weight="900" fill="#e2e8f0">0%</text>
+                    <text x="70" y="85" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#64748b">da meta</text>
+                  </svg>
+                </div>
+                <!-- Verso: abre analytics -->
+                <div class="ring-face ring-back">
+                  <svg width="140" height="140" viewBox="0 0 140 140">
+                    <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(0,200,232,0.1)" stroke-width="10"/>
+                    <circle cx="70" cy="70" r="54" fill="none" stroke="#00c8e8" stroke-width="2" stroke-dasharray="9 6" opacity="0.4"/>
+                    <!-- Mini bar chart -->
+                    <rect x="50" y="59" width="9" height="17" rx="2" fill="#00c8e8" opacity="0.65"/>
+                    <rect x="62" y="50" width="9" height="26" rx="2" fill="#00c8e8" opacity="0.9"/>
+                    <rect x="74" y="54" width="9" height="22" rx="2" fill="#00c8e8" opacity="0.75"/>
+                    <!-- Label -->
+                    <text x="70" y="91" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#00c8e8" letter-spacing="0.12em">ANALYTICS</text>
+                    <text x="70" y="104" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#64748b">▶ ver detalhes</text>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
           <div class="ov-kpi c-green"><div class="ov-kpi-label">Clientes ativos</div><div class="ov-kpi-val c-green" id="kpi-active">0</div><div class="ov-kpi-sub">contratos em andamento</div></div>
@@ -583,6 +937,10 @@
       </div>
     </section>
 
+    <section id="tab-influencer" class="tab-content">
+      <div class="inner" id="influencer-inner"></div>
+    </section>
+
     <section id="tab-marketing" class="tab-content">
       <div class="inner">
         <div class="sec-header"><div class="sec-title">Marketing & Conteúdo</div><button class="btn-add" id="btn-new-mkt" onclick="openMarketingModal(null)">+ Novo conteúdo</button></div>
@@ -658,11 +1016,23 @@ function loading(id) { document.getElementById(id).innerHTML = '<div class="load
 // ROLES
 // ══════════════════════════════════════
 const ROLES = {
-  admin:       { tabs:['overview','pipeline','clients','finance','marketing','tasks','handoff','team'], canEdit:['pipeline','clients','finance','marketing','tasks','team'] },
-  operacional: { tabs:['overview','pipeline','clients','marketing','tasks','handoff'],                  canEdit:['pipeline','clients','marketing','tasks'] },
-  financeiro:  { tabs:['overview','clients','finance','handoff'],                                       canEdit:['finance'] },
+  admin:       { tabs:['overview','pipeline','clients','finance','influencer','marketing','tasks','handoff','team'], canEdit:['pipeline','clients','finance','influencer','marketing','tasks','team'] },
+  operacional: { tabs:['overview','pipeline','clients','influencer','marketing','tasks','handoff'],                  canEdit:['pipeline','clients','influencer','marketing','tasks'] },
+  financeiro:  { tabs:['overview','clients','finance','influencer','handoff'],                                       canEdit:['finance'] },
 };
-const TAB_LABELS = {overview:'Visão Geral',pipeline:'Pipeline',clients:'Clientes',finance:'Financeiro',marketing:'Marketing',tasks:'Tarefas',handoff:'Atividade',team:'Equipe'};
+const TAB_LABELS = {overview:'Visão Geral',pipeline:'Pipeline',clients:'Clientes',finance:'Financeiro',influencer:'Influencer',marketing:'Marketing',tasks:'Tarefas',handoff:'Atividade',team:'Equipe'};
+const I = (p) => `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const TAB_ICONS = {
+  overview:  I('<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>'),
+  pipeline:  I('<circle cx="3" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="13" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><line x1="4.5" y1="8" x2="6.5" y2="8"/><line x1="9.5" y1="8" x2="11.5" y2="8"/>'),
+  clients:   I('<circle cx="8" cy="5" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/>'),
+  finance:   I('<polyline points="2,12 5,8 9,10 14,4"/><line x1="14" y1="4" x2="14" y2="8"/><line x1="14" y1="4" x2="10" y2="4"/>'),
+  marketing: I('<polygon points="3,9 3,7 13,3 13,13 3,9"/><line x1="3" y1="9" x2="3" y2="13"/>'),
+  tasks:     I('<rect x="2" y="2" width="12" height="12" rx="2"/><polyline points="5,8 7,10 11,6"/>'),
+  handoff:   I('<path d="M8 2a5 5 0 015 5v3l1.5 2H1.5L3 10V7a5 5 0 015-5z"/><path d="M6.5 13.5a1.5 1.5 0 003 0"/>'),
+  team:       I('<circle cx="5.5" cy="5" r="2.5"/><path d="M1 14c0-2.5 2-4.5 4.5-4.5"/><circle cx="10.5" cy="5" r="2.5"/><path d="M15 14c0-2.5-2-4.5-4.5-4.5"/>'),
+  influencer: I('<path d="M8 2l1.5 3.5L13 6l-2.5 2.5.5 3.5L8 10.5 5 12l.5-3.5L3 6l3.5-.5z"/><path d="M14 10l1 2M2 10l-1 2"/>'),
+};
 const ROLE_PERMS = {
   admin:       ['Pipeline','Clientes','Financeiro','Marketing','Tarefas','Equipe','Editar tudo'],
   operacional: ['Pipeline','Clientes','Marketing','Tarefas'],
@@ -713,9 +1083,20 @@ function startApp() {
   hav.style.background = currentUser.color;
   document.getElementById('h-uname').textContent = currentUser.name;
   document.getElementById('h-urole').textContent = roleLabel(currentUser.role);
+
+  // sidebar user info
+  const sbAv = document.getElementById('sb-av');
+  sbAv.textContent = initials(currentUser.name);
+  sbAv.style.background = currentUser.color;
+  document.getElementById('sb-uname').textContent = currentUser.name;
+  document.getElementById('sb-urole').textContent = roleLabel(currentUser.role);
+
+  // build sidebar nav
   const role = ROLES[currentUser.role];
-  document.getElementById('h-tabs').innerHTML = role.tabs.map((t,i) =>
-    `<button class="h-tab${i===0?' active':''}" onclick="switchTab('${t}',this)">${TAB_LABELS[t]}</button>`
+  document.getElementById('sb-nav').innerHTML = role.tabs.map((t,i) =>
+    `<button class="sb-item${i===0?' active':''}" id="sb-tab-${t}" onclick="switchTab('${t}',this)">
+      <span class="sb-icon">${TAB_ICONS[t]||''}</span>${TAB_LABELS[t]}
+    </button>`
   ).join('');
   renderOverview();
   startRealtime();
@@ -723,14 +1104,15 @@ function startApp() {
 
 function startRealtime() {
   const rerender = () => {
-    const renders = {overview:renderOverview,pipeline:renderPipeline,clients:renderClients,finance:renderFinance,tasks:renderTasks,team:renderTeam};
+    const renders = {overview:renderOverview,pipeline:renderPipeline,clients:renderClients,finance:renderFinance,influencer:renderInfluencer,tasks:renderTasks,team:renderTeam};
     renders[activeTab]?.();
   };
   sb.channel('nexo-realtime')
-    .on('postgres_changes',{event:'*',schema:'public',table:'clients'},        rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},          rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'finance_entries'},rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'activity_log'},   rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'clients'},         rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},           rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'finance_entries'}, rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'activity_log'},    rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'influencer_jobs'}, rerender)
     .subscribe();
 }
 
@@ -797,6 +1179,25 @@ const DEMO = {
     { id: 'dm6', tipo: 'post',     titulo: 'Antes e Depois — transformação digital de negócio local', status: 'planejado', obs: 'Carrossel comparativo' },
     { id: 'dm7', tipo: 'story',    titulo: 'Depoimento — cliente fala sobre o resultado',             status: 'planejado', obs: '' },
   ],
+  influencers: [
+    { id:'inf-1', nome:'Ana Souza',   nicho:'Beleza & Lifestyle',       instagram:'@anasouza.off',   valor_por_job:350, status:'ativo' },
+    { id:'inf-2', nome:'Carol Lima',  nicho:'Gastronomia & Vida Local',  instagram:'@carollimareal',  valor_por_job:280, status:'ativo' },
+  ],
+  influencer_jobs: [
+    { id:'ij1', influencer_id:'inf-1', influencer_nome:'Ana Souza',  cliente_alvo:'Clínica São Lucas',        descricao:'Reel — antes e depois da automação de agendamento',  roteiro:true,  gravacao:true,  edicao:true,  publicado:true,  pago:true,  valor:350, created_at:new Date(Date.now()-25*86400000).toISOString() },
+    { id:'ij2', influencer_id:'inf-1', influencer_nome:'Ana Souza',  cliente_alvo:'Advocacia Mendes & Filho', descricao:'Reel — como o escritório automatizou o atendimento',   roteiro:true,  gravacao:true,  edicao:true,  publicado:true,  pago:true,  valor:350, created_at:new Date(Date.now()-12*86400000).toISOString() },
+    { id:'ij3', influencer_id:'inf-2', influencer_nome:'Carol Lima', cliente_alvo:'Restaurante Bella Vista',  descricao:'Reel — sistema de reservas via WhatsApp',              roteiro:true,  gravacao:true,  edicao:false, publicado:false, pago:false, valor:280, created_at:new Date(Date.now()-4*86400000).toISOString() },
+    { id:'ij4', influencer_id:'inf-1', influencer_nome:'Ana Souza',  cliente_alvo:'Pet Shop Amigo Fiel',      descricao:'Reel — agendamento online e lembretes automáticos',    roteiro:true,  gravacao:false, edicao:false, publicado:false, pago:false, valor:350, created_at:new Date(Date.now()-2*86400000).toISOString() },
+    { id:'ij5', influencer_id:'inf-2', influencer_nome:'Carol Lima', cliente_alvo:'Ótica Visão Clara',        descricao:'Reel — vitrine digital com IA',                        roteiro:false, gravacao:false, edicao:false, publicado:false, pago:false, valor:280, created_at:new Date(Date.now()-1*86400000).toISOString() },
+  ],
+  monthlyData: [
+    { label: 'Jan', key: '2026-01', receita:  4200, implementacao:  1500, despesa:  320, leads: 2 },
+    { label: 'Fev', key: '2026-02', receita:  5800, implementacao:  2200, despesa:  380, leads: 3 },
+    { label: 'Mar', key: '2026-03', receita:  7400, implementacao:  1800, despesa:  410, leads: 4 },
+    { label: 'Abr', key: '2026-04', receita:  9200, implementacao:  3200, despesa:  490, leads: 5 },
+    { label: 'Mai', key: '2026-05', receita: 10500, implementacao:  1500, despesa:  460, leads: 3 },
+    { label: 'Jun', key: '2026-06', receita: 10500, implementacao:  3300, despesa:  567, leads: 2 },
+  ],
 };
 
 function toggleNumbers() {
@@ -810,18 +1211,30 @@ function toggleNumbers() {
 function toggleDemo() {
   demoMode = !demoMode;
   document.getElementById('btn-demo').classList.toggle('on', demoMode);
-  const renders = {overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam};
+  const renders = {overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam};
   renders[activeTab]?.();
 }
 
 function switchTab(id, btn) {
   if (clockInterval && id !== 'overview') { clearInterval(clockInterval); clockInterval = null; }
   document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.h-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   activeTab = id;
-  ({overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam})[id]?.();
+  closeSidebar();
+  ({overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam})[id]?.();
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('open');
+  document.getElementById('btn-hamburger').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+  document.getElementById('btn-hamburger').classList.remove('open');
 }
 
 // ══════════════════════════════════════
@@ -1389,7 +1802,516 @@ async function saveTeam(id) {
     document.getElementById('h-av').style.background=obj.color;
     document.getElementById('h-uname').textContent=obj.name;
     document.getElementById('h-urole').textContent=roleLabel(obj.role);
+    document.getElementById('sb-av').textContent=initials(obj.name);
+    document.getElementById('sb-av').style.background=obj.color;
+    document.getElementById('sb-uname').textContent=obj.name;
+    document.getElementById('sb-urole').textContent=roleLabel(obj.role);
   }
+}
+
+// ══════════════════════════════════════
+// ANALYTICS PANEL
+// ══════════════════════════════════════
+let analyticsCharts = {};
+let analyticsCache = null;
+
+function openAnalytics() {
+  document.getElementById('analytics-overlay').classList.add('open');
+  loadAnalytics();
+}
+
+function closeAnalytics() {
+  document.getElementById('analytics-overlay').classList.remove('open');
+  Object.values(analyticsCharts).forEach(c => { try { c.destroy(); } catch(e){} });
+  analyticsCharts = {};
+}
+
+async function loadAnalytics() {
+  const body = document.getElementById('an-body');
+  body.innerHTML = '<div class="an-loading"><div class="an-spinner"></div><span>Carregando analytics...</span></div>';
+  Object.values(analyticsCharts).forEach(c => { try { c.destroy(); } catch(e){} });
+  analyticsCharts = {};
+
+  let clients, entries;
+  if (demoMode) {
+    clients = DEMO.clients;
+    entries = DEMO.finance;
+  } else {
+    const [r1, r2] = await Promise.all([
+      sb.from('clients').select('*').order('created_at'),
+      sb.from('finance_entries').select('*').order('data'),
+    ]);
+    clients = r1.data || [];
+    entries = r2.data || [];
+  }
+
+  const months = getLast6Months();
+
+  let mRevenue, mImpl, mDespesas, mLeads, labels;
+  if (demoMode && DEMO.monthlyData) {
+    const md = DEMO.monthlyData;
+    labels    = md.map(m => m.label);
+    mRevenue  = md.map(m => m.receita);
+    mImpl     = md.map(m => m.implementacao);
+    mDespesas = md.map(m => m.despesa);
+    mLeads    = md.map(m => m.leads);
+  } else {
+    labels    = months.map(m => m.label);
+    mRevenue  = months.map(m => entries.filter(e => e.data?.slice(0,7)===m.key && e.tipo==='entrada').reduce((s,e)=>s+(parseFloat(e.valor)||0),0));
+    mImpl     = months.map(m => entries.filter(e => e.data?.slice(0,7)===m.key && e.tipo==='implementacao').reduce((s,e)=>s+(parseFloat(e.valor)||0),0));
+    mDespesas = months.map(m => entries.filter(e => e.data?.slice(0,7)===m.key && e.tipo==='despesa').reduce((s,e)=>s+(parseFloat(e.valor)||0),0));
+    mLeads    = months.map(m => clients.filter(c => c.created_at?.slice(0,7)===m.key).length);
+  }
+
+  const active   = clients.filter(c => c.status==='ativo');
+  const pipeline = clients.filter(c => ['prospect','proposta','negociando'].includes(c.status));
+  const lost     = clients.filter(c => c.status==='encerrado');
+  const mrr      = active.reduce((s,c) => s+(parseFloat(c.valor)||0), 0);
+  const conversion = clients.length > 0 ? Math.round(active.length/clients.length*100) : 0;
+
+  const curFat = mRevenue[mRevenue.length-1] + mImpl[mImpl.length-1];
+  const prevFat = mRevenue[mRevenue.length-2] + mImpl[mImpl.length-2];
+  const mrrGrowth = prevFat > 0 ? Math.round((curFat-prevFat)/prevFat*100) : 0;
+  const lucro = curFat - mDespesas[mDespesas.length-1];
+
+  const funnel = [
+    { label:'Prospect',   count:clients.filter(c=>c.status==='prospect').length,   color:'#00c8e8' },
+    { label:'Proposta',   count:clients.filter(c=>c.status==='proposta').length,    color:'#7b5ccc' },
+    { label:'Negociando', count:clients.filter(c=>c.status==='negociando').length,  color:'#f97316' },
+    { label:'Ativo',      count:active.length,                                       color:'#22c55e' },
+    { label:'Encerrado',  count:lost.length,                                         color:'#ef4444' },
+  ];
+
+  analyticsCache = { mrr, mrrGrowth, active:active.length, pipeline:pipeline.length, conversion, lucro };
+  const suggestions = buildSuggestions(clients, mrr, conversion, mrrGrowth, pipeline);
+
+  renderAnalyticsBody(body, { mrr, mrrGrowth, active, pipeline, lost, conversion, lucro, funnel, mRevenue, mImpl, mDespesas, mLeads, labels, suggestions });
+
+  const now = new Date();
+  const sub = document.getElementById('an-subtitle');
+  if (sub) sub.textContent = `${demoMode ? '⚡ DEMO  •  ' : ''}Atualizado ${now.toLocaleDateString('pt-BR')} às ${now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+}
+
+function getLast6Months() {
+  const r = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i);
+    r.push({ key: d.toISOString().slice(0,7), label: d.toLocaleDateString('pt-BR',{month:'short'}).replace('.','') });
+  }
+  return r;
+}
+
+function renderAnalyticsBody(body, d) {
+  const { mrr, mrrGrowth, active, pipeline, lost, conversion, lucro, funnel, mRevenue, mImpl, mDespesas, mLeads, labels, suggestions } = d;
+
+  const growthTag = mrrGrowth > 0
+    ? `<span class="an-kpi-tag up">▲ +${mrrGrowth}% mês anterior</span>`
+    : mrrGrowth < 0
+    ? `<span class="an-kpi-tag down">▼ ${mrrGrowth}% mês anterior</span>`
+    : `<span class="an-kpi-tag neutral">— estável</span>`;
+
+  body.innerHTML = `
+    <div class="an-kpis">
+      <div class="an-kpi-card">
+        <div class="an-kpi-label">MRR Atual</div>
+        <div class="an-kpi-val c-cyan">${fmtMoney(mrr)}</div>
+        <div class="an-kpi-sub">receita recorrente mensal</div>
+        ${growthTag}
+      </div>
+      <div class="an-kpi-card">
+        <div class="an-kpi-label">Clientes Ativos</div>
+        <div class="an-kpi-val c-green">${active.length}</div>
+        <div class="an-kpi-sub">contratos em andamento</div>
+        <span class="an-kpi-tag ${lost.length>0?'down':'neutral'}">${lost.length} encerrado${lost.length!==1?'s':''}</span>
+      </div>
+      <div class="an-kpi-card">
+        <div class="an-kpi-label">Taxa de Conversão</div>
+        <div class="an-kpi-val c-purple">${conversion}%</div>
+        <div class="an-kpi-sub">prospects → clientes ativos</div>
+        ${conversion>=40?'<span class="an-kpi-tag up">acima da média</span>':'<span class="an-kpi-tag neutral">meta: 40%</span>'}
+      </div>
+      <div class="an-kpi-card">
+        <div class="an-kpi-label">Lucro no Mês</div>
+        <div class="an-kpi-val c-orange" style="font-size:${lucro>=10000?'20px':'24px'}">${fmtMoney(lucro)}</div>
+        <div class="an-kpi-sub">receitas − despesas</div>
+        <span class="an-kpi-tag ${lucro>0?'up':'down'}">${lucro>0?'▲ positivo':'▼ negativo'}</span>
+      </div>
+    </div>
+
+    <div class="an-charts-row cols-6-4">
+      <div class="an-chart-card">
+        <div class="an-chart-title">Progressão do Faturamento — últimos 6 meses</div>
+        <div class="an-chart-wrap"><canvas id="chart-revenue"></canvas></div>
+      </div>
+      <div class="an-chart-card">
+        <div class="an-chart-title">Pipeline por Status</div>
+        <div class="an-chart-wrap"><canvas id="chart-funnel"></canvas></div>
+      </div>
+    </div>
+
+    <div class="an-charts-row cols-5-5">
+      <div class="an-chart-card">
+        <div class="an-chart-title">Novos Leads por Mês</div>
+        <div class="an-chart-wrap"><canvas id="chart-leads"></canvas></div>
+      </div>
+      <div class="an-chart-card">
+        <div class="an-chart-title">Sugestões de Melhoria — IA</div>
+        <div class="an-suggestions" id="an-sug-list"></div>
+      </div>
+    </div>
+  `;
+
+  const sugList = document.getElementById('an-sug-list');
+  const icons  = ['💡','📈','⚠️','🎯','🔄'];
+  const bgs    = ['rgba(0,200,232,0.08)','rgba(34,197,94,0.08)','rgba(249,115,22,0.08)','rgba(167,139,250,0.08)','rgba(0,200,232,0.06)'];
+  suggestions.forEach((s,i) => {
+    const div = document.createElement('div');
+    div.className = 'an-suggestion-item';
+    div.innerHTML = `<div class="an-sug-icon" style="background:${bgs[i%bgs.length]}">${icons[i%icons.length]}</div><div class="an-sug-text">${s}</div>`;
+    sugList.appendChild(div);
+  });
+
+  requestAnimationFrame(() => {
+    buildRevenueChart(mRevenue, mImpl, mDespesas, labels);
+    buildFunnelChart(funnel);
+    buildLeadsChart(mLeads, labels);
+  });
+}
+
+const AN_CHART_OPTS = {
+  tooltip: {
+    backgroundColor:'#0d1e35', borderColor:'rgba(0,200,232,0.2)', borderWidth:1,
+    titleColor:'#94a3b8', bodyColor:'#e2e8f0', padding:10,
+  },
+  legend: (pos='top') => ({ position:pos, labels:{ color:'#64748b', font:{size:11,family:'Inter,sans-serif'}, boxWidth:12, padding:14 } }),
+  scaleX: { grid:{ color:'rgba(0,200,232,0.04)' }, ticks:{ color:'#64748b', font:{size:11,family:'Inter,sans-serif'} } },
+  scaleY: { grid:{ color:'rgba(0,200,232,0.04)' }, ticks:{ color:'#64748b', font:{size:11,family:'Inter,sans-serif'} }, beginAtZero:true },
+};
+
+function buildRevenueChart(revenue, impl, despesas, labels) {
+  const ctx = document.getElementById('chart-revenue'); if (!ctx) return;
+  analyticsCharts.revenue = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label:'Recorrente (MRR)',   data:revenue,  borderColor:'#00c8e8', backgroundColor:'rgba(0,200,232,0.08)',  fill:true, tension:0.4, pointBackgroundColor:'#00c8e8', pointRadius:4, borderWidth:2 },
+        { label:'Implementações',     data:impl,     borderColor:'#7b5ccc', backgroundColor:'rgba(123,92,204,0.07)', fill:true, tension:0.4, pointBackgroundColor:'#7b5ccc', pointRadius:4, borderWidth:2 },
+        { label:'Despesas',           data:despesas, borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.05)',  fill:true, tension:0.4, pointBackgroundColor:'#ef4444', pointRadius:4, borderWidth:2, borderDash:[5,3] },
+      ],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins: {
+        legend: AN_CHART_OPTS.legend(),
+        tooltip: { ...AN_CHART_OPTS.tooltip, callbacks:{ label: c => ` ${c.dataset.label}: ${fmtMoney(c.parsed.y)}` } },
+      },
+      scales: {
+        x: AN_CHART_OPTS.scaleX,
+        y: { ...AN_CHART_OPTS.scaleY, ticks:{ ...AN_CHART_OPTS.scaleY.ticks, callback: v => fmtMoney(v) } },
+      },
+    },
+  });
+}
+
+function buildFunnelChart(funnel) {
+  const ctx = document.getElementById('chart-funnel'); if (!ctx) return;
+  const nonZero = funnel.filter(f => f.count > 0);
+  if (nonZero.length === 0) {
+    ctx.closest('.an-chart-card').querySelector('.an-chart-wrap').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#475569;font-size:13px">Sem dados de pipeline</div>';
+    return;
+  }
+  analyticsCharts.funnel = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: nonZero.map(f => f.label),
+      datasets: [{ data:nonZero.map(f=>f.count), backgroundColor:nonZero.map(f=>f.color+'bb'), borderColor:nonZero.map(f=>f.color), borderWidth:1, hoverOffset:6 }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins: {
+        legend: AN_CHART_OPTS.legend('bottom'),
+        tooltip: { ...AN_CHART_OPTS.tooltip, callbacks:{ label: c => ` ${c.label}: ${c.parsed} cliente${c.parsed!==1?'s':''}` } },
+      },
+    },
+  });
+}
+
+function buildLeadsChart(leads, labels) {
+  const ctx = document.getElementById('chart-leads'); if (!ctx) return;
+  analyticsCharts.leads = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label:'Novos leads',
+        data: leads,
+        backgroundColor: labels.map((_,i) => i===labels.length-1 ? '#00c8e8bb' : 'rgba(0,200,232,0.22)'),
+        borderColor: '#00c8e8',
+        borderWidth: 1,
+        borderRadius: 6,
+      }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend:{ display:false },
+        tooltip:{ ...AN_CHART_OPTS.tooltip, callbacks:{ label: c => ` ${c.parsed.y} lead${c.parsed.y!==1?'s':''}` } },
+      },
+      scales: {
+        x: { ...AN_CHART_OPTS.scaleX, grid:{ display:false } },
+        y: { ...AN_CHART_OPTS.scaleY, ticks:{ ...AN_CHART_OPTS.scaleY.ticks, stepSize:1 } },
+      },
+    },
+  });
+}
+
+function buildSuggestions(clients, mrr, conversion, mrrGrowth, pipeline) {
+  const out = [];
+  const lost = clients.filter(c => c.status==='encerrado');
+
+  if (conversion < 30)
+    out.push(`Taxa de conversão em <strong>${conversion}%</strong> — revise o pitch ou a qualificação de prospects antes de enviar proposta.`);
+  else if (conversion >= 50)
+    out.push(`Taxa de conversão de <strong>${conversion}%</strong> — excelente! Documente o que está funcionando e replique no processo comercial.`);
+  else
+    out.push(`Conversão em <strong>${conversion}%</strong> — boa base. Aprimore o follow-up e o roteiro de proposta para chegar em 50%.`);
+
+  if (mrrGrowth > 10)
+    out.push(`MRR cresceu <strong>${mrrGrowth}%</strong> no último mês — ótimo momentum. Escale a prospecção para manter a aceleração.`);
+  else if (mrrGrowth < 0)
+    out.push(`MRR caiu <strong>${Math.abs(mrrGrowth)}%</strong> — priorize fechar os ${pipeline.length} lead${pipeline.length!==1?'s':''} em negociação agora.`);
+  else
+    out.push(`MRR estável. Feche os <strong>${pipeline.length} lead${pipeline.length!==1?'s':''}</strong> do pipeline para retomar crescimento acelerado.`);
+
+  const stale = clients.filter(c => ['prospect','proposta'].includes(c.status) && c.created_at && (Date.now()-new Date(c.created_at))/86400000 > 14);
+  if (stale.length > 0)
+    out.push(`<strong>${stale.length} lead${stale.length>1?'s':''}</strong> em prospect/proposta há mais de 14 dias — agende follow-up hoje.`);
+
+  if (mrr < 10000) {
+    const needed = Math.max(1, Math.ceil((10000-mrr)/2500));
+    out.push(`Para atingir R$ 10.000 de MRR, feche mais <strong>${needed} cliente${needed>1?'s':''}</strong> no ticket médio atual.`);
+  } else if (mrr < 20000)
+    out.push(`Com <strong>${fmtMoney(mrr)}</strong> de MRR, consolide o onboarding e reduza o churn para sustentar o crescimento.`);
+  else
+    out.push(`MRR acima de R$ 20k — hora de investir em processos e time para entregar com qualidade nesse volume.`);
+
+  if (lost.length > 0)
+    out.push(`<strong>${lost.length} cliente${lost.length>1?'s':''} encerrado${lost.length>1?'s':''}</strong> — faça entrevistas de churn para ajustar oferta e evitar repetição.`);
+
+  return out.slice(0, 5);
+}
+
+function openStoriesCard() {
+  if (!analyticsCache) return;
+  const { mrr, mrrGrowth, active, pipeline, conversion, lucro } = analyticsCache;
+  const now = new Date();
+  document.getElementById('story-period').textContent = now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  document.getElementById('story-mrr').textContent = mrr.toLocaleString('pt-BR');
+  const gEl = document.getElementById('story-growth');
+  gEl.textContent = mrrGrowth > 0 ? `▲ +${mrrGrowth}% vs mês anterior` : mrrGrowth < 0 ? `▼ ${mrrGrowth}% vs mês anterior` : '— estável vs mês anterior';
+  gEl.style.color = mrrGrowth > 0 ? '#22c55e' : mrrGrowth < 0 ? '#ef4444' : '#64748b';
+  document.getElementById('story-metrics').innerHTML = `
+    <div class="story-metric"><div class="story-metric-val">${active}</div><div class="story-metric-label">Clientes Ativos</div></div>
+    <div class="story-metric"><div class="story-metric-val">${conversion}%</div><div class="story-metric-label">Taxa de Conversão</div></div>
+    <div class="story-metric"><div class="story-metric-val">${pipeline}</div><div class="story-metric-label">No Pipeline</div></div>
+    <div class="story-metric"><div class="story-metric-val" style="font-size:${lucro>=10000?'18px':'22px'}">${fmtMoney(lucro)}</div><div class="story-metric-label">Lucro no Mês</div></div>
+  `;
+  document.getElementById('stories-overlay').classList.add('open');
+}
+function closeStoriesCard() { document.getElementById('stories-overlay').classList.remove('open'); }
+
+// ══════════════════════════════════════
+// INFLUENCER
+// ══════════════════════════════════════
+async function renderInfluencer() {
+  const wrap = document.getElementById('influencer-inner');
+  if (!wrap) return;
+  wrap.innerHTML = '<div class="loading-state"><div class="spin-cyan"></div>Carregando...</div>';
+
+  let influencers, jobs;
+  if (demoMode) {
+    influencers = DEMO.influencers;
+    jobs = DEMO.influencer_jobs;
+  } else {
+    try {
+      const [r1, r2] = await Promise.all([
+        sb.from('influencers').select('*').order('nome'),
+        sb.from('influencer_jobs').select('*').order('created_at', {ascending:false}),
+      ]);
+      if (r1.error) throw r1.error;
+      influencers = r1.data || [];
+      jobs = r2.data || [];
+    } catch(e) {
+      wrap.innerHTML = `
+        <div class="inf-empty" style="padding:80px 20px">
+          <div class="inf-empty-icon">⚡</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)">Ative o modo DEMO para explorar</div>
+          <div style="font-size:13px;color:var(--muted);max-width:380px;margin:0 auto 20px;line-height:1.6">
+            Para dados reais, crie as tabelas <code style="background:rgba(0,200,232,.1);color:var(--cyan);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">influencers</code>
+            e <code style="background:rgba(0,200,232,.1);color:var(--cyan);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">influencer_jobs</code> no Supabase.
+          </div>
+          <button class="btn-add" onclick="if(!demoMode)toggleDemo(); renderInfluencer()">Ver no modo DEMO</button>
+        </div>`;
+      return;
+    }
+  }
+
+  const ed = canEdit('influencer');
+  const activeJobs    = jobs.filter(j => !j.publicado);
+  const publishedJobs = jobs.filter(j => j.publicado && !j.pago);
+  const paidJobs      = jobs.filter(j => j.pago);
+  const totalPaid     = paidJobs.reduce((s,j) => s+(parseFloat(j.valor)||0), 0);
+  const pendingPay    = publishedJobs.reduce((s,j) => s+(parseFloat(j.valor)||0), 0);
+  const thisMonthKey  = new Date().toISOString().slice(0,7);
+  const jobsThisMonth = jobs.filter(j => j.publicado && (j.created_at||'').slice(0,7)===thisMonthKey).length;
+
+  wrap.innerHTML = `
+    <div class="sec-header">
+      <div class="sec-title">Influencer</div>
+      ${ed?`<button class="btn-add" onclick="openJobModal()">+ Novo Job</button>`:''}
+    </div>
+    <div class="inf-kpis">
+      <div class="inf-kpi"><div class="inf-kpi-label">Influencers Ativas</div><div class="inf-kpi-val c-cyan">${influencers.filter(i=>i.status==='ativo').length}</div><div class="inf-kpi-sub">parceiras da NEXO IA</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">Jobs em Produção</div><div class="inf-kpi-val c-orange">${activeJobs.length}</div><div class="inf-kpi-sub">roteiro · gravação · edição</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">Total Investido</div><div class="inf-kpi-val c-green" style="font-size:${totalPaid>=10000?'22px':'28px'}">${fmtMoney(totalPaid)}</div><div class="inf-kpi-sub">pagamentos realizados</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">A Pagar</div><div class="inf-kpi-val c-purple" style="font-size:${pendingPay>=10000?'22px':'28px'}">${fmtMoney(pendingPay)}</div><div class="inf-kpi-sub">publicados, aguardando pgto</div></div>
+    </div>
+    <div class="inf-cards" id="inf-cards"></div>
+    ${activeJobs.length>0?`<div class="inf-section-title">Jobs em produção — clique nas etapas para marcar</div><div class="inf-jobs-list" id="inf-active"></div>`:''}
+    ${publishedJobs.length>0?`<div class="inf-section-title">Publicados — aguardando pagamento</div><div class="inf-jobs-list" id="inf-pub"></div>`:''}
+    ${paidJobs.length>0?`<div class="inf-section-title">Pagos & Concluídos</div><div class="inf-jobs-list" id="inf-paid"></div>`:''}
+    ${jobs.length===0?`<div class="inf-empty"><div class="inf-empty-icon">🎬</div><div class="inf-empty-text">Nenhum job cadastrado ainda</div></div>`:''}
+  `;
+
+  const cardsEl = document.getElementById('inf-cards');
+  influencers.forEach(inf => {
+    const myJobs  = jobs.filter(j => j.influencer_id===inf.id);
+    const myPaid  = myJobs.filter(j=>j.pago).reduce((s,j)=>s+(parseFloat(j.valor)||0),0);
+    const myActive= myJobs.filter(j=>!j.publicado).length;
+    cardsEl.innerHTML += `
+      <div class="inf-card">
+        <div class="inf-card-status ${inf.status}">${inf.status}</div>
+        <div class="inf-card-avatar">${initials(inf.nome)}</div>
+        <div class="inf-card-info">
+          <div class="inf-card-name">${inf.nome}</div>
+          <div class="inf-card-nicho">${inf.nicho}</div>
+          <div class="inf-card-ig">${inf.instagram}</div>
+        </div>
+        <div class="inf-card-stats">
+          <div class="inf-stat"><span class="inf-stat-val">${fmtMoney(inf.valor_por_job||0)}</span><span class="inf-stat-lbl">por job</span></div>
+          <div class="inf-stat"><span class="inf-stat-val">${myJobs.length}</span><span class="inf-stat-lbl">jobs total</span></div>
+          <div class="inf-stat"><span class="inf-stat-val" style="color:var(--green)">${fmtMoney(myPaid)}</span><span class="inf-stat-lbl">pago</span></div>
+        </div>
+      </div>`;
+  });
+
+  function jobHtml(job) {
+    const stages = [
+      {key:'roteiro',  label:'Roteiro'},
+      {key:'gravacao', label:'Gravação'},
+      {key:'edicao',   label:'Edição'},
+      {key:'publicado',label:'Publicado'},
+      {key:'pago',     label:'Pago'},
+    ];
+    const stagesHtml = stages.map((s,i) => {
+      const done = !!job[s.key];
+      const isPago = s.key==='pago';
+      const line = i<stages.length-1
+        ? `<div class="inf-stage-line ${done&&!!job[stages[i+1].key]?'done':''}"></div>`
+        : '';
+      return `<div class="inf-stage-wrap">
+        <div class="inf-stage ${done?'done':''} ${isPago?'pago-stage':''}" onclick="${ed?`toggleJobStage('${job.id}','${s.key}')`:''}" title="${s.label}">
+          <div class="inf-stage-dot">${done?'✓':''}</div>
+          <div class="inf-stage-label">${s.label}</div>
+        </div>${line}
+      </div>`;
+    }).join('');
+    return `
+      <div class="inf-job-item">
+        <div>
+          <div class="inf-job-influencer">${job.influencer_nome}</div>
+          <div class="inf-job-desc">${job.descricao}</div>
+          ${job.cliente_alvo?`<div class="inf-job-client">→ ${job.cliente_alvo}</div>`:''}
+        </div>
+        <div class="inf-job-stages">${stagesHtml}</div>
+        <div class="inf-job-valor">${fmtMoney(job.valor||0)}</div>
+      </div>`;
+  }
+
+  ['inf-active','inf-pub','inf-paid'].forEach((elId,i) => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const list = [activeJobs, publishedJobs, paidJobs][i];
+    el.innerHTML = list.map(jobHtml).join('');
+  });
+}
+
+async function toggleJobStage(jobId, stage) {
+  if (demoMode) {
+    const job = DEMO.influencer_jobs.find(j => j.id===jobId);
+    if (!job) return;
+    job[stage] = !job[stage];
+    if (stage==='pago' && job[stage]) job.publicado = true;
+    if (stage==='publicado' && !job[stage]) job.pago = false;
+    renderInfluencer();
+    return;
+  }
+  const job = (await sb.from('influencer_jobs').select('*').eq('id',jobId).single()).data;
+  if (!job) return;
+  const upd = {[stage]: !job[stage]};
+  if (stage==='pago' && upd[stage]) upd.publicado = true;
+  if (stage==='publicado' && !upd[stage]) upd.pago = false;
+  await sb.from('influencer_jobs').update(upd).eq('id',jobId);
+  renderInfluencer();
+}
+
+function openJobModal(jobId) {
+  const job = jobId ? (demoMode ? DEMO.influencer_jobs.find(j=>j.id===jobId) : null) : null;
+  const influencers = demoMode ? DEMO.influencers : [];
+  const infOptions = influencers.map(i => `<option value="${i.id}" data-nome="${i.nome}" data-valor="${i.valor_por_job}" ${job?.influencer_id===i.id?'selected':''}>${i.nome} — ${fmtMoney(i.valor_por_job)}</option>`).join('');
+  document.getElementById('modal-box').innerHTML = `
+    <div class="modal-title">${job?'Editar Job':'Novo Job de Influencer'}</div>
+    <div class="form-grid">
+      <div class="form-field"><label>Influencer</label>
+        <select id="f-inf-id" class="form-input" onchange="const o=this.options[this.selectedIndex];document.getElementById('f-inf-valor').value=o.dataset.valor||''">
+          <option value="">Selecione...</option>${infOptions}
+        </select>
+      </div>
+      <div class="form-field"><label>Valor (R$)</label><input id="f-inf-valor" class="form-input" type="number" placeholder="350" value="${job?.valor||''}"></div>
+      <div class="form-field" style="grid-column:span 2"><label>Descrição do Job</label><input id="f-inf-desc" class="form-input" placeholder="Ex: Reel — antes e depois da automação" value="${job?.descricao||''}"></div>
+      <div class="form-field" style="grid-column:span 2"><label>Cliente Alvo (opcional)</label><input id="f-inf-cliente" class="form-input" placeholder="Qual negócio será promovido?" value="${job?.cliente_alvo||''}"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveJob('${jobId||''}')">Salvar</button>
+    </div>`;
+  openModal();
+}
+
+async function saveJob(jobId) {
+  const selEl = document.getElementById('f-inf-id');
+  const selOpt = selEl?.options[selEl.selectedIndex];
+  const infId   = v('f-inf-id');
+  const infNome = selOpt?.dataset.nome || '';
+  const desc    = v('f-inf-desc');
+  const valor   = parseFloat(v('f-inf-valor'))||0;
+  const cliente = v('f-inf-cliente');
+  if (!infId || !desc) { alert('Preencha influencer e descrição.'); return; }
+  if (demoMode) {
+    if (jobId) {
+      const job = DEMO.influencer_jobs.find(j=>j.id===jobId);
+      if (job) { job.influencer_id=infId; job.influencer_nome=infNome; job.descricao=desc; job.valor=valor; job.cliente_alvo=cliente; }
+    } else {
+      DEMO.influencer_jobs.unshift({id:'ij'+Date.now(),influencer_id:infId,influencer_nome:infNome,descricao:desc,valor,cliente_alvo:cliente,roteiro:false,gravacao:false,edicao:false,publicado:false,pago:false,created_at:new Date().toISOString()});
+    }
+    closeModal(); renderInfluencer(); return;
+  }
+  const obj = {influencer_id:infId, influencer_nome:infNome, descricao:desc, valor, cliente_alvo:cliente};
+  if (jobId) await sb.from('influencer_jobs').update(obj).eq('id',jobId);
+  else await sb.from('influencer_jobs').insert(obj);
+  closeModal(); renderInfluencer();
 }
 
 // ══════════════════════════════════════
@@ -1413,5 +2335,46 @@ function closeModalOutside(e) { if (e.target===document.getElementById('modal-ov
   }
 })();
 </script>
+
+<!-- ══ ANALYTICS OVERLAY ══ -->
+<div id="analytics-overlay">
+  <div class="an-header">
+    <div class="an-header-left">
+      <div class="an-logo">NEXO<span>IA</span> Analytics</div>
+      <div class="an-subtitle" id="an-subtitle">carregando...</div>
+    </div>
+    <div class="an-header-right">
+      <button class="an-btn-stories" onclick="openStoriesCard()">📱 Para Stories</button>
+      <button class="an-close" onclick="closeAnalytics()">×</button>
+    </div>
+  </div>
+  <div class="an-body" id="an-body">
+    <div class="an-loading"><div class="an-spinner"></div><span>Carregando analytics...</span></div>
+  </div>
+</div>
+
+<!-- ══ STORIES CARD ══ -->
+<div id="stories-overlay" onclick="if(event.target===this)closeStoriesCard()">
+  <div class="story-card" id="story-card">
+    <button class="story-close-btn" onclick="closeStoriesCard()">×</button>
+    <div class="story-top">
+      <div class="story-logo">NEXO<span>IA</span></div>
+      <div class="story-period" id="story-period"></div>
+    </div>
+    <div class="story-mrr-section">
+      <div class="story-mrr-label">MRR Atual</div>
+      <div class="story-mrr-val"><span class="prefix">R$</span><span id="story-mrr">0</span></div>
+      <div class="story-mrr-growth" id="story-growth"></div>
+    </div>
+    <div class="story-metrics" id="story-metrics"></div>
+    <div class="story-divider"></div>
+    <div class="story-footer">
+      <div class="story-brand">NEXO IA</div>
+      <div class="story-tagline">IA que move o ponteiro de faturamento</div>
+    </div>
+  </div>
+  <div class="story-hint">📸 Screenshot para compartilhar nos Stories</div>
+</div>
+
 </body>
 </html>

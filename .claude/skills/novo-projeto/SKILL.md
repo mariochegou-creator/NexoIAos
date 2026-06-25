@@ -33,6 +33,7 @@ Criar a pasta com:
 
 - `CLAUDE.md` do projeto (instruções herdadas + específicas)
 - `briefing.md` (com o que foi coletado na entrevista)
+- `roteiros/` — pasta sempre criada, independente das entregas (todo cliente pode ter um reel)
 - Subpastas conforme as entregas mencionadas (ex: se mencionou "ads e conteúdo", criar `ads/` e `conteudo/`)
 
 ### Passo 4 — Conteúdo do `CLAUDE.md` do projeto
@@ -102,6 +103,16 @@ curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients" \
 Salvar o `id` retornado no campo `supabase_id` do `.nexo-status.md`.
 
 Se o curl falhar, criar o arquivo `.nexo-status.md` mesmo assim — o `/sync` conseguirá criar o registro depois.
+
+Criar também a pasta `roteiros/` dentro da pasta do projeto (se ainda não existir), com um README mínimo:
+
+```markdown
+# Roteiros — [Nome do cliente]
+
+Pasta para roteiros de Reels e vídeos de influencer.
+
+Use `/roteiro` para criar um novo roteiro para esse cliente.
+```
 
 ### Passo 6 — Resumo
 
