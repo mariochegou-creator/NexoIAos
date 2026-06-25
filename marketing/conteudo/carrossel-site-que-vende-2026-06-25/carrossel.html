@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrossel — Site que vende</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 40px 24px; font-family: 'Inter', sans-serif; }
+    .slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; flex-shrink: 0; display: flex; flex-direction: column; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 64px 80px 0; flex-shrink: 0; }
+    .logo { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; letter-spacing: 0.05em; }
+    .logo .n { color: #00c8e8; }
+    .logo .i { color: #e2e8f0; }
+    .counter { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: rgba(0,200,232,0.6); letter-spacing: 0.18em; }
+    .body-area { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 60px 80px; }
+    .footer { padding: 0 80px 56px; flex-shrink: 0; }
+    .footer-line { height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 28px; }
+    .swipe { display: flex; align-items: center; gap: 16px; }
+    .swipe-text { font-size: 30px; font-weight: 800; color: #00c8e8; }
+    .swipe-arrow { font-size: 30px; color: #00c8e8; }
+    .eyebrow { font-size: 22px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: #00c8e8; margin-bottom: 32px; }
+    .rule { width: 80px; height: 6px; background: #00c8e8; border-radius: 3px; margin-bottom: 48px; }
+
+    /* SLIDE 1 — CAPA */
+    .s1 { background: #050e1f; }
+    .s1 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.04) 1px, transparent 1px); background-size: 80px 80px; }
+    .s1 .glow { position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.09) 0%, transparent 65%); }
+    .s1 .header, .s1 .body-area, .s1 .footer { position: relative; z-index: 1; }
+    .s1 h1 { font-size: 94px; font-weight: 900; line-height: 1.0; letter-spacing: -0.04em; color: #e2e8f0; margin-bottom: 44px; }
+    .s1 h1 .cyan { color: #00c8e8; }
+    .s1 .sub { font-size: 36px; font-weight: 500; color: #94a3b8; line-height: 1.55; }
+
+    /* SLIDE 2 — LISTA */
+    .s2 { background: #081422; }
+    .s2 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    .s2 .header, .s2 .body-area, .s2 .footer { position: relative; z-index: 1; }
+    .list { display: flex; flex-direction: column; }
+    .list-item { display: flex; align-items: center; gap: 40px; padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .list-item:last-child { border-bottom: none; }
+    .list-num { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #00c8e8; min-width: 56px; }
+    .list-text { font-size: 46px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; color: #e2e8f0; }
+
+    /* SLIDE 3 — CITAÇÃO */
+    .s3 { background: #050e1f; border-left: 8px solid #00c8e8; }
+    .s3 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%); }
+    .s3 .header, .s3 .body-area, .s3 .footer { position: relative; z-index: 1; }
+    .s3 h2 { font-size: 76px; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s3 h2 .cyan { color: #00c8e8; }
+
+    /* SLIDE 4 — SOLO */
+    .s4 { background: #081422; }
+    .s4 .header, .s4 .body-area, .s4 .footer { position: relative; z-index: 1; }
+    .s4 h2 { font-size: 84px; font-weight: 900; line-height: 1.02; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s4 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 780px; }
+
+    /* SLIDE 5 — NÚMERO */
+    .s5 { background: #050e1f; }
+    .s5 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    .s5 .big-num { font-family: 'Space Mono', monospace; font-size: 300px; font-weight: 700; line-height: 1; color: rgba(0,200,232,0.07); letter-spacing: -0.04em; position: absolute; right: -10px; bottom: 100px; z-index: 0; }
+    .s5 .header, .s5 .body-area, .s5 .footer { position: relative; z-index: 1; }
+    .s5 h2 { font-size: 82px; font-weight: 900; line-height: 1.04; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s5 h2 .cyan { color: #00c8e8; }
+    .s5 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 720px; }
+
+    /* SLIDE 6 — CTA FINAL */
+    .s6 { background: #050e1f; }
+    .s6 .top-bar { position: absolute; top: 0; left: 0; right: 0; height: 8px; background: #00c8e8; }
+    .s6 .glow-left { position: absolute; top: -100px; left: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.1) 0%, transparent 65%); }
+    .s6 .glow-right { position: absolute; bottom: -100px; right: -100px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 65%); }
+    .s6 .content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; padding: 80px; }
+    .s6 .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: auto; padding-top: 24px; }
+    .s6 .mid { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .s6 .tag { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,200,232,0.12); border: 1px solid rgba(0,200,232,0.3); color: #00c8e8; font-size: 20px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 14px 28px; border-radius: 100px; margin-bottom: 48px; width: fit-content; }
+    .s6 h2 { font-size: 92px; font-weight: 900; line-height: 1.0; letter-spacing: -0.04em; color: #e2e8f0; margin-bottom: 48px; }
+    .s6 h2 .cyan { color: #00c8e8; }
+    .s6 .cta-box { background: #00c8e8; border-radius: 16px; padding: 48px 56px; display: flex; flex-direction: column; gap: 16px; }
+    .s6 .cta-line1 { font-size: 42px; font-weight: 800; color: #050e1f; line-height: 1.3; }
+    .s6 .cta-line2 { font-size: 36px; font-weight: 900; color: #050e1f; line-height: 1.2; }
+    .s6 .bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 36px; display: flex; justify-content: space-between; align-items: center; }
+    .s6 .handle { font-family: 'Space Mono', monospace; font-size: 22px; font-weight: 700; color: #64748b; letter-spacing: 0.05em; }
+    .s6 .slide-num { font-family: 'Space Mono', monospace; font-size: 22px; color: rgba(0,200,232,0.5); letter-spacing: 0.18em; }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1 — CAPA -->
+  <div class="slide s1">
+    <div class="grid"></div>
+    <div class="glow"></div>
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">01 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">Pra quem ainda não tem site</div>
+      <div class="rule"></div>
+      <h1>Seu cliente procura<br>você no <span class="cyan">Google</span><br>e não te acha.</h1>
+      <p class="sub">Ele não desistiu de comprar. Comprou do concorrente.</p>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Arraste pro lado</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — LISTA -->
+  <div class="slide s2">
+    <div class="grid"></div>
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">02 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">O que você tá perdendo agora</div>
+      <div class="rule"></div>
+      <div class="list">
+        <div class="list-item"><span class="list-num">01</span><span class="list-text">Cliente que pesquisa de noite e desiste.</span></div>
+        <div class="list-item"><span class="list-num">02</span><span class="list-text">Gente perguntando endereço e horário toda hora no direct.</span></div>
+        <div class="list-item"><span class="list-num">03</span><span class="list-text">Venda que vai pro concorrente que aparece primeiro.</span></div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — CITAÇÃO -->
+  <div class="slide s3">
+    <div class="glow"></div>
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">03 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">A realidade</div>
+      <div class="rule"></div>
+      <h2>Se você não tá<br>no Google, pra<br>metade dos seus<br>clientes você<br>não <span class="cyan">existe.</span></h2>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — SOLO -->
+  <div class="slide s4">
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">04 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">A solução</div>
+      <div class="rule"></div>
+      <h2>Um site simples<br>resolve isso.</h2>
+      <p class="body-text">Catálogo dos seus produtos ou serviços, endereço, horário e botão de WhatsApp direto — o cliente decide sem precisar te perguntar nada.</p>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — NÚMERO -->
+  <div class="slide s5">
+    <div class="grid"></div>
+    <div class="big-num">24H</div>
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">05 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">Vantagem real</div>
+      <div class="rule"></div>
+      <h2>Funciona<br><span class="cyan">24 horas.</span></h2>
+      <p class="body-text">Inclusive de madrugada, domingo e feriado — quando você nem tá de olho no celular.</p>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Último slide</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — CTA FINAL -->
+  <div class="slide s6">
+    <div class="top-bar"></div>
+    <div class="glow-left"></div>
+    <div class="glow-right"></div>
+    <div class="content">
+      <div class="top">
+        <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+        <div class="counter">06 / 06</div>
+      </div>
+      <div class="mid">
+        <div class="tag">● Próximo passo</div>
+        <h2>Seu site, no<br>ar essa <span class="cyan">semana.</span></h2>
+        <div class="cta-box">
+          <span class="cta-line1">👇 Link na bio</span>
+          <span class="cta-line2">Chama no direct e vê como funciona.</span>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="handle">@nexo.iabr</div>
+        <div class="slide-num">06 / 06</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
