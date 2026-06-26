@@ -1066,6 +1066,10 @@
         <circle cx="8" cy="8" r="3"/><line x1="8" y1="1" x2="8" y2="2.5"/><line x1="8" y1="13.5" x2="8" y2="15"/><line x1="1" y1="8" x2="2.5" y2="8"/><line x1="13.5" y1="8" x2="15" y2="8"/><line x1="3.05" y1="3.05" x2="4.1" y2="4.1"/><line x1="11.9" y1="11.9" x2="12.95" y2="12.95"/><line x1="12.95" y1="3.05" x2="11.9" y2="4.1"/><line x1="4.1" y1="11.9" x2="3.05" y2="12.95"/>
       </svg>
     </button>
+    <button class="btn-logout" onclick="window.open('guia-comandos-nexo-ia.html','_blank')" title="Guia de comandos NexoIAos" style="display:flex;align-items:center;gap:6px">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h12v10H2z"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg>
+      Instruções
+    </button>
     <div class="h-user">
       <div class="h-av" id="h-av"></div>
       <div><div class="h-uname" id="h-uname"></div><div class="h-urole" id="h-urole"></div></div>
@@ -2309,7 +2313,11 @@ async function renderHandoff() {
 }
 
 function openHandoffModal(c) {
-  const prompt = `Olá! Vou continuar o projeto ${c.nome} no MazyOS.
+  const localPath = c.local_path ? c.local_path.replace(/\\/g,'/') : null;
+  const pathLine = localPath
+    ? `Caminho do projeto: ${localPath}`
+    : `Projeto: ${c.nome}`;
+  const prompt = `Olá! Vou continuar o projeto ${c.nome}.
 
 O que foi feito na última sessão (por ${c.handoff_by||'colega'}):
 ${c.handoff_summary||'—'}
@@ -2319,11 +2327,12 @@ ${c.handoff_next||'—'}
 
 Status atual: ${statusLabel(c.status)}${c.valor?` | Valor: ${fmtMoney(c.valor)}`:''}
 
-Por favor, abra a pasta clientes/${c.nome}/ e me ajude a continuar de onde parou.`;
+${pathLine}
+Por favor, abra o projeto e me ajude a continuar de onde parou.`;
 
   document.getElementById('modal-box').innerHTML = `
     <div class="modal-title">Continuar — ${c.nome}</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Copie o texto abaixo e cole numa nova janela do Claude / MazyOS:</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Copie o texto abaixo e cole numa nova conversa do Claude:</div>
     <div class="handoff-modal-content" id="handoff-prompt-text">${prompt}</div>
     <button class="btn-copy" onclick="copyHandoff()">Copiar prompt</button>
     <div class="modal-actions" style="margin-top:12px"><button class="btn-cancel" onclick="closeModal()">Fechar</button></div>
