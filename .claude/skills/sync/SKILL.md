@@ -44,9 +44,16 @@ local_path:
 
 **Se existir**, ler os campos do frontmatter.
 
-### Passo 3 — Atualizar campos se necessário
+### Passo 3 — Perguntar observações e atualizar campos
 
-Se o usuário acabou de descrever mudanças (ex: "fechamos o contrato por R$ 3.000", "mudou pra ativo"), atualizar os campos correspondentes no `.nexo-status.md` ANTES de sincronizar.
+**Sempre** perguntar antes de sincronizar:
+
+> "Quer atualizar as observações desse projeto? (aparecem na dashboard ao clicar no cliente)
+> Observação atual: [valor de obs ou 'vazia']"
+
+Aguardar a resposta. Se o usuário digitar algo, substituir o campo `obs` no `.nexo-status.md`. Se responder "não" ou "pular", manter o valor atual.
+
+Depois, se o usuário tiver descrito mudanças no contexto da conversa (ex: "fechamos o contrato por R$ 3.000", "mudou pra ativo"), atualizar os campos correspondentes também.
 
 Campos disponíveis:
 - `status`: prospect | proposta | negociando | ativo | encerrado

@@ -1911,14 +1911,14 @@ async function renderClients() {
   const empty = document.getElementById('clients-empty');
   if (!(clients||[]).length) { tbody.innerHTML=''; empty.style.display='block'; return; }
   empty.style.display='none';
-  tbody.innerHTML = clients.map(c=>`<tr>
-    <td style="font-weight:600">${c.nome}</td>
+  tbody.innerHTML = clients.map(c=>`<tr style="cursor:pointer" onclick="clientRowClick('${c.id}',${!!(c.repo_url||c.local_path)})">
+    <td style="font-weight:600;color:var(--cyan)">${c.nome}</td>
     <td><span class="badge ${c.status}">${statusLabel(c.status)}</span></td>
     <td style="color:var(--muted)">${c.servicos||'—'}</td>
     <td style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12px">${c.valor?fmtMoney(c.valor):'—'}</td>
     <td>${c.resp||'—'}</td>
     <td style="color:var(--muted);font-size:12px;max-width:200px">${c.proximo_passo||'—'}</td>
-    <td><div style="display:flex;gap:5px;flex-wrap:wrap">${(c.repo_url||c.local_path)?`<button class="btn-sm project" onclick="openProjectModal('${c.id}')">▶ Abrir</button>`:''} ${ed?`<button class="btn-sm" onclick="openClientModal('${c.id}')">Editar</button><button class="btn-sm danger" onclick="deleteClient('${c.id}')">Excluir</button>`:''}</div></td>
+    <td onclick="event.stopPropagation()"><div style="display:flex;gap:5px;flex-wrap:wrap">${(c.repo_url||c.local_path)?`<button class="btn-sm project" onclick="openProjectModal('${c.id}')">▶ Abrir</button>`:''} ${ed?`<button class="btn-sm" onclick="openClientModal('${c.id}')">Editar</button><button class="btn-sm danger" onclick="deleteClient('${c.id}')">Excluir</button>`:''}</div></td>
   </tr>`).join('');
 }
 
@@ -1955,6 +1955,11 @@ async function saveClient(id) {
   closeModal();
   if (activeTab==='pipeline') renderPipeline();
   if (activeTab==='clients') renderClients();
+}
+
+function clientRowClick(id, hasProject) {
+  if (hasProject) openProjectModal(id);
+  else if (canEdit('clients')) openClientModal(id);
 }
 
 async function openProjectModal(id) {
