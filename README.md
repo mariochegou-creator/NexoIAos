@@ -1,13 +1,13 @@
-# MazyOS
+# NexoIAos
 
-> O sistema operacional do seu negócio dentro do Claude Code.
+> IA que conecta negócio local com resultado. Não tecnologia — entrega.
 
-Você acaba de instalar o MazyOS. Em alguns minutos, sua empresa vai
-ter uma memória própria, uma identidade visual aplicada em tudo que
-o sistema gerar, e 15 skills prontas pra fazer marketing, SEO, ads
-e operação rodarem com você dirigindo.
+Você acabou de instalar o NexoIAos. Em alguns minutos, sua operação vai
+ter memória própria, um fluxo de vendas consultiva pronto pra usar, e
+skills que fazem o trabalho pesado — de diagnosticar a dor do cliente até
+entregar o relatório mensal.
 
-Bora voar.
+Sem enrolação. Vamos ao que importa.
 
 ---
 
@@ -20,91 +20,103 @@ Dois caminhos. Escolhe o que combina contigo.
 Abre o Claude Code em qualquer pasta e cola:
 
 ```
-Clona o https://github.com/mazzeoia/MazyOS.git na pasta atual,
-entra nela e roda o /instalar.
+Clona o https://github.com/mariochegou-creator/NexoIAos.git na pasta atual,
+entra nela e roda o /setup.
 ```
 
-Ele clona, entra na pasta nova e dispara a entrevista de setup. Você
-só responde.
+Ele clona, entra na pasta e dispara a configuração. Você só responde.
 
 ### Pelo terminal (mais previsível)
 
 ```
-git clone https://github.com/mazzeoia/MazyOS.git
-cd MazyOS
+git clone https://github.com/mariochegou-creator/NexoIAos.git
+cd NexoIAos
 code .
 ```
 
-Na janela do VS Code que abrir: terminal integrado → `claude` → `/instalar`.
+Na janela do VS Code que abrir: terminal integrado → `claude` → `/setup`.
 
 ---
 
-Quando o `/instalar` terminar, renomeia a pasta `MazyOS/` pro nome do teu
-negócio (fecha o VS Code, renomeia no Explorer/Finder, abre de novo). A
-pasta não fica como "MazyOS" — ela é o teu negócio agora.
+Quando o `/setup` terminar, renomeia a pasta `NexoIAos/` pro nome do teu
+negócio ou da empresa onde você atua. A pasta não fica como "NexoIAos" —
+ela é a sua operação agora.
 
-O `/instalar` roda uma vez só. Te entrevista sobre o negócio, monta a
-memória e configura o sistema. Depois disso, é só usar.
+O `/setup` roda uma vez só. Te entrevista, descobre se você é agência,
+freelancer ou atua dentro de uma empresa — e configura o sistema pro seu
+contexto. Depois disso, é só operar.
 
 ---
 
 ## O sistema
 
 **Núcleo** — o jeito de operar o dia a dia
-`/abrir` carrega o contexto antes de cada sessão de trabalho · `/salvar`
-faz commit + push no GitHub · `/atualizar` varre o projeto e atualiza
-a memória · `/novo-projeto` cria pasta isolada pra cada cliente ou
-iniciativa · `/mapear-rotinas` descobre o que você repete e transforma
-em skill personalizada.
+`/abrir` carrega o contexto antes de cada sessão · `/salvar` faz commit
++ push no GitHub · `/atualizar` varre o projeto e atualiza a memória ·
+`/novo-projeto` cria pasta isolada pra cada cliente ou iniciativa ·
+`/mapear-rotinas` descobre o que você repete e transforma em skill.
 
-**Conteúdo e SEO** — vitrine pública da empresa
-`/carrossel` cria carrosséis 1080×1350 com identidade da marca (com ou
-sem foto IA) · `/publicar-tema` pega um tema e entrega artigo de blog +
-carrossel + 3 legendas amarradas · `/seo` roda fluxo completo de 8 passos
-(demanda, concorrência, GMB, on-page, conteúdo, ads, monitoramento, GEO)
-· `/responder-avaliacoes` escreve respostas humanas pras reviews do
-Google · `/aprovar-post` publica blog + Instagram + Facebook num comando.
+**Funil de vendas consultiva** — do diagnóstico ao fechamento
+`/r1` analisa a transcrição da primeira reunião com SPIN Selling e entrega
+o mapa de dores com duas rotas de solução (enxuta e robusta) · `/apn`
+transforma o diagnóstico em proposta personalizada nas palavras do cliente ·
+`/r2` monta o roteiro da reunião de fechamento e analisa a transcrição depois
+· `/follow-up` gera a mensagem certa pra cada objeção que ficou na mesa.
 
-**Anúncios pagos** — onde o dinheiro entra
-`/anuncio-google` monta a campanha inteira em CSV pronto pra importar
-no Google Ads Editor · `/relatorio-ads` lê os exports de Google + Meta
-e devolve relatório semanal com alertas e recomendações.
+**Entrega e recorrência** — depois que fecha
+`/onboarding` estrutura a primeira semana com o cliente novo, com checklist
+integrado à dashboard · `/relatorio-cliente` gera o relatório mensal em
+linguagem humana, pra dono de negócio entender e renovar.
 
-**Produção** — ferramentas do dia a dia
-`/analisar-dados` lê CSV/XLSX/PDF e gera resumo executivo ·
-`/email-profissional` rascunha email a partir de contexto livre.
+**Conteúdo** — presença que gera cliente
+`/roteiro-viral` busca o que tá em alta no nicho do cliente e entrega
+roteiro + legendas + guia de filmagem + guia de edição, pronto pra modelo
+· `/carrossel` cria carrosséis com identidade da marca · `/seo` roda fluxo
+completo de presença local (GMB, on-page, conteúdo, monitoramento) ·
+`/responder-avaliacoes` escreve respostas humanas pras reviews do Google.
+
+**Anúncios** — quando a base orgânica já tá de pé
+`/anuncio-google` monta campanha em CSV pronto pro Google Ads Editor ·
+`/relatorio-ads` lê exports de Google + Meta e devolve relatório semanal
+com alertas.
+
+**Manutenção** — manter o sistema atualizado
+`/sync-mazyos` verifica se saíram atualizações no repositório base e mostra
+o que mudou antes de qualquer merge. Você decide o que absorver.
 
 ---
 
 ## A tese
 
-IA não é uma ferramenta que sua empresa usa. É o sistema operacional em
-que ela roda.
+Negócio local não precisa de tecnologia. Precisa de resultado.
 
-A diferença não é velocidade. É capacidade nova — uma pessoa com IA
-constrói o que antes exigia time inteiro. Cada processo crítico que hoje
-roda em open loop (decide → executa → não mede → repete cego) vira
-closed loop dentro do MazyOS (decide → executa → captura → realimenta →
-ajusta sozinho).
+A maioria das agências de IA vende ferramenta. Apresentação bonita, contrato
+assinado, e três meses depois o dono não consegue medir se valeu.
 
-O sistema não substitui você. Vira parte da sua empresa.
+O NexoIAos nasce do avesso: cada skill existe porque resolve um problema
+real de negócio local — cliente que some no WhatsApp, Instagram parado,
+Google que não aparece, proposta que não fecha. A IA é o meio, nunca o argumento.
 
----
-
-## Como o MazyOS pensa
-
-`_memoria/` é o cérebro. Tudo que importa do seu negócio mora aqui —
-quem é a empresa, como ela fala, o que tá em foco essa semana. O Claude
-lê isso antes de cada resposta. Quanto melhor a memória, melhor o sistema.
-
-`identidade/` é o rosto. Cores, fontes, logo, padrão visual. Todo
-carrossel, slide, peça que o sistema gera respeita isso.
-
-`marketing/`, `saidas/` e `scripts/` são o resultado. O sistema produz,
-versiona no GitHub, fica tudo seu.
+Quem usa isso não entrega software. Entrega ponteiro de faturamento.
 
 ---
 
-## Quando precisar
+## Como o NexoIAos pensa
 
-[mazzeoia.com.br](https://mazzeoia.com.br)
+`_memoria/` é o cérebro. Quem é o negócio, como ele fala, o que está em
+foco. O Claude lê isso antes de cada resposta. Quanto melhor a memória,
+mais cirúrgico o sistema.
+
+`identidade/` é o rosto. Cores, fontes, padrão visual. Todo carrossel,
+proposta e peça que o sistema gera respeita isso.
+
+`saidas/` e `dados/` são o resultado. O sistema produz, versiona no GitHub,
+fica tudo seu.
+
+---
+
+## Base
+
+Construído sobre o [MazyOS](https://github.com/mazzeoia/MazyOS) com camada
+de vendas consultiva, onboarding de cliente e fluxo de resultado para
+negócio local.
