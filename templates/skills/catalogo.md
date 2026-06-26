@@ -7,6 +7,34 @@ Skills externas prontas pra instalar. Use como referencia ao criar skills novas 
 
 ---
 
+## Vendas consultiva (SPIN) — Nexo IA
+
+### Análise da R1 (diagnóstico SPIN)
+**O que faz:** Analisa a transcrição da primeira reunião com o lead usando SPIN Selling. Mapeia situação, problemas, implicações e entrega duas rotas de solução (enxuta e robusta) pra cada dor levantada.
+**Bom pra:** Transformar a call de descoberta num documento de trabalho cirúrgico, pronto pra virar proposta.
+**Como usar:** `/r1` + colar a transcrição
+**Fonte:** Skill da Nexo IA
+
+### APN — Apresentação de Proposta Personalizada
+**O que faz:** Transforma o diagnóstico da R1 numa proposta sob medida, nas palavras e números do próprio cliente. Cada linha passa no "teste de exclusividade" — se caberia em qualquer negócio, reescreve.
+**Bom pra:** Montar a proposta antes da R2. Depende da saída do `/r1`.
+**Como usar:** `/apn`
+**Fonte:** Skill da Nexo IA
+
+### R2 — Apresentação e fechamento
+**O que faz:** Monta o roteiro da segunda reunião (reconexão, need-payoff, apresentação do plano, ancoragem de preço, objeções mapeadas, fechamento). Também analisa a transcrição da R2 e diz se fechou, o que ficou na mesa e o próximo passo.
+**Bom pra:** Preparar a call de fechamento e fazer o debriefe depois. Depende da `/apn` e do `/r1`.
+**Como usar:** `/r2`
+**Fonte:** Skill da Nexo IA
+
+### Roteiro Viral — conteúdo em alta + pacote completo pra modelo
+**O que faz:** Busca vídeos e músicas em alta do nicho do cliente, analisa os padrões e entrega roteiro + legenda + guia de filmagem + guia de edição, tudo pronto pra mandar no WhatsApp da modelo.
+**Bom pra:** Qualquer job de influencer/modelo, em qualquer segmento. Diferente do `/roteiro` (que foca no roteiro em si), o `/roteiro-viral` inclui a pesquisa de tendências e o pacote completo de produção.
+**Como usar:** `/roteiro-viral`
+**Fonte:** Skill da Nexo IA
+
+---
+
 ## Escrever copy e textos de venda
 
 ### Schwartz Copy (resposta direta)
