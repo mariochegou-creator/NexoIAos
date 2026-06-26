@@ -56,6 +56,13 @@ contexto. Depois disso, é só operar.
 `/novo-projeto` cria pasta isolada pra cada cliente ou iniciativa ·
 `/mapear-rotinas` descobre o que você repete e transforma em skill.
 
+**Prospecção** — chegar até o decisor
+Antes de qualquer reunião, existe o trabalho de abrir porta. O `playbook-vendas`
+e os `scripts-prospeccao` (em `saidas/`) cobrem esse terreno: como abordar
+presencialmente sem falar em IA logo de cara, scripts de WhatsApp e DM com
+gancho de resultado, como identificar se o cara é o decisor, e quando avançar.
+A regra central: **não vendemos IA — vendemos o que a ausência de IA está custando.**
+
 **Funil de vendas consultiva** — do diagnóstico ao fechamento
 `/r1` analisa a transcrição da primeira reunião com SPIN Selling e entrega
 o mapa de dores com duas rotas de solução (enxuta e robusta) · `/apn`
