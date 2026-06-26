@@ -1003,6 +1003,33 @@
     [data-theme="light"] .cfg-input { background: rgba(255,255,255,.9); }
     [data-theme="light"] .cfg-save { color: #ffffff !important; }
     [data-theme="light"] .cfg-toggle-slider { background: rgba(0,0,0,.07); }
+
+    /* ── PROJECT MODAL ── */
+    .proj-links { display:flex; flex-direction:column; gap:8px; padding:14px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; margin-bottom:16px; }
+    .proj-link-row { display:flex; align-items:center; gap:8px; }
+    .proj-link-icon { color:var(--muted); flex-shrink:0; display:flex; }
+    .proj-link-url { font-size:12px; color:var(--cyan); text-decoration:none; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .proj-link-url:hover { text-decoration:underline; }
+    .proj-clone-row { display:flex; align-items:center; gap:8px; }
+    .proj-clone-cmd { font-size:11px; color:var(--muted2); font-family:'JetBrains Mono',monospace; background:rgba(0,0,0,.25); padding:5px 8px; border-radius:5px; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .proj-copy-btn { background:none; border:1px solid var(--border); border-radius:5px; cursor:pointer; padding:4px 7px; color:var(--muted); transition:all .15s; flex-shrink:0; display:flex; align-items:center; }
+    .proj-copy-btn:hover { border-color:var(--cyan); color:var(--cyan); }
+    .btn-open-vscode { width:100%; background:linear-gradient(135deg,#007acc 0%,#005fa3 100%); color:#fff; border:none; border-radius:10px; padding:12px 20px; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; margin:14px 0; font-family:'Inter',sans-serif; box-shadow:0 4px 20px rgba(0,122,204,.3); }
+    .btn-open-vscode:hover { transform:translateY(-1px); box-shadow:0 8px 32px rgba(0,122,204,.5); }
+    .proj-no-path { font-size:12px; color:var(--muted); text-align:center; padding:12px; background:var(--surface2); border-radius:8px; margin:14px 0; border:1px dashed var(--border); }
+    .proj-section-title { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin:16px 0 8px; display:flex; align-items:center; gap:8px; }
+    .proj-session-meta { font-size:11px; color:var(--muted2); text-transform:none; letter-spacing:0; font-weight:400; }
+    .proj-commits { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; max-height:190px; overflow-y:auto; }
+    .proj-commit { display:flex; gap:8px; padding:5px 0; border-bottom:1px solid rgba(0,200,232,.04); font-size:12px; }
+    .proj-commit:last-child { border-bottom:none; }
+    .proj-commit-hash { font-family:'JetBrains Mono',monospace; color:var(--cyan); flex-shrink:0; font-size:11px; }
+    .proj-commit-msg { color:var(--text); }
+    .proj-empty-msg { font-size:12px; color:var(--muted); text-align:center; padding:16px; }
+    .proj-notes { font-size:13px; color:var(--muted2); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 12px; line-height:1.6; white-space:pre-wrap; }
+    .btn-sm.project { border-color:rgba(0,122,204,.4); color:#4da6e8; }
+    .btn-sm.project:hover { border-color:#007acc; background:rgba(0,122,204,.08); }
+    [data-theme="light"] .proj-clone-cmd { background:rgba(0,0,0,.06); }
+    [data-theme="light"] .btn-open-vscode { color:#ffffff !important; }
   </style>
 </head>
 <body>
@@ -1891,7 +1918,7 @@ async function renderClients() {
     <td style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12px">${c.valor?fmtMoney(c.valor):'—'}</td>
     <td>${c.resp||'—'}</td>
     <td style="color:var(--muted);font-size:12px;max-width:200px">${c.proximo_passo||'—'}</td>
-    <td>${ed?`<div style="display:flex;gap:5px"><button class="btn-sm" onclick="openClientModal('${c.id}')">Editar</button><button class="btn-sm danger" onclick="deleteClient('${c.id}')">Excluir</button></div>`:''}</td>
+    <td><div style="display:flex;gap:5px;flex-wrap:wrap">${(c.repo_url||c.local_path)?`<button class="btn-sm project" onclick="openProjectModal('${c.id}')">▶ Abrir</button>`:''} ${ed?`<button class="btn-sm" onclick="openClientModal('${c.id}')">Editar</button><button class="btn-sm danger" onclick="deleteClient('${c.id}')">Excluir</button>`:''}</div></td>
   </tr>`).join('');
 }
 
@@ -1912,6 +1939,8 @@ async function openClientModal(id, defaultStatus) {
     <div class="form-row"><label>Valor mensal (R$)</label><input id="f-valor" type="number" value="${c?.valor||''}" placeholder="0" ${ro?'disabled':''}></div>
     <div class="form-row"><label>Responsável</label><select id="f-resp" ${ro?'disabled':''}>${(profiles||[]).map(u=>`<option${c?.resp===u.name?' selected':''}>${u.name}</option>`).join('')}</select></div>
     <div class="form-row"><label>Próximo passo</label><input id="f-passo" value="${c?.proximo_passo||''}" ${ro?'disabled':''}></div>
+    <div class="form-row"><label>Repositório GitHub</label><input id="f-repo" type="url" value="${c?.repo_url||''}" placeholder="https://github.com/usuario/repo" ${ro?'disabled':''}></div>
+    <div class="form-row"><label>Caminho local</label><input id="f-local-path" value="${c?.local_path||''}" placeholder="c:/Users/Fernando/Documents/projeto" ${ro?'disabled':''}></div>
     <div class="form-row"><label>Observações</label><textarea id="f-obs" ${ro?'disabled':''}>${c?.obs||''}</textarea></div>
     <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Fechar</button>${!ro?`<button class="btn-save" onclick="saveClient('${id||''}')">Salvar</button>`:''}</div>
   `;
@@ -1919,13 +1948,83 @@ async function openClientModal(id, defaultStatus) {
 }
 
 async function saveClient(id) {
-  const obj = {nome:v('f-nome'),status:v('f-status'),servicos:v('f-servicos'),valor:v('f-valor')||null,resp:v('f-resp'),proximo_passo:v('f-passo'),obs:v('f-obs')};
+  const obj = {nome:v('f-nome'),status:v('f-status'),servicos:v('f-servicos'),valor:v('f-valor')||null,resp:v('f-resp'),proximo_passo:v('f-passo'),repo_url:v('f-repo')||null,local_path:v('f-local-path')||null,obs:v('f-obs')};
   if (!obj.nome) { alert('Informe o nome.'); return; }
   if (id) await sb.from('clients').update(obj).eq('id',id);
   else await sb.from('clients').insert(obj);
   closeModal();
   if (activeTab==='pipeline') renderPipeline();
   if (activeTab==='clients') renderClients();
+}
+
+async function openProjectModal(id) {
+  let c;
+  if (demoMode) c = DEMO.clients.find((_,i)=>String(i)===String(id)) || DEMO.clients[0];
+  else { const { data } = await sb.from('clients').select('*').eq('id',id).single(); c = data; }
+  if (!c) return;
+
+  const sess = c.last_session;
+  const copyIcon = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="9" height="9" rx="1"/><path d="M3 12H2a1 1 0 01-1-1V2a1 1 0 011-1h9a1 1 0 011 1v1"/></svg>`;
+  const checkIcon = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg>`;
+
+  function mkCopy(text) {
+    return `<button class="proj-copy-btn" onclick="projCopy(this,'${text.replace(/'/g,"\\'")}')" title="Copiar">${copyIcon}</button>`;
+  }
+
+  const commitsHtml = sess?.commits?.length
+    ? sess.commits.map(cm=>`<div class="proj-commit"><span class="proj-commit-hash">${cm.slice(0,7)}</span><span class="proj-commit-msg">${cm.slice(8)}</span></div>`).join('')
+    : `<div class="proj-empty-msg">Nenhuma sessão registrada. Rode /sync após trabalhar.</div>`;
+
+  const sessDate = sess?.synced_at
+    ? new Date(sess.synced_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) + ' ' + new Date(sess.synced_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
+    : null;
+
+  const localPath = c.local_path ? c.local_path.replace(/\\/g,'/') : '';
+
+  document.getElementById('modal-box').innerHTML = `
+    <div class="modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+      <span>${c.nome}</span>
+      <span class="badge ${c.status}" style="font-size:10px">${statusLabel(c.status)}</span>
+    </div>
+
+    ${c.repo_url||c.local_path ? `<div class="proj-links">
+      ${c.repo_url ? `
+        <div class="proj-link-row">
+          <div class="proj-link-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></div>
+          <a href="${c.repo_url}" target="_blank" class="proj-link-url">${c.repo_url.replace('https://github.com/','')}</a>
+          ${mkCopy(c.repo_url)}
+        </div>
+        <div class="proj-clone-row">
+          <code class="proj-clone-cmd">git clone ${c.repo_url}</code>
+          ${mkCopy('git clone ' + c.repo_url)}
+        </div>` : ''}
+    </div>` : ''}
+
+    ${localPath
+      ? `<button class="btn-open-vscode" onclick="openInVSCode('${localPath}')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9.5 3L14 8l-4.5 5"/><path d="M2 5.5L5.5 8 2 10.5"/></svg>Abrir no VS Code</button>`
+      : `<div class="proj-no-path">Caminho local não configurado — edite o cliente para adicionar.</div>`}
+
+    <div class="proj-section-title">Última sessão${sessDate ? `<span class="proj-session-meta">— ${sessDate} por ${sess.synced_by||'—'}</span>` : ''}</div>
+    <div class="proj-commits">${commitsHtml}</div>
+
+    ${c.obs ? `<div class="proj-section-title" style="margin-top:14px">Observações</div><div class="proj-notes">${c.obs}</div>` : ''}
+
+    <div class="modal-actions" style="margin-top:18px"><button class="btn-cancel" onclick="closeModal()">Fechar</button>${canEdit('clients')?`<button class="btn-save" onclick="closeModal();openClientModal('${id}')">Editar</button>`:''}</div>
+  `;
+  openModal();
+}
+
+function openInVSCode(path) {
+  window.open('vscode://file/' + path);
+}
+
+function projCopy(btn, text) {
+  const checkIcon = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="2,8 6,12 14,4"/></svg>`;
+  const copyIcon  = `<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="9" height="9" rx="1"/><path d="M3 12H2a1 1 0 01-1-1V2a1 1 0 011-1h9a1 1 0 011 1v1"/></svg>`;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = checkIcon;
+    setTimeout(() => btn.innerHTML = copyIcon, 1500);
+  });
 }
 
 // ══════════════════════════════════════

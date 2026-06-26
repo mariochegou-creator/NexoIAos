@@ -37,6 +37,8 @@ servicos:
 proximo_passo: 
 resp: Mario Brandao
 obs: 
+repo_url: 
+local_path: 
 ---
 ```
 
@@ -53,6 +55,8 @@ Campos disponíveis:
 - `proximo_passo`: texto livre
 - `resp`: nome completo do responsável (Mario Brandao / Lucas Warner / Rian Martins)
 - `obs`: texto livre
+- `repo_url`: URL do repositório GitHub do projeto deste cliente
+- `local_path`: caminho local da pasta no computador (ex: c:/Users/Fernando/Documents/projeto)
 
 ### Passo 4 — Executar o upsert via curl
 
@@ -78,8 +82,18 @@ curl -s -X PATCH "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients?id=eq
   -H "apikey: SB_KEY" \
   -H "Authorization: Bearer SB_KEY" \
   -H "Content-Type: application/json" \
-  -d "{\"status\":\"STATUS\",\"valor\":VALOR,\"servicos\":\"SERVICOS\",\"resp\":\"RESP\",\"proximo_passo\":\"PASSO\",\"obs\":\"OBS\"}"
+  -d "{\"status\":\"STATUS\",\"valor\":VALOR,\"servicos\":\"SERVICOS\",\"resp\":\"RESP\",\"proximo_passo\":\"PASSO\",\"repo_url\":\"REPO_URL\",\"local_path\":\"LOCAL_PATH\",\"obs\":\"OBS\"}"
 ```
+
+### Passo 4b — Coletar últimos commits do projeto
+
+Se a pasta do cliente for um repositório git, rodar:
+```bash
+git log --oneline -10 2>/dev/null
+```
+
+Se retornar commits, armazenar como array de strings para usar no Passo 5.
+Se não for um repo git, `commits` fica como array vazio `[]`.
 
 ### Passo 5 — Registrar handoff
 
@@ -94,8 +108,12 @@ curl -s -X PATCH "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients?id=eq
   -H "apikey: SB_KEY" \
   -H "Authorization: Bearer SB_KEY" \
   -H "Content-Type: application/json" \
-  -d "{\"handoff_summary\":\"RESUMO\",\"handoff_next\":\"PROXIMO_PASSO\",\"handoff_by\":\"NOME_DO_RESPONSAVEL\",\"handoff_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}"
+  -d "{\"handoff_summary\":\"RESUMO\",\"handoff_next\":\"PROXIMO_PASSO\",\"handoff_by\":\"NOME_DO_RESPONSAVEL\",\"handoff_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"last_session\":{\"synced_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"synced_by\":\"NOME_DO_RESPONSAVEL\",\"commits\":[COMMITS_JSON]}}"
 ```
+
+Onde `COMMITS_JSON` é o resultado do `git log --oneline -10` convertido para array JSON de strings. Exemplo: `\"abc1234 Adiciona configurações\",\"def5678 Fix cores\"`
+
+Se não houver commits, usar `[]`.
 
 ### Passo 5b — Registrar no feed de atividade
 
