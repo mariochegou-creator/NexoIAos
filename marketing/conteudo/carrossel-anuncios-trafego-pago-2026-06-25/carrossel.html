@@ -27,42 +27,52 @@
 
     /* SLIDE 1 — CAPA */
     .s1 { background: #050e1f; }
-    .s1 .glow { position: absolute; top: -150px; right: -150px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 65%); }
+    .s1 .glow { position: absolute; top: -150px; right: -150px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.14) 0%, transparent 65%); }
     .s1 .header, .s1 .body-area, .s1 .footer { position: relative; z-index: 1; }
     .s1 h1 { font-size: 84px; font-weight: 900; line-height: 1.04; letter-spacing: -0.04em; color: #e2e8f0; margin-bottom: 44px; }
-    .s1 h1 .cyan { color: #00c8e8; }
+    .s1 h1 .orange { color: #f97316; }
     .s1 .sub { font-size: 36px; font-weight: 500; color: #94a3b8; line-height: 1.55; }
 
-    /* SLIDE 2 — LISTA */
-    .s2 { background: #081422; }
-    .s2 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
-    .s2 .header, .s2 .body-area, .s2 .footer { position: relative; z-index: 1; }
+    /* SLIDE 2 — SOLO-FOTO (foto cheia com texto sobreposto) */
+    .s2 {
+      background-image: linear-gradient(rgba(5,14,31,0.15), rgba(5,14,31,0.9) 70%), url('foto-ads.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .s2 h2 { font-size: 64px; font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: #fff; margin-bottom: 28px; }
+    .s2 h2 .cyan { color: #00c8e8; }
+    .s2 .body-text { font-size: 28px; color: #cbd5e1; line-height: 1.55; max-width: 700px; }
+
+    /* SLIDE 3 — LISTA */
+    .s3 { background: #081422; }
+    .s3 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    .s3 .header, .s3 .body-area, .s3 .footer { position: relative; z-index: 1; }
     .list { display: flex; flex-direction: column; }
     .list-item { display: flex; align-items: center; gap: 40px; padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
     .list-item:last-child { border-bottom: none; }
-    .list-num { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #00c8e8; min-width: 56px; }
+    .list-num { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #f97316; min-width: 56px; }
     .list-text { font-size: 46px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; color: #e2e8f0; }
 
-    /* SLIDE 3 — CITAÇÃO */
-    .s3 { background: #050e1f; border-left: 8px solid #00c8e8; }
-    .s3 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%); }
-    .s3 .header, .s3 .body-area, .s3 .footer { position: relative; z-index: 1; }
-    .s3 h2 { font-size: 70px; font-weight: 900; line-height: 1.08; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s3 h2 .cyan { color: #00c8e8; }
-
-    /* SLIDE 4 — SOLO */
-    .s4 { background: #081422; }
+    /* SLIDE 4 — CITAÇÃO */
+    .s4 { background: #050e1f; border-left: 8px solid #00c8e8; }
+    .s4 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.1) 0%, transparent 70%); }
     .s4 .header, .s4 .body-area, .s4 .footer { position: relative; z-index: 1; }
-    .s4 h2 { font-size: 84px; font-weight: 900; line-height: 1.02; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s4 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 780px; }
+    .s4 h2 { font-size: 70px; font-weight: 900; line-height: 1.08; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s4 h2 .cyan { color: #00c8e8; }
 
     /* SLIDE 5 — NÚMERO */
-    .s5 { background: #050e1f; }
-    .s5 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    .s5 { background: #081422; }
     .s5 .header, .s5 .body-area, .s5 .footer { position: relative; z-index: 1; }
-    .s5 h2 { font-size: 78px; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .report-box {
+      background: rgba(0,200,232,0.05); border: 1px solid rgba(0,200,232,0.18); border-radius: 16px;
+      padding: 44px; display: flex; flex-direction: column; gap: 24px; margin-top: 12px;
+    }
+    .report-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 20px; }
+    .report-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .report-row .label { font-family: 'Space Mono', monospace; font-size: 22px; color: #64748b; letter-spacing: 0.05em; }
+    .report-row .value { font-size: 34px; font-weight: 800; color: #e2e8f0; }
+    .s5 h2 { font-size: 78px; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 36px; }
     .s5 h2 .cyan { color: #00c8e8; }
-    .s5 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 720px; }
 
     /* SLIDE 6 — CTA FINAL */
     .s6 { background: #050e1f; }
@@ -95,7 +105,7 @@
     <div class="body-area">
       <div class="eyebrow">Pra quem já tentou anunciar e não viu volta</div>
       <div class="rule"></div>
-      <h1>Investir em anúncio<br>sem estratégia é<br><span class="cyan">jogar dinheiro<br>fora.</span></h1>
+      <h1>Investir em anúncio<br>sem estratégia é<br><span class="orange">jogar dinheiro<br>fora.</span></h1>
       <p class="sub">Você bota R$50 no Instagram e nem sabe se voltou.</p>
     </div>
     <div class="footer">
@@ -104,12 +114,29 @@
     </div>
   </div>
 
-  <!-- SLIDE 2 — LISTA -->
+  <!-- SLIDE 2 — SOLO-FOTO -->
   <div class="slide s2">
-    <div class="grid"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">02 / 06</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">O que importa de verdade</div>
+      <div class="rule"></div>
+      <h2>Anúncio bom não é<br>o que tem mais<br>alcance. É o que<br>traz cliente que<br><span class="cyan">compra.</span></h2>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — LISTA -->
+  <div class="slide s3">
+    <div class="grid"></div>
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">03 / 06</div>
     </div>
     <div class="body-area">
       <div class="eyebrow">Por que o anúncio não funcionou</div>
@@ -126,26 +153,9 @@
     </div>
   </div>
 
-  <!-- SLIDE 3 — CITAÇÃO -->
-  <div class="slide s3">
-    <div class="glow"></div>
-    <div class="header">
-      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
-      <div class="counter">03 / 06</div>
-    </div>
-    <div class="body-area">
-      <div class="eyebrow">O que importa de verdade</div>
-      <div class="rule"></div>
-      <h2>Anúncio bom não<br>é o que tem mais<br>alcance. É o que<br>traz cliente que<br><span class="cyan">compra.</span></h2>
-    </div>
-    <div class="footer">
-      <div class="footer-line"></div>
-      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 — SOLO -->
+  <!-- SLIDE 4 — CITAÇÃO -->
   <div class="slide s4">
+    <div class="glow"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">04 / 06</div>
@@ -153,8 +163,7 @@
     <div class="body-area">
       <div class="eyebrow">A solução</div>
       <div class="rule"></div>
-      <h2>A gente gerencia<br>seu anúncio com<br>estratégia.</h2>
-      <p class="body-text">Define o público certo, testa o que funciona e ajusta toda semana — sem você precisar entender nada disso.</p>
+      <h2>A gente gerencia<br>seu anúncio com<br><span class="cyan">estratégia.</span></h2>
     </div>
     <div class="footer">
       <div class="footer-line"></div>
@@ -162,9 +171,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 5 — NÚMERO -->
+  <!-- SLIDE 5 — NÚMERO / RELATÓRIO -->
   <div class="slide s5">
-    <div class="grid"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">05 / 06</div>
@@ -173,7 +181,12 @@
       <div class="eyebrow">Transparência total</div>
       <div class="rule"></div>
       <h2>Você recebe<br>relatório <span class="cyan">simples.</span></h2>
-      <p class="body-text">Quanto entrou, quanto voltou, pra onde foi cada real investido.</p>
+      <div class="report-box">
+        <div class="report-row"><span class="label">QUANTO ENTROU</span><span class="value">R$ 1.200</span></div>
+        <div class="report-row"><span class="label">QUANTO VOLTOU</span><span class="value">R$ 4.800</span></div>
+        <div class="report-row"><span class="label">PRA ONDE FOI</span><span class="value">Cada real, rastreado</span></div>
+      </div>
+      <p style="font-size:18px;color:#64748b;margin-top:20px;font-style:italic;">*Exemplo ilustrativo de relatório — os números reais variam por negócio.</p>
     </div>
     <div class="footer">
       <div class="footer-line"></div>

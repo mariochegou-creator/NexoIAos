@@ -15,52 +15,62 @@
     .logo { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; letter-spacing: 0.05em; }
     .logo .n { color: #00c8e8; }
     .logo .i { color: #e2e8f0; }
+    .logo-light .n { color: #00c8e8; }
+    .logo-light .i { color: #050e1f; }
     .counter { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: rgba(0,200,232,0.6); letter-spacing: 0.18em; }
+    .counter-light { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: rgba(5,14,31,0.4); letter-spacing: 0.18em; }
     .body-area { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 60px 80px; }
     .footer { padding: 0 80px 56px; flex-shrink: 0; }
     .footer-line { height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 28px; }
+    .footer-line-light { height: 1px; background: rgba(5,14,31,0.12); margin-bottom: 28px; }
     .swipe { display: flex; align-items: center; gap: 16px; }
     .swipe-text { font-size: 30px; font-weight: 800; color: #00c8e8; }
+    .swipe-text-light { font-size: 30px; font-weight: 800; color: #050e1f; }
     .swipe-arrow { font-size: 30px; color: #00c8e8; }
+    .swipe-arrow-light { font-size: 30px; color: #050e1f; }
     .eyebrow { font-size: 22px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: #00c8e8; margin-bottom: 32px; }
     .rule { width: 80px; height: 6px; background: #00c8e8; border-radius: 3px; margin-bottom: 48px; }
 
     /* SLIDE 1 — CAPA */
     .s1 { background: #050e1f; }
-    .s1 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.04) 1px, transparent 1px); background-size: 80px 80px; }
-    .s1 .glow { position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.09) 0%, transparent 65%); }
+    .s1 .lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(135deg, rgba(0,200,232,0.04) 0px, rgba(0,200,232,0.04) 2px, transparent 2px, transparent 60px); }
     .s1 .header, .s1 .body-area, .s1 .footer { position: relative; z-index: 1; }
     .s1 h1 { font-size: 94px; font-weight: 900; line-height: 1.0; letter-spacing: -0.04em; color: #e2e8f0; margin-bottom: 44px; }
     .s1 h1 .cyan { color: #00c8e8; }
     .s1 .sub { font-size: 36px; font-weight: 500; color: #94a3b8; line-height: 1.55; }
 
-    /* SLIDE 2 — LISTA */
-    .s2 { background: #081422; }
-    .s2 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    /* SLIDE 2 — CITAÇÃO */
+    .s2 { background: #081422; border-left: 8px solid #00c8e8; }
+    .s2 .glow { position: absolute; top: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.08) 0%, transparent 70%); }
     .s2 .header, .s2 .body-area, .s2 .footer { position: relative; z-index: 1; }
-    .list { display: flex; flex-direction: column; }
-    .list-item { display: flex; align-items: center; gap: 40px; padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
-    .list-item:last-child { border-bottom: none; }
-    .list-num { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #00c8e8; min-width: 56px; }
-    .list-text { font-size: 46px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; color: #e2e8f0; }
+    .s2 h2 { font-size: 76px; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s2 h2 .cyan { color: #00c8e8; }
 
-    /* SLIDE 3 — CITAÇÃO */
-    .s3 { background: #050e1f; border-left: 8px solid #00c8e8; }
-    .s3 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%); }
+    /* SLIDE 3 — LISTA EM CÍRCULOS */
+    .s3 { background: #050e1f; }
     .s3 .header, .s3 .body-area, .s3 .footer { position: relative; z-index: 1; }
-    .s3 h2 { font-size: 76px; font-weight: 900; line-height: 1.05; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s3 h2 .cyan { color: #00c8e8; }
+    .circle-list { display: flex; flex-direction: column; gap: 36px; }
+    .circle-item { display: flex; align-items: flex-start; gap: 32px; }
+    .circle-num {
+      width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(0,200,232,0.1); border: 1px solid rgba(0,200,232,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: #00c8e8;
+    }
+    .circle-text { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; color: #e2e8f0; padding-top: 8px; }
 
-    /* SLIDE 4 — SOLO */
-    .s4 { background: #081422; }
-    .s4 .header, .s4 .body-area, .s4 .footer { position: relative; z-index: 1; }
-    .s4 h2 { font-size: 84px; font-weight: 900; line-height: 1.02; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s4 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 780px; }
+    /* SLIDE 4 — SOLO-FOTO (split) */
+    .s4 { background: #050e1f; display: flex; flex-direction: row; padding: 0; }
+    .s4 .photo-half { width: 46%; background-image: linear-gradient(rgba(5,14,31,0.15), rgba(5,14,31,0.35)), url('foto-solucao.jpg'); background-size: cover; background-position: center; }
+    .s4 .text-half { width: 54%; display: flex; flex-direction: column; justify-content: space-between; padding: 64px 64px 56px; }
+    .s4 .text-top { display: flex; justify-content: space-between; align-items: center; }
+    .s4 h2 { font-size: 60px; font-weight: 900; line-height: 1.04; letter-spacing: -0.03em; color: #e2e8f0; margin-bottom: 28px; }
+    .s4 .body-text-dark { font-size: 26px; color: #94a3b8; line-height: 1.55; }
 
     /* SLIDE 5 — NÚMERO */
-    .s5 { background: #050e1f; }
+    .s5 { background: #081422; }
     .s5 .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 80px 80px; }
-    .s5 .big-num { font-family: 'Space Mono', monospace; font-size: 300px; font-weight: 700; line-height: 1; color: rgba(0,200,232,0.07); letter-spacing: -0.04em; position: absolute; right: -10px; bottom: 100px; z-index: 0; }
+    .s5 .big-num { font-family: 'Space Mono', monospace; font-size: 300px; font-weight: 700; line-height: 1; color: rgba(0,200,232,0.08); letter-spacing: -0.04em; position: absolute; right: -10px; bottom: 100px; z-index: 0; }
     .s5 .header, .s5 .body-area, .s5 .footer { position: relative; z-index: 1; }
     .s5 h2 { font-size: 82px; font-weight: 900; line-height: 1.04; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
     .s5 h2 .cyan { color: #00c8e8; }
@@ -89,8 +99,7 @@
 
   <!-- SLIDE 1 — CAPA -->
   <div class="slide s1">
-    <div class="grid"></div>
-    <div class="glow"></div>
+    <div class="lines"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">01 / 06</div>
@@ -107,34 +116,12 @@
     </div>
   </div>
 
-  <!-- SLIDE 2 — LISTA -->
+  <!-- SLIDE 2 — CITAÇÃO -->
   <div class="slide s2">
-    <div class="grid"></div>
-    <div class="header">
-      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
-      <div class="counter">02 / 06</div>
-    </div>
-    <div class="body-area">
-      <div class="eyebrow">O que você tá perdendo agora</div>
-      <div class="rule"></div>
-      <div class="list">
-        <div class="list-item"><span class="list-num">01</span><span class="list-text">Cliente que pesquisa de noite e desiste.</span></div>
-        <div class="list-item"><span class="list-num">02</span><span class="list-text">Gente perguntando endereço e horário toda hora no direct.</span></div>
-        <div class="list-item"><span class="list-num">03</span><span class="list-text">Venda que vai pro concorrente que aparece primeiro.</span></div>
-      </div>
-    </div>
-    <div class="footer">
-      <div class="footer-line"></div>
-      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 — CITAÇÃO -->
-  <div class="slide s3">
     <div class="glow"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
-      <div class="counter">03 / 06</div>
+      <div class="counter">02 / 06</div>
     </div>
     <div class="body-area">
       <div class="eyebrow">A realidade</div>
@@ -147,21 +134,43 @@
     </div>
   </div>
 
-  <!-- SLIDE 4 — SOLO -->
-  <div class="slide s4">
+  <!-- SLIDE 3 — LISTA EM CÍRCULOS -->
+  <div class="slide s3">
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
-      <div class="counter">04 / 06</div>
+      <div class="counter">03 / 06</div>
     </div>
     <div class="body-area">
-      <div class="eyebrow">A solução</div>
+      <div class="eyebrow">O que você tá perdendo agora</div>
       <div class="rule"></div>
-      <h2>Um site simples<br>resolve isso.</h2>
-      <p class="body-text">Catálogo dos seus produtos ou serviços, endereço, horário e botão de WhatsApp direto — o cliente decide sem precisar te perguntar nada.</p>
+      <div class="circle-list">
+        <div class="circle-item"><div class="circle-num">01</div><div class="circle-text">Cliente que pesquisa de noite e desiste.</div></div>
+        <div class="circle-item"><div class="circle-num">02</div><div class="circle-text">Gente perguntando endereço e horário no direct.</div></div>
+        <div class="circle-item"><div class="circle-num">03</div><div class="circle-text">Venda que vai pro concorrente que aparece primeiro.</div></div>
+      </div>
     </div>
     <div class="footer">
       <div class="footer-line"></div>
       <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — SOLO-FOTO (split) -->
+  <div class="slide s4">
+    <div class="photo-half"></div>
+    <div class="text-half">
+      <div class="text-top">
+        <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+        <div class="counter">04 / 06</div>
+      </div>
+      <div>
+        <h2>Um site simples<br>resolve isso.</h2>
+        <p class="body-text-dark">Catálogo dos seus produtos ou serviços, endereço, horário e botão de WhatsApp direto — o cliente decide sem precisar te perguntar nada.</p>
+      </div>
+      <div>
+        <div class="footer-line"></div>
+        <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+      </div>
     </div>
   </div>
 

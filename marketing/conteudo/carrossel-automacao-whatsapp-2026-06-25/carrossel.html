@@ -25,13 +25,15 @@
     .eyebrow { font-size: 22px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: #00c8e8; margin-bottom: 32px; }
     .rule { width: 80px; height: 6px; background: #00c8e8; border-radius: 3px; margin-bottom: 48px; }
 
-    /* SLIDE 1 — CAPA */
-    .s1 { background: #050e1f; }
-    .s1 .glow { position: absolute; top: -150px; right: -150px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 65%); }
-    .s1 .header, .s1 .body-area, .s1 .footer { position: relative; z-index: 1; }
-    .s1 h1 { font-size: 88px; font-weight: 900; line-height: 1.02; letter-spacing: -0.04em; color: #e2e8f0; margin-bottom: 44px; }
+    /* SLIDE 1 — CAPA-FOTO */
+    .s1 {
+      background-image: linear-gradient(rgba(5,14,31,0.25), rgba(5,14,31,0.93)), url('foto-capa.jpg');
+      background-size: cover;
+      background-position: center 25%;
+    }
+    .s1 h1 { font-size: 82px; font-weight: 900; line-height: 1.05; letter-spacing: -0.04em; color: #fff; margin-bottom: 40px; }
     .s1 h1 .cyan { color: #00c8e8; }
-    .s1 .sub { font-size: 36px; font-weight: 500; color: #94a3b8; line-height: 1.55; }
+    .s1 .sub { font-size: 34px; font-weight: 500; color: #cbd5e1; line-height: 1.5; }
 
     /* SLIDE 2 — LISTA */
     .s2 { background: #081422; }
@@ -43,27 +45,35 @@
     .list-num { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; color: #00c8e8; min-width: 56px; }
     .list-text { font-size: 46px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.15; color: #e2e8f0; }
 
-    /* SLIDE 3 — CITAÇÃO */
-    .s3 { background: #050e1f; border-left: 8px solid #00c8e8; }
-    .s3 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%); }
+    /* SLIDE 3 — SOLO */
+    .s3 { background: #050e1f; }
     .s3 .header, .s3 .body-area, .s3 .footer { position: relative; z-index: 1; }
-    .s3 h2 { font-size: 70px; font-weight: 900; line-height: 1.08; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s3 h2 .cyan { color: #00c8e8; }
+    .s3 h2 { font-size: 84px; font-weight: 900; line-height: 1.02; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s3 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 780px; }
 
-    /* SLIDE 4 — SOLO */
+    /* SLIDE 4 — NÚMERO (anel/donut) */
     .s4 { background: #081422; }
     .s4 .header, .s4 .body-area, .s4 .footer { position: relative; z-index: 1; }
-    .s4 h2 { font-size: 84px; font-weight: 900; line-height: 1.02; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
-    .s4 .body-text { font-size: 34px; color: #94a3b8; line-height: 1.6; max-width: 780px; }
+    .ring-row { display: flex; align-items: center; gap: 56px; margin-top: 8px; }
+    .ring {
+      width: 280px; height: 280px; border-radius: 50%; flex-shrink: 0;
+      border: 22px solid rgba(0,200,232,0.15);
+      border-top-color: #00c8e8; border-right-color: #00c8e8;
+      display: flex; align-items: center; justify-content: center;
+      transform: rotate(-45deg);
+    }
+    .ring .ring-val { font-family: 'Space Mono', monospace; font-size: 64px; font-weight: 700; color: #e2e8f0; transform: rotate(45deg); }
+    .ring-text h2 { font-size: 50px; font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: #e2e8f0; margin-bottom: 20px; }
+    .ring-text h2 .cyan { color: #00c8e8; }
+    .ring-text p { font-size: 26px; color: #94a3b8; line-height: 1.5; max-width: 460px; }
+    .note { font-size: 18px; color: #64748b; margin-top: 20px; font-style: italic; }
 
-    /* SLIDE 5 — NÚMERO */
-    .s5 { background: #050e1f; }
-    .s5 .big-num { font-family: 'Space Mono', monospace; font-size: 360px; font-weight: 700; line-height: 1; color: rgba(0,200,232,0.1); letter-spacing: -0.04em; position: absolute; right: -10px; bottom: 80px; z-index: 0; }
+    /* SLIDE 5 — CITAÇÃO */
+    .s5 { background: #050e1f; border-left: 8px solid #00c8e8; }
+    .s5 .glow { position: absolute; bottom: -150px; right: -150px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%); }
     .s5 .header, .s5 .body-area, .s5 .footer { position: relative; z-index: 1; }
-    .s5 h2 { font-size: 80px; font-weight: 900; line-height: 1.04; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
+    .s5 h2 { font-size: 68px; font-weight: 900; line-height: 1.1; letter-spacing: -0.035em; color: #e2e8f0; margin-bottom: 44px; }
     .s5 h2 .cyan { color: #00c8e8; }
-    .s5 .body-text { font-size: 32px; color: #94a3b8; line-height: 1.6; max-width: 680px; }
-    .s5 .note { font-size: 20px; color: #64748b; margin-top: 24px; font-style: italic; }
 
     /* SLIDE 6 — SOLO */
     .s6 { background: #081422; }
@@ -91,9 +101,8 @@
 </head>
 <body>
 
-  <!-- SLIDE 1 — CAPA -->
+  <!-- SLIDE 1 — CAPA-FOTO -->
   <div class="slide s1">
-    <div class="glow"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">01 / 07</div>
@@ -132,29 +141,11 @@
     </div>
   </div>
 
-  <!-- SLIDE 3 — CITAÇÃO -->
+  <!-- SLIDE 3 — SOLO -->
   <div class="slide s3">
-    <div class="glow"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">03 / 07</div>
-    </div>
-    <div class="body-area">
-      <div class="eyebrow">A realidade</div>
-      <div class="rule"></div>
-      <h2>Você não devia<br>estar perdendo<br>tempo cobrando.<br>Devia estar<br><span class="cyan">atendendo.</span></h2>
-    </div>
-    <div class="footer">
-      <div class="footer-line"></div>
-      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 — SOLO -->
-  <div class="slide s4">
-    <div class="header">
-      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
-      <div class="counter">04 / 07</div>
     </div>
     <div class="body-area">
       <div class="eyebrow">A solução</div>
@@ -168,19 +159,41 @@
     </div>
   </div>
 
-  <!-- SLIDE 5 — NÚMERO -->
+  <!-- SLIDE 4 — NÚMERO (anel) -->
+  <div class="slide s4">
+    <div class="header">
+      <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
+      <div class="counter">04 / 07</div>
+    </div>
+    <div class="body-area">
+      <div class="eyebrow">O que isso vale</div>
+      <div class="rule"></div>
+      <div class="ring-row">
+        <div class="ring"><div class="ring-val">30%</div></div>
+        <div class="ring-text">
+          <h2>É possível<br>recuperar até<br><span class="cyan">30%</span></h2>
+          <p>das mensalidades atrasadas, só com lembrete automático no WhatsApp.</p>
+        </div>
+      </div>
+      <p class="note">*Estimativa com base em lembrete automático — pode variar conforme o negócio.</p>
+    </div>
+    <div class="footer">
+      <div class="footer-line"></div>
+      <div class="swipe"><span class="swipe-text">Continua no próximo</span><span class="swipe-arrow">→</span></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — CITAÇÃO -->
   <div class="slide s5">
-    <div class="big-num">30%</div>
+    <div class="glow"></div>
     <div class="header">
       <div class="logo"><span class="n">NEXO</span><span class="i"> IA</span></div>
       <div class="counter">05 / 07</div>
     </div>
     <div class="body-area">
-      <div class="eyebrow">O que isso vale</div>
+      <div class="eyebrow">No fim das contas</div>
       <div class="rule"></div>
-      <h2>É possível recuperar<br>até <span class="cyan">30%</span> das<br>mensalidades<br>atrasadas.</h2>
-      <p class="body-text">Só com lembrete automático no WhatsApp, sem você precisar cobrar ninguém.</p>
-      <p class="note">*Estimativa com base em lembrete automático — pode variar conforme o negócio.</p>
+      <h2>Você não devia<br>estar perdendo<br>tempo cobrando.<br>Devia estar<br><span class="cyan">atendendo.</span></h2>
     </div>
     <div class="footer">
       <div class="footer-line"></div>
@@ -195,7 +208,7 @@
       <div class="counter">06 / 07</div>
     </div>
     <div class="body-area">
-      <div class="eyebrow">No fim do dia</div>
+      <div class="eyebrow">Resultado prático</div>
       <div class="rule"></div>
       <h2>Funciona enquanto<br>você atende quem já<br>tá na sua frente.</h2>
     </div>
