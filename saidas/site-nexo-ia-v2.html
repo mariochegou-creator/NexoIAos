@@ -750,124 +750,69 @@
       line-height: 1.5;
     }
 
-    /* ── INVESTIMENTO ── */
-    #investimento {
-      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+    /* ── SERVIÇOS / CONFIANÇA ── */
+    #servicos {
+      background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
     }
 
-    .invest-layout {
+    .servicos-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: start;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
     }
 
-    .price-card {
+    .servico-card {
       background: var(--card-bg);
-      border: 1px solid var(--border-hover);
-      border-radius: 16px;
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .price-card::before {
-      content: '';
-      position: absolute;
-      top: -60px; left: -60px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,200,232,0.1) 0%, transparent 70%);
-    }
-
-    .price-card::after {
-      content: '';
-      position: absolute;
-      bottom: -60px; right: -60px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
-    }
-
-    .price-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: linear-gradient(135deg, var(--cyan-dim), var(--orange-dim));
       border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.3rem 0.8rem;
-      border-radius: 100px;
-      margin-bottom: 1.5rem;
-      position: relative;
-      z-index: 1;
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
     }
 
-    .price-main {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 2rem;
+    .servico-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
     }
 
-    .price-main .label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
+    .servico-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--cyan-dim);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.25rem;
     }
 
-    .price-main .amount {
-      font-size: 3rem;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--cyan);
-      line-height: 1;
-    }
-
-    .price-main .currency {
-      font-size: 1.5rem;
-      vertical-align: top;
-      margin-top: 0.4rem;
-      display: inline-block;
-    }
-
-    .price-main .desc {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 0.35rem;
-    }
-
-    .price-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 1.5rem 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .price-recurring {
-      position: relative;
-      z-index: 1;
-    }
-
-    .price-recurring .label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .price-recurring .amount {
-      font-size: 1.75rem;
+    .servico-card h3 {
+      font-size: 1.05rem;
       font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--orange);
+      margin-bottom: 0.75rem;
     }
 
-    .price-recurring .desc {
-      font-size: 0.8rem;
+    .servico-dor {
+      font-size: 0.85rem;
       color: var(--muted);
-      margin-top: 0.35rem;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .servico-dor strong {
+      color: var(--orange);
+      font-weight: 600;
+    }
+
+    .servico-solucao {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── ORÇAMENTO ── */
+    #orcamento {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
     }
 
     .price-cta {
@@ -890,64 +835,6 @@
     .price-cta:hover {
       box-shadow: 0 0 36px rgba(0,200,232,0.45);
     }
-
-    .includes-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      position: relative;
-      z-index: 1;
-      margin-top: 1.5rem;
-    }
-
-    .include-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      font-size: 0.875rem;
-      color: var(--text);
-    }
-
-    .include-item .check {
-      color: var(--cyan);
-      font-size: 0.9rem;
-      flex-shrink: 0;
-      margin-top: 0.05rem;
-    }
-
-    .invest-right {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .compare-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
-
-    .compare-card h4 {
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--muted);
-    }
-
-    .compare-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-    }
-
-    .compare-row:last-child { border-bottom: none; }
-    .compare-row .label { color: var(--muted); }
-    .compare-row .bad { color: #ef4444; font-weight: 600; }
-    .compare-row .good { color: var(--cyan); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 
     /* ── CTA ── */
     #cta {
@@ -1034,7 +921,6 @@
       .metrics-grid { grid-template-columns: repeat(2, 1fr); }
       .processo-steps { grid-template-columns: repeat(2, 1fr); }
       .processo-steps::before { display: none; }
-      .invest-layout { grid-template-columns: 1fr; }
       nav .nav-links { display: none; }
     }
 
@@ -1054,12 +940,12 @@
   <nav>
     <div class="nav-logo">NEXO<span>IA</span></div>
     <ul class="nav-links">
-      <li><a href="#produto">Produto</a></li>
-      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#servicos">O que fazemos</a></li>
       <li><a href="#processo">Como funciona</a></li>
-      <li><a href="#investimento">Investimento</a></li>
+      <li><a href="#confianca">Por que confiar</a></li>
+      <li><a href="#orcamento">Orçamento</a></li>
     </ul>
-    <a href="https://wa.me/55SEUNUMERO" class="nav-cta">Falar agora</a>
+    <a href="https://wa.me/55SEUNUMERO?text=Quero%20minha%20an%C3%A1lise%20gratuita" class="nav-cta">Análise gratuita</a>
     <a href="dashboard-nexo-ia.html" class="nav-internal" title="Área interna">⚙</a>
   </nav>
 
@@ -1076,21 +962,21 @@
           Nossa IA analisa o seu negócio e implementa o que vai gerar resultado — sem você precisar entender de tecnologia.
         </p>
         <div class="hero-actions">
-          <a href="https://wa.me/55SEUNUMERO" class="btn-primary">
-            Quero saber mais →
+          <a href="https://wa.me/55SEUNUMERO?text=Quero%20minha%20an%C3%A1lise%20gratuita" class="btn-primary">
+            Quero minha análise gratuita →
           </a>
-          <a href="#produto" class="btn-secondary">
-            Ver como funciona
+          <a href="#servicos" class="btn-secondary">
+            Ver o que fazemos
           </a>
         </div>
         <div class="hero-stats">
           <div class="stat">
-            <span class="stat-num" data-target="15">0</span>
-            <span class="stat-label">dias de implementação</span>
+            <span class="stat-num" data-target="100" data-suffix="%">0</span>
+            <span class="stat-label">análise gratuita, sem compromisso</span>
           </div>
           <div class="stat">
-            <span class="stat-num" data-target="100">0</span>
-            <span class="stat-label">% personalizado</span>
+            <span class="stat-num" data-target="24" data-suffix="h">0</span>
+            <span class="stat-label">pra te responder no WhatsApp</span>
           </div>
         </div>
       </div>
@@ -1132,12 +1018,49 @@
     </div>
   </section>
 
+  <!-- O que fazemos -->
+  <section id="servicos">
+    <div class="container">
+      <div class="section-head fi">
+        <div class="section-label">// o que a nexo ia entrega</div>
+        <h2 class="section-h2">4 frentes. Um único<br>objetivo: você vender mais.</h2>
+        <p class="section-sub">Não é só site. A gente cuida de tudo que faz um negócio local aparecer, ser procurado e fechar venda.</p>
+      </div>
+      <div class="servicos-grid">
+        <div class="servico-card fi d1">
+          <div class="servico-icon">🌐</div>
+          <h3>Site profissional</h3>
+          <p class="servico-dor"><strong>O problema:</strong> seu cliente procura no Google, não te acha, e compra do concorrente que apareceu primeiro.</p>
+          <p class="servico-solucao">Site rápido, com catálogo, endereço e WhatsApp — funcionando 24h, mesmo quando você não tá.</p>
+        </div>
+        <div class="servico-card fi d2">
+          <div class="servico-icon">📱</div>
+          <h3>Instagram e conteúdo</h3>
+          <p class="servico-dor"><strong>O problema:</strong> você sabe que precisa postar, mas não tem tempo — e quando posta, não sabe se gerou alguma venda.</p>
+          <p class="servico-solucao">A gente cuida do conteúdo, da frequência e da identidade visual. Você só aprova.</p>
+        </div>
+        <div class="servico-card fi d3">
+          <div class="servico-icon">🎯</div>
+          <h3>Anúncios que trazem cliente</h3>
+          <p class="servico-dor"><strong>O problema:</strong> você já investiu em anúncio e não sabe se voltou alguma coisa pro seu bolso.</p>
+          <p class="servico-solucao">Gestão de tráfego pago com público certo e relatório simples de quanto voltou pra cada real investido.</p>
+        </div>
+        <div class="servico-card fi d4">
+          <div class="servico-icon">💬</div>
+          <h3>Automação de WhatsApp</h3>
+          <p class="servico-dor"><strong>O problema:</strong> cliente manda mensagem às 22h, você só vê de manhã — ele já fechou com outro.</p>
+          <p class="servico-solucao">Resposta automática, agendamento e lembrete, sem você precisar estar com o celular na mão o dia inteiro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Produto -->
   <section id="produto">
     <div class="container">
       <div class="produto-layout">
         <div>
-          <div class="section-label fi">// o que a nexo ia entrega</div>
+          <div class="section-label fi">// site profissional, por dentro</div>
           <h2 class="section-h2 fi">Site profissional<br>como base</h2>
           <p class="section-sub fi" style="margin-bottom:2.5rem">
             Todo cliente começa com um site que representa o negócio de verdade — rápido, bonito e integrado com WhatsApp.
@@ -1348,83 +1271,93 @@
     </div>
   </section>
 
-  <!-- Investimento -->
-  <section id="investimento">
+  <!-- Por que confiar -->
+  <section id="confianca">
     <div class="container">
       <div class="section-head fi">
-        <div class="section-label">// investimento</div>
-        <h2 class="section-h2">Preço justo.<br>Resultado claro.</h2>
+        <div class="section-label">// por que confiar na nexo ia</div>
+        <h2 class="section-h2">Agência nova.<br>Processo sério.</h2>
+        <p class="section-sub">Não vamos fingir que temos uma carteira enorme de clientes. Vamos te mostrar como trabalhamos — e deixar você decidir.</p>
       </div>
-      <div class="invest-layout">
-        <div class="price-card fi">
-          <div class="price-tag">✦ Mais escolhido</div>
-          <div class="price-main">
-            <div class="label">Implementação única</div>
-            <div class="amount"><span class="currency">R$</span>700</div>
-            <div class="desc">Site profissional + configuração completa</div>
-          </div>
-          <div class="price-divider"></div>
-          <div class="price-recurring">
-            <div class="label">Mensalidade</div>
-            <div class="amount">R$300<span style="font-size:1rem;color:var(--muted)">/mês</span></div>
-            <div class="desc">Hospedagem, suporte, atualizações e dashboard ativo</div>
-          </div>
-          <div class="includes-list">
-            <div class="include-item"><span class="check">✓</span> Site profissional personalizado</div>
-            <div class="include-item"><span class="check">✓</span> WhatsApp integrado</div>
-            <div class="include-item"><span class="check">✓</span> Dashboard com métricas que movem o seu faturamento</div>
-            <div class="include-item"><span class="check">✓</span> Entrega em até 15 dias</div>
-            <div class="include-item"><span class="check">✓</span> Suporte direto via WhatsApp</div>
-          </div>
-          <a href="https://wa.me/55SEUNUMERO" class="price-cta">Quero começar agora →</a>
+      <div class="servicos-grid">
+        <div class="servico-card fi d1">
+          <div class="servico-icon">🛡️</div>
+          <h3>Garantia de verdade</h3>
+          <p class="servico-solucao">Análise gratuita antes de qualquer proposta. Você só paga se decidir seguir com a gente — sem letra pequena.</p>
         </div>
-
-        <div class="invest-right fi">
-          <div class="compare-card">
-            <h4>Compare com as alternativas</h4>
-            <div class="compare-row">
-              <span class="label">Funcionário meio período</span>
-              <span class="bad">R$1.400+/mês</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">Agência de marketing</span>
-              <span class="bad">R$2.000+/mês</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">Freelancer de site</span>
-              <span class="bad">R$1.500+ sem suporte</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">NEXO IA (implementação)</span>
-              <span class="good">R$700</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">NEXO IA (mensalidade)</span>
-              <span class="good">R$300/mês</span>
-            </div>
-          </div>
-
-          <div class="compare-card">
-            <h4>O que você ganha</h4>
-            <div class="compare-row">
-              <span class="label">Presença digital profissional</span>
-              <span class="good">✓</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">Dashboard em tempo real</span>
-              <span class="good">✓</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">Suporte contínuo</span>
-              <span class="good">✓</span>
-            </div>
-            <div class="compare-row">
-              <span class="label">Sem contrato de fidelidade</span>
-              <span class="good">✓</span>
-            </div>
-          </div>
+        <div class="servico-card fi d2">
+          <div class="servico-icon">📲</div>
+          <h3>Processo transparente</h3>
+          <p class="servico-solucao">Você acompanha cada etapa direto no WhatsApp. Sem caixa preta, sem "confia que tá indo bem".</p>
+        </div>
+        <div class="servico-card fi d3">
+          <div class="servico-icon">🤝</div>
+          <h3>Quem te atende é quem entrega</h3>
+          <p class="servico-solucao">Sem call center, sem terceirizar pra quem não conhece seu negócio. Fala com a gente, sempre.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Como a IA entra de verdade -->
+  <section id="metodo" style="background:var(--surface)">
+    <div class="container">
+      <div class="section-head center fi">
+        <div class="section-label">// como a ia entra de verdade</div>
+        <h2 class="section-h2">Não é palavra da moda.<br>É como a gente trabalha.</h2>
+        <p class="section-sub">"IA" virou modinha em proposta de agência. Aqui é diferente: a gente te mostra exatamente onde ela entra no seu projeto.</p>
+      </div>
+      <div class="servicos-grid">
+        <div class="servico-card fi d1">
+          <div class="servico-icon">🔍</div>
+          <h3>Diagnóstico com dado, não com chute</h3>
+          <p class="servico-solucao">Nossa IA cruza as informações do seu negócio — site, redes, atendimento — e aponta exatamente onde você tá perdendo cliente.</p>
+        </div>
+        <div class="servico-card fi d2">
+          <div class="servico-icon">⚡</div>
+          <h3>Execução mais rápida</h3>
+          <p class="servico-solucao">Usamos IA pra acelerar produção de conteúdo, automação de atendimento e ajuste de anúncio. Você recebe resultado mais rápido, sem perder qualidade.</p>
+        </div>
+        <div class="servico-card fi d3">
+          <div class="servico-icon">📈</div>
+          <h3>Melhoria mesmo quando a gente não fala com você</h3>
+          <p class="servico-solucao">A IA acompanha o que tá funcionando e ajusta a estratégia entre uma conversa e outra. Seu negócio não fica parado esperando a próxima reunião.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Orçamento -->
+  <section id="orcamento">
+    <div class="container">
+      <div class="section-head center fi">
+        <div class="section-label">// orçamento</div>
+        <h2 class="section-h2">Cada negócio é único.<br>Seu orçamento também é.</h2>
+        <p class="section-sub">A gente não vende pacote fechado. Primeiro entende o seu negócio, depois monta a proposta certa pra ele.</p>
+      </div>
+      <div class="processo-steps">
+        <div class="step-card fi d1">
+          <div class="step-num">01</div>
+          <h3>Análise gratuita</h3>
+          <p>A gente olha seu negócio de verdade — site, Instagram, atendimento — e identifica onde você tá perdendo cliente.</p>
+        </div>
+        <div class="step-card fi d2">
+          <div class="step-num">02</div>
+          <h3>Diagnóstico</h3>
+          <p>Te mostramos exatamente o que encontramos e o que faria diferença pro seu caso — sem termo técnico.</p>
+        </div>
+        <div class="step-card fi d3">
+          <div class="step-num">03</div>
+          <h3>Proposta sob medida</h3>
+          <p>Só então montamos um orçamento — com o que faz sentido pro seu negócio, não um pacote genérico de prateleira.</p>
+        </div>
+        <div class="step-card fi d4">
+          <div class="step-num">04</div>
+          <h3>Você decide</h3>
+          <p>Sem pressão, sem letra pequena. Você só paga se decidir seguir com a gente.</p>
+        </div>
+      </div>
+      <a href="https://wa.me/55SEUNUMERO?text=Quero%20minha%20an%C3%A1lise%20gratuita" class="price-cta fi" style="max-width:420px;margin:3rem auto 0;display:block">Quero minha análise gratuita →</a>
     </div>
   </section>
 
@@ -1433,10 +1366,10 @@
     <div class="container">
       <div class="cta-inner">
         <div class="section-label fi" style="display:block;text-align:center;margin-bottom:1rem">// próximo passo</div>
-        <h2 class="fi">Pronto pra mover<br>o seu faturamento?</h2>
-        <p class="fi">Conversa sem compromisso. Nossa IA analisa o seu negócio e a gente apresenta o que vai gerar resultado.</p>
+        <h2 class="fi">Pronto pra parar de<br>perder cliente?</h2>
+        <p class="fi">Análise gratuita do seu negócio, sem compromisso. A gente te mostra exatamente onde você tá perdendo venda — e o que fazer sobre isso.</p>
         <div class="cta-actions fi">
-          <a href="https://wa.me/55SEUNUMERO" class="btn-primary">Falar no WhatsApp →</a>
+          <a href="https://wa.me/55SEUNUMERO?text=Quero%20minha%20an%C3%A1lise%20gratuita" class="btn-primary">Quero minha análise gratuita →</a>
           <a href="mailto:[seu email]" class="btn-secondary">Enviar e-mail</a>
         </div>
       </div>
