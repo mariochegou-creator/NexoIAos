@@ -117,6 +117,17 @@ Antes de definir a capa, considerar a **última capa publicada** pra alternar:
 
 Se o usuário não souber qual foi a última, perguntar.
 
+### Não repetir o design do carrossel anterior
+
+Antes de montar um carrossel novo, olhar o último criado em `marketing/conteudo/` (estrutura de slides, ordem dos layouts, se usou foto ou não). O carrossel novo precisa variar pelo menos 2 destes pontos em relação ao anterior:
+- **Ordem dos layouts** (não repetir CAPA→LISTA→CITAÇÃO→SOLO→NÚMERO→CTA sempre na mesma sequência)
+- **Tratamento da capa** (texto puro vs. foto cheia com overlay vs. split foto+texto)
+- **Como o dado/lista aparece** (lista vertical numerada, grid de cards, círculos numerados, anel de estatística — variar a forma, não só o texto)
+
+Paleta de cores e fontes seguem sempre o `identidade/design-guide.md` — a variação é de **layout e composição**, nunca de cor/tipografia.
+
+**Imagem de contexto:** quando o tema permitir (ex: tipo de negócio do cliente, ambiente físico, uso de celular), buscar uma foto real que dê contexto — via banco gratuito (Pexels/Unsplash, sem precisar de API key pro Pexels via CDN direto) ou foto IA se houver `OPENAI_API_KEY` configurada. Nem todo carrossel precisa de foto, mas pelo menos variar entre carrosséis "100% texto" e carrosséis "com foto" pra não cair no mesmo padrão sempre.
+
 ### Linguagem (regra crítica)
 
 Seguir `_memoria/preferencias.md`. Em geral: frases naturais, sem jargão de marketing, sem corporativês. O público real raramente fala "ticket médio", "performance", "B2B". Falar como ele fala.
