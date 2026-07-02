@@ -1177,8 +1177,8 @@
     <section id="tab-pipeline" class="tab-content">
       <div class="inner">
         <div class="sec-header">
-          <div class="sec-title">Funil Comercial</div>
-          <button class="btn-add" id="btn-new-prospect" onclick="openLeadModal(null)">+ Novo lead</button>
+          <div class="sec-title">Pipeline CRM</div>
+          <button class="btn-add" id="btn-new-prospect" onclick="openClientModal(null,'prospect')">+ Novo prospect</button>
         </div>
         <div class="pipeline-board" id="pipeline-board"></div>
       </div>
@@ -1187,8 +1187,8 @@
     <section id="tab-clients" class="tab-content">
       <div class="inner">
         <div class="sec-header">
-          <div class="sec-title">Clientes & Projetos</div>
-          <button class="btn-add" id="btn-new-client" onclick="openClientModal(null,'ativo')">+ Novo cliente (exceção, sem lead)</button>
+          <div class="sec-title">Clientes</div>
+          <button class="btn-add" id="btn-new-client" onclick="openClientModal(null,'ativo')">+ Novo cliente</button>
         </div>
         <div class="tbl-wrap">
           <table class="clients-table"><thead><tr><th>Nome</th><th>Status</th><th>Serviços</th><th>Valor/mês</th><th>Responsável</th><th>Próximo passo</th><th></th></tr></thead>
@@ -1198,17 +1198,10 @@
       </div>
     </section>
 
-    <section id="tab-suporte" class="tab-content">
-      <div class="inner">
-        <div class="sec-header"><div class="sec-title">Suporte & Saúde da Conta</div></div>
-        <div id="suporte-grid" class="team-grid"></div>
-      </div>
-    </section>
-
     <section id="tab-finance" class="tab-content">
       <div class="inner">
         <div class="sec-header">
-          <div class="sec-title">Financeiro Recorrente</div>
+          <div class="sec-title">Financeiro</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn-add" onclick="openFinanceModal('entrada')">+ Entrada</button>
             <button class="btn-add" style="background:rgba(234,179,8,.12);color:#eab308;border:1px solid #eab308" onclick="openFinanceModal('implementacao')">+ Implementação</button>
@@ -1422,11 +1415,10 @@
               </thead>
               <tbody>
                 <tr><td>Visão Geral</td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td></tr>
-                <tr><td>Funil Comercial</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td></tr>
-                <tr><td>Clientes & Projetos</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-read">✓ leitura</span></td></tr>
-                <tr><td>Suporte & Saúde</td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td></tr>
-                <tr><td>Financeiro Recorrente</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td><td><span class="cfg-check-edit">✓ edição</span></td></tr>
-                <tr><td>Influenciadores</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-read">✓ leitura</span></td></tr>
+                <tr><td>Pipeline</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td></tr>
+                <tr><td>Clientes</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-read">✓ leitura</span></td></tr>
+                <tr><td>Financeiro</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td><td><span class="cfg-check-edit">✓ edição</span></td></tr>
+                <tr><td>Influencer</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-read">✓ leitura</span></td></tr>
                 <tr><td>Marketing</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td></tr>
                 <tr><td>Tarefas</td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-check-edit">✓ edição</span></td><td><span class="cfg-cross">—</span></td></tr>
                 <tr><td>Atividade</td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td><td><span class="cfg-check">✓</span></td></tr>
@@ -1434,16 +1426,6 @@
                 <tr><td>Configurações</td><td><span class="cfg-check">✓</span></td><td><span class="cfg-cross">—</span></td><td><span class="cfg-cross">—</span></td></tr>
               </tbody>
             </table>
-          </div>
-
-          <!-- Processo em aberto -->
-          <div class="cfg-card span2">
-            <div class="cfg-card-title">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.5" fill="currentColor"/></svg>
-              Processo em aberto
-              <button class="btn-add" style="margin-left:auto;padding:4px 10px;font-size:11px" onclick="openPendenciaModal()">+ Item</button>
-            </div>
-            <div id="pendencias-list"></div>
           </div>
 
         </div>
@@ -1485,8 +1467,7 @@ async function edgeFetch(fn, opts) {
 function v(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
 function fmtMoney(n) { return 'R$ ' + parseFloat(n||0).toLocaleString('pt-BR',{maximumFractionDigits:0}); }
 function initials(name) { return (name||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-function statusLabel(s) { return {prospect:'Prospect',proposta:'Proposta',negociando:'Negociando',ativo:'Ativo',encerrado:'Encerrado',suspenso:'Suspenso',pendente:'Pendente',em_andamento:'Em andamento',concluido:'Concluído'}[s]||s; }
-function etapaFunilLabel(e) { return (FUNIL_COLS.find(c=>c.id===e)||{}).label || e; }
+function statusLabel(s) { return {prospect:'Prospect',proposta:'Proposta',negociando:'Negociando',ativo:'Ativo',encerrado:'Encerrado',pendente:'Pendente',em_andamento:'Em andamento',concluido:'Concluído'}[s]||s; }
 function fmtPrazo(prazo) {
   const [data, hora] = [prazo.slice(0,10), prazo.slice(11,16)];
   const [y,m,d] = data.split('-');
@@ -1494,7 +1475,7 @@ function fmtPrazo(prazo) {
 }
 function mktLabel(s) { return {planejado:'Planejado',producao:'Em produção',pronto:'Pronto',publicado:'Publicado'}[s]||s; }
 function roleLabel(r) { return {admin:'Admin',operacional:'Operacional',financeiro:'Financeiro'}[r]||r; }
-const PIPE_COLORS = {captacao:'#7b5ccc',r1_agendada:'#a78bfa',r1_feita:'#8b5cf6',apn_enviada:'#f97316',r2_agendada:'#f59e0b',r2_feita:'#eab308',follow_up:'#06b6d4',fechado:'#22c55e',perdido:'#3f5070'};
+const PIPE_COLORS = {prospect:'#7b5ccc',proposta:'#f97316',negociando:'#eab308',ativo:'#22c55e',encerrado:'#3f5070'};
 const DAYS = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 function fmtDate(d) { return `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; }
@@ -1505,11 +1486,11 @@ function loading(id) { document.getElementById(id).innerHTML = '<div class="load
 // ROLES
 // ══════════════════════════════════════
 const ROLES = {
-  admin:       { tabs:['overview','pipeline','clients','suporte','finance','influencer','marketing','tasks','handoff','team','settings'], canEdit:['pipeline','clients','finance','influencer','marketing','tasks','team','settings'] },
-  operacional: { tabs:['overview','pipeline','clients','suporte','influencer','marketing','tasks','handoff'],                            canEdit:['pipeline','clients','influencer','marketing','tasks'] },
-  financeiro:  { tabs:['overview','clients','suporte','finance','influencer','handoff'],                                                 canEdit:['finance'] },
+  admin:       { tabs:['overview','pipeline','clients','finance','influencer','marketing','tasks','handoff','team','settings'], canEdit:['pipeline','clients','finance','influencer','marketing','tasks','team','settings'] },
+  operacional: { tabs:['overview','pipeline','clients','influencer','marketing','tasks','handoff'],                            canEdit:['pipeline','clients','influencer','marketing','tasks'] },
+  financeiro:  { tabs:['overview','clients','finance','influencer','handoff'],                                                 canEdit:['finance'] },
 };
-const TAB_LABELS = {overview:'Visão Geral',pipeline:'Funil Comercial',clients:'Clientes & Projetos',suporte:'Suporte & Saúde',finance:'Financeiro Recorrente',influencer:'Influenciadores',marketing:'Marketing',tasks:'Tarefas',handoff:'Atividade',team:'Equipe',settings:'Configurações'};
+const TAB_LABELS = {overview:'Visão Geral',pipeline:'Pipeline',clients:'Clientes',finance:'Financeiro',influencer:'Influencer',marketing:'Marketing',tasks:'Tarefas',handoff:'Atividade',team:'Equipe',settings:'Configurações'};
 const I = (p) => `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 const TAB_ICONS = {
   overview:  I('<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>'),
@@ -1522,7 +1503,6 @@ const TAB_ICONS = {
   team:       I('<circle cx="5.5" cy="5" r="2.5"/><path d="M1 14c0-2.5 2-4.5 4.5-4.5"/><circle cx="10.5" cy="5" r="2.5"/><path d="M15 14c0-2.5-2-4.5-4.5-4.5"/>'),
   influencer: I('<path d="M8 2l1.5 3.5L13 6l-2.5 2.5.5 3.5L8 10.5 5 12l.5-3.5L3 6l3.5-.5z"/><path d="M14 10l1 2M2 10l-1 2"/>'),
   settings:   I('<circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M12.9 3.1l-1.4 1.4M4.5 11.5l-1.4 1.4"/>'),
-  suporte:    I('<path d="M8 1.5l5.5 2.2v4c0 3.5-2.3 6.5-5.5 7.3-3.2-.8-5.5-3.8-5.5-7.3v-4z"/><polyline points="5.5,8 7.2,9.8 10.5,6"/>'),
 };
 const ROLE_PERMS = {
   admin:       ['Pipeline','Clientes','Financeiro','Marketing','Tarefas','Equipe','Configurações','Editar tudo'],
@@ -1595,19 +1575,15 @@ function startApp() {
 
 function startRealtime() {
   const rerender = () => {
-    const renders = {overview:renderOverview,pipeline:renderPipeline,clients:renderClients,suporte:renderSuporte,finance:renderFinance,influencer:renderInfluencer,tasks:renderTasks,team:renderTeam};
+    const renders = {overview:renderOverview,pipeline:renderPipeline,clients:renderClients,finance:renderFinance,influencer:renderInfluencer,tasks:renderTasks,team:renderTeam};
     renders[activeTab]?.();
   };
   sb.channel('nexo-realtime')
-    .on('postgres_changes',{event:'*',schema:'public',table:'leads'},              rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'clientes'},           rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'contratos'},          rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'projetos'},           rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},              rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'finance_entries'},    rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'activity_log'},       rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'influenciadores'},    rerender)
-    .on('postgres_changes',{event:'*',schema:'public',table:'campanhas_indicacao'},rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'clients'},         rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'tasks'},           rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'finance_entries'}, rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'activity_log'},    rerender)
+    .on('postgres_changes',{event:'*',schema:'public',table:'influencer_jobs'}, rerender)
     .subscribe();
 }
 
@@ -1693,36 +1669,15 @@ let demoMode = false;
 const DEMO = {
   goal: 18000,
   clients: [
-    { id:'dc1', nome: 'Clínica São Lucas',        status: 'ativo',     responsavel: 'Mario Brandao', segmento:'Clínica',    cidade:'Franca, SP', servicos:'Site + Dashboard',      proximo_passo:'Renovação em agosto', handoff_summary: 'Site entregue, versão mobile aprovada pelo cliente.', handoff_next: 'Configurar automação de avaliações Google', handoff_by: 'Mario Brandao', handoff_at: new Date(Date.now()-18000000).toISOString() },
-    { id:'dc2', nome: 'Restaurante Bella Vista',  status: 'ativo',     responsavel: 'Lucas Warner',  segmento:'Restaurante', cidade:'Franca, SP', servicos:'Automação WhatsApp',    proximo_passo:'Entregar relatório do mês' },
-    { id:'dc3', nome: 'Studio Fitness Pro',       status: 'ativo',     responsavel: 'Mario Brandao', segmento:'Academia',   cidade:'Franca, SP', servicos:'Dashboard',             proximo_passo:'Configurar automação de agendamento' },
-    { id:'dc4', nome: 'Advocacia Mendes & Filho', status: 'ativo',     responsavel: 'Lucas Warner',  segmento:'Serviços',   cidade:'Franca, SP', servicos:'Dashboard mensal',      proximo_passo:'Revisão do dashboard mensal' },
-    { id:'dc5', nome: 'Construtora Alfa',         status: 'encerrado',responsavel: 'Mario Brandao', segmento:'Construção', cidade:'Franca, SP', servicos:'',                      proximo_passo:'' },
-  ],
-  contratos: [
-    { cliente_id:'dc1', nome:'Clínica São Lucas',        valor_mensal:3200, status:'ativo' },
-    { cliente_id:'dc2', nome:'Restaurante Bella Vista',  valor_mensal:2800, status:'ativo' },
-    { cliente_id:'dc3', nome:'Studio Fitness Pro',       valor_mensal:1900, status:'ativo' },
-    { cliente_id:'dc4', nome:'Advocacia Mendes & Filho', valor_mensal:2600, status:'ativo' },
-  ],
-  leads: [
-    { id:'dl1', nome:'Farmácia Popular Centro', etapa_funil:'captacao',     responsavel:'Mario Brandao', valor_estimado:2500, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl2', nome:'Escola de Idiomas Talk',  etapa_funil:'r1_agendada',  responsavel:'Lucas Warner',  valor_estimado:3100, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl3', nome:'Salão Beleza Rara',       etapa_funil:'r1_feita',     responsavel:'Mario Brandao', valor_estimado:1700, origem:'indicacao-influencer', influenciador_id:'di1', tentativas_followup:0 },
-    { id:'dl4', nome:'Ótica Visão Clara',       etapa_funil:'apn_enviada',  responsavel:'Lucas Warner',  valor_estimado:1800, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl5', nome:'Pet Shop Amigo Fiel',     etapa_funil:'r2_agendada',  responsavel:'Mario Brandao', valor_estimado:2200, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl6', nome:'Barbearia Corte Nobre',   etapa_funil:'r2_feita',     responsavel:'Lucas Warner',  valor_estimado:1500, origem:'indicacao-influencer', influenciador_id:'di2', tentativas_followup:0 },
-    { id:'dl7', nome:'Doceria Sabor Doce',      etapa_funil:'follow_up',    responsavel:'Mario Brandao', valor_estimado:1300, origem:'prospeccao-ativa',    tentativas_followup:2, objecao_aberta:'Achou o preço alto, mandei a rota enxuta' },
-    { id:'dl8', nome:'Clínica Odonto Sorriso',  etapa_funil:'fechado',      responsavel:'Lucas Warner',  valor_estimado:2900, origem:'prospeccao-ativa',    resultado_r2:'pedido' },
-    { id:'dl9', nome:'Loja Moda Urbana',        etapa_funil:'perdido',      responsavel:'Mario Brandao', valor_estimado:1600, origem:'prospeccao-ativa',    resultado_r2:'nao_venda' },
-  ],
-  influenciadores: [
-    { id:'di1', nome:'Ana Souza',  nicho:'Beleza & Lifestyle',        cidade:'Franca, SP', plataforma:'Instagram', status_formalizacao:'script_criado' },
-    { id:'di2', nome:'Carol Lima', nicho:'Gastronomia & Vida Local',  cidade:'Franca, SP', plataforma:'TikTok',    status_formalizacao:'reativo' },
-  ],
-  campanhas_indicacao: [
-    { id:'dci1', influenciador_id:'di1', influenciador_nome:'Ana Souza',  cliente_nome:'Clínica São Lucas',       data:'2026-06-20', leads_gerados:2 },
-    { id:'dci2', influenciador_id:'di2', influenciador_nome:'Carol Lima', cliente_nome:'Restaurante Bella Vista', data:'2026-06-15', leads_gerados:1 },
+    { nome: 'Clínica São Lucas',       status: 'ativo',      valor: 3200, resp: 'Mario Brandao' },
+    { nome: 'Restaurante Bella Vista', status: 'ativo',      valor: 2800, resp: 'Lucas Warner'  },
+    { nome: 'Studio Fitness Pro',      status: 'ativo',      valor: 1900, resp: 'Mario Brandao' },
+    { nome: 'Advocacia Mendes & Filho',status: 'ativo',      valor: 2600, resp: 'Lucas Warner'  },
+    { nome: 'Pet Shop Amigo Fiel',     status: 'negociando', valor: 2200, resp: 'Mario Brandao', handoff_summary: 'Proposta enviada por WhatsApp. Cliente pediu 2 dias para decidir. Gostou do pacote de automação + site.', handoff_next: 'Ligar na quinta pra confirmar o fechamento', handoff_by: 'Mario Brandao', handoff_at: new Date(Date.now()-18000000).toISOString() },
+    { nome: 'Ótica Visão Clara',       status: 'proposta',   valor: 1800, resp: 'Lucas Warner'  },
+    { nome: 'Farmácia Popular Centro', status: 'prospect',   valor: 2500, resp: 'Mario Brandao' },
+    { nome: 'Escola de Idiomas Talk',  status: 'prospect',   valor: 3100, resp: 'Lucas Warner'  },
+    { nome: 'Construtora Alfa',        status: 'encerrado',  valor: 0,    resp: 'Mario Brandao' },
   ],
   tasks: [
     { title: 'Reunião de alinhamento mensal',          resp: 'Mario Brandao', status: 'em_andamento', client_name: 'Clínica São Lucas'        },
@@ -1798,7 +1753,7 @@ function toggleNumbers() {
 function toggleDemo() {
   demoMode = !demoMode;
   document.getElementById('btn-demo').classList.toggle('on', demoMode);
-  const renders = {overview:renderOverview, pipeline:renderPipeline, clients:renderClients, suporte:renderSuporte, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam};
+  const renders = {overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam};
   renders[activeTab]?.();
 }
 
@@ -1810,7 +1765,7 @@ function switchTab(id, btn) {
   if (btn) btn.classList.add('active');
   activeTab = id;
   closeSidebar();
-  ({overview:renderOverview, pipeline:renderPipeline, clients:renderClients, suporte:renderSuporte, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam, settings:loadSettings})[id]?.();
+  ({overview:renderOverview, pipeline:renderPipeline, clients:renderClients, finance:renderFinance, influencer:renderInfluencer, marketing:renderMarketing, tasks:renderTasks, handoff:renderHandoff, team:renderTeam, settings:loadSettings})[id]?.();
 }
 
 function openSidebar() {
@@ -1853,48 +1808,6 @@ function loadSettings() {
   if (goalEl) goalEl.value = localStorage.getItem('nexo-goal') || '';
   const darkEl = document.getElementById('cfg-dark');
   if (darkEl) darkEl.checked = (document.documentElement.getAttribute('data-theme') || 'dark') !== 'light';
-  renderPendencias();
-}
-
-// ── PROCESSO EM ABERTO ──
-async function renderPendencias() {
-  const el = document.getElementById('pendencias-list');
-  if (!el) return;
-  const { data } = await sb.from('processo_pendencias').select('*').order('created_at');
-  const statusLbl = {aberto:'Aberto',em_definicao:'Em definição',resolvido:'Resolvido'};
-  el.innerHTML = (data||[]).map(p=>`
-    <div class="cfg-integration">
-      <div class="cfg-int-left">
-        <div class="cfg-int-dot ${p.status==='resolvido'?'on':'off'}"></div>
-        <div>
-          <div class="cfg-int-name">${p.titulo}</div>
-          ${p.descricao?`<div class="cfg-int-desc">${p.descricao}</div>`:''}
-        </div>
-      </div>
-      <select onchange="updatePendenciaStatus('${p.id}',this.value)" style="font-size:11px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:3px 6px">
-        ${Object.entries(statusLbl).map(([v,l])=>`<option value="${v}"${p.status===v?' selected':''}>${l}</option>`).join('')}
-      </select>
-    </div>
-  `).join('') || '<div style="font-size:12px;color:var(--muted)">Nenhum item em aberto.</div>';
-}
-async function updatePendenciaStatus(id, status) {
-  await sb.from('processo_pendencias').update({status, updated_at:new Date().toISOString()}).eq('id',id);
-  renderPendencias();
-}
-function openPendenciaModal() {
-  document.getElementById('modal-box').innerHTML = `
-    <div class="modal-title">Novo item — Processo em aberto</div>
-    <div class="form-row"><label>Título</label><input id="f-pend-titulo" placeholder="ex: SLA de resposta no WhatsApp"></div>
-    <div class="form-row"><label>Descrição</label><textarea id="f-pend-desc"></textarea></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="savePendencia()">Salvar</button></div>
-  `;
-  openModal();
-}
-async function savePendencia() {
-  const titulo = v('f-pend-titulo');
-  if (!titulo) { alert('Informe o título.'); return; }
-  await sb.from('processo_pendencias').insert({titulo, descricao:v('f-pend-desc')});
-  closeModal(); renderPendencias();
 }
 
 function saveAgencySettings() {
@@ -1949,19 +1862,17 @@ async function renderOverview() {
   }, 1000);
   renderMeetings();
 
-  let clients, contratos, leads, tasks, profiles, goal;
+  let clients, tasks, profiles, goal;
   if (demoMode) {
-    clients = DEMO.clients; contratos = DEMO.contratos||[]; leads = DEMO.leads||[]; tasks = DEMO.tasks; profiles = DEMO.profiles; goal = DEMO.goal;
+    clients = DEMO.clients; tasks = DEMO.tasks; profiles = DEMO.profiles; goal = DEMO.goal;
   } else {
-    const [r1, rc, rl, r2, r3, r4] = await Promise.all([
-      sb.from('clientes').select('*'),
-      sb.from('contratos').select('*').eq('status','ativo'),
-      sb.from('leads').select('*'),
+    const [r1, r2, r3, r4] = await Promise.all([
+      sb.from('clients').select('*'),
       sb.from('tasks').select('*'),
       sb.from('profiles').select('*'),
       sb.from('settings').select('value').eq('key','mrr_goal').single(),
     ]);
-    clients = r1.data||[]; contratos = rc.data||[]; leads = rl.data||[]; tasks = r2.data||[]; profiles = r3.data||[];
+    clients = r1.data||[]; tasks = r2.data||[]; profiles = r3.data||[];
     goal = parseFloat(r4.data?.value||5000);
   }
 
@@ -1975,9 +1886,9 @@ async function renderOverview() {
   } else if (!demoMode && strip) { strip.remove(); }
 
   const active = (clients||[]).filter(c => c.status === 'ativo');
-  const pipeC  = (leads||[]).filter(c => !['fechado','perdido'].includes(c.etapa_funil));
-  const mrr    = (contratos||[]).reduce((s,c) => s+(parseFloat(c.valor_mensal)||0), 0);
-  const potential = pipeC.reduce((s,c) => s+(parseFloat(c.valor_estimado)||0), 0);
+  const pipeC  = (clients||[]).filter(c => ['prospect','proposta','negociando'].includes(c.status));
+  const mrr    = active.reduce((s,c) => s+(parseFloat(c.valor)||0), 0);
+  const potential = pipeC.reduce((s,c) => s+(parseFloat(c.valor)||0), 0);
   const open   = (tasks||[]).filter(t => t.status !== 'concluido');
   const pct    = goal > 0 ? Math.min(mrr/goal, 1) : 0;
 
@@ -2000,18 +1911,18 @@ async function renderOverview() {
   fill.style.width='0%';
   setTimeout(() => { fill.style.width = (pct*100)+'%'; }, 80);
 
-  // Pipeline bar (funil comercial, sobre leads)
-  const stages = FUNIL_COLS.map(c=>c.id);
-  const stageLabel = Object.fromEntries(FUNIL_COLS.map(c=>[c.id,c.label]));
+  // Pipeline bar
+  const stages = ['prospect','proposta','negociando','ativo','encerrado'];
+  const stageLabel = {prospect:'Prospect',proposta:'Proposta',negociando:'Negociando',ativo:'Ativo',encerrado:'Encerrado'};
   const counts = {};
-  stages.forEach(s => counts[s] = (leads||[]).filter(c=>c.etapa_funil===s).length);
-  const total = (leads||[]).length;
-  document.getElementById('ov-total-txt').textContent = total + (total!==1?' leads':' lead') + ' no funil';
+  stages.forEach(s => counts[s] = (clients||[]).filter(c=>c.status===s).length);
+  const total = (clients||[]).length;
+  document.getElementById('ov-total-txt').textContent = total + (total!==1?' clientes':' cliente') + ' no sistema';
   document.getElementById('ov-pipe-bar').innerHTML = total === 0
     ? '<div style="flex:1;background:rgba(0,200,232,0.08);border-radius:5px"></div>'
     : stages.filter(s=>counts[s]>0).map(s => `<div class="ov-pipe-seg" style="flex:${counts[s]};background:${PIPE_COLORS[s]}"></div>`).join('');
   document.getElementById('ov-pipe-labels').innerHTML = total === 0
-    ? '<span style="font-size:12px;color:var(--muted)">Nenhum lead ainda.</span>'
+    ? '<span style="font-size:12px;color:var(--muted)">Nenhum cliente ainda.</span>'
     : stages.filter(s=>counts[s]>0).map(s => `<div class="ov-pipe-label"><div class="ov-pipe-dot" style="background:${PIPE_COLORS[s]}"></div>${stageLabel[s]}<span class="ov-pipe-count">${counts[s]}</span></div>`).join('');
 
   // Tasks list
@@ -2047,127 +1958,52 @@ async function saveGoal() {
 // ══════════════════════════════════════
 // PIPELINE
 // ══════════════════════════════════════
-const FUNIL_COLS = [
-  {id:'captacao',label:'Captação'},{id:'r1_agendada',label:'R1 agendada'},{id:'r1_feita',label:'R1 feita'},
-  {id:'apn_enviada',label:'APN enviada'},{id:'r2_agendada',label:'R2 agendada'},{id:'r2_feita',label:'R2 feita'},
-  {id:'follow_up',label:'Follow-up'},{id:'fechado',label:'Fechado'},{id:'perdido',label:'Perdido'},
-];
-const FUNIL_NEXT = {captacao:'r1_agendada',r1_agendada:'r1_feita',r1_feita:'apn_enviada',apn_enviada:'r2_agendada',r2_agendada:'r2_feita',r2_feita:'follow_up',follow_up:'fechado'};
-const FUNIL_NEXT_LBL = {captacao:'→ R1 agendada',r1_agendada:'→ R1 feita',r1_feita:'→ APN enviada',apn_enviada:'→ R2 agendada',r2_agendada:'→ R2 feita',r2_feita:'→ Follow-up',follow_up:'→ Fechado'};
-const ORIGEM_LABELS = {'prospeccao-ativa':'Prospecção ativa','indicacao-influencer':'Indicação influencer'};
+const COLS = [{id:'prospect',label:'Prospect'},{id:'proposta',label:'Proposta enviada'},{id:'negociando',label:'Negociando'},{id:'ativo',label:'Cliente ativo'},{id:'encerrado',label:'Encerrado'}];
+const NEXT = {prospect:'proposta',proposta:'negociando',negociando:'ativo',ativo:'encerrado'};
+const NEXT_LBL = {prospect:'→ Proposta',proposta:'→ Negociando',negociando:'→ Ativo',ativo:'→ Encerrar'};
 
 async function renderPipeline() {
   const ed = canEdit('pipeline');
   document.getElementById('btn-new-prospect').style.display = ed?'':'none';
   loading('pipeline-board');
-  const leads = demoMode ? (DEMO.leads||[]) : (await sb.from('leads').select('*').order('created_at',{ascending:false})).data;
-  document.getElementById('pipeline-board').innerHTML = FUNIL_COLS.map(col => {
-    const cards = (leads||[]).filter(c=>c.etapa_funil===col.id);
+  const clients = demoMode ? DEMO.clients : (await sb.from('clients').select('*').order('created_at',{ascending:false})).data;
+  document.getElementById('pipeline-board').innerHTML = COLS.map(col => {
+    const cards = (clients||[]).filter(c=>c.status===col.id);
     return `<div class="pipeline-col col-${col.id}">
       <div class="col-header"><span>${col.label}</span><span style="font-size:18px;font-weight:900">${cards.length}</span></div>
       <div class="col-body">
-        ${cards.map(c=>`<div class="pipeline-card" onclick="openLeadModal('${c.id}')">
+        ${cards.map(c=>`<div class="pipeline-card" onclick="openClientModal('${c.id}')">
           <div class="pc-name">${c.nome}</div>
-          ${c.valor_estimado?`<div class="pc-val">${fmtMoney(c.valor_estimado)}/mês</div>`:''}
-          ${c.resp||c.responsavel?`<div class="pc-resp">${c.responsavel||''}</div>`:''}
-          <div class="pc-resp" style="opacity:.7">${ORIGEM_LABELS[c.origem]||''}${c.tentativas_followup?` · ${c.tentativas_followup}x follow-up`:''}</div>
+          ${c.valor?`<div class="pc-val">${fmtMoney(c.valor)}/mês</div>`:''}
+          ${c.resp?`<div class="pc-resp">${c.resp}</div>`:''}
           ${ed?`<div class="pc-actions" onclick="event.stopPropagation()">
-            ${FUNIL_NEXT[c.etapa_funil]?`<button class="pc-btn" onclick="moveLead('${c.id}','${FUNIL_NEXT[c.etapa_funil]}')">${FUNIL_NEXT_LBL[c.etapa_funil]}</button>`:''}
-            ${c.etapa_funil!=='perdido'&&c.etapa_funil!=='fechado'?`<button class="pc-btn danger" onclick="moveLead('${c.id}','perdido')">Perdido</button>`:''}
-            <button class="pc-btn danger" onclick="deleteLead('${c.id}')">Excluir</button>
+            ${NEXT[c.status]?`<button class="pc-btn" onclick="moveClient('${c.id}','${NEXT[c.status]}')">${NEXT_LBL[c.status]}</button>`:''}
+            <button class="pc-btn danger" onclick="deleteClient('${c.id}')">Excluir</button>
           </div>`:''}
         </div>`).join('')}
-        ${ed?`<button class="add-card-btn" onclick="openLeadModal(null,'${col.id}')">+ Adicionar</button>`:''}
+        ${ed?`<button class="add-card-btn" onclick="openClientModal(null,'${col.id}')">+ Adicionar</button>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
-async function moveLead(id, etapa_funil) {
-  await sb.from('leads').update({etapa_funil, updated_at:new Date().toISOString()}).eq('id',id);
-  if (etapa_funil === 'fechado') await promoteLeadToClient(id);
+async function moveClient(id, status) {
+  await sb.from('clients').update({status}).eq('id',id);
   renderPipeline();
 }
-async function deleteLead(id) {
+async function deleteClient(id) {
   if (!confirm('Excluir?')) return;
-  await sb.from('leads').delete().eq('id',id);
-  renderPipeline();
-}
-
-// Promove um lead fechado para cliente + contrato, preservando o lead_id de origem.
-async function promoteLeadToClient(leadId) {
-  const { data: lead } = await sb.from('leads').select('*').eq('id',leadId).single();
-  if (!lead) return;
-  const { data: existing } = await sb.from('clientes').select('id').eq('lead_id',leadId).maybeSingle();
-  if (existing) return; // já promovido antes, não duplica
-  const { data: cliente } = await sb.from('clientes').insert({
-    nome: lead.nome, segmento: lead.segmento, cidade: lead.cidade, status: 'ativo',
-    responsavel: lead.responsavel, data_entrada: new Date().toISOString().slice(0,10),
-    origem: lead.origem, lead_id: lead.id, obs: lead.obs,
-  }).select().single();
-  if (cliente && lead.valor_estimado) {
-    await sb.from('contratos').insert({ cliente_id: cliente.id, valor_mensal: lead.valor_estimado, status: 'ativo' });
-  }
-}
-
-async function openLeadModal(id, defaultEtapa) {
-  const ro = !canEdit('pipeline');
-  let c = null;
-  if (id) {
-    if (demoMode) c = (DEMO.leads||[]).find(l=>l.id===id);
-    else { const { data } = await sb.from('leads').select('*').eq('id',id).single(); c = data; }
-  }
-  const profiles = demoMode ? DEMO.profiles : (await sb.from('profiles').select('name').order('name')).data;
-  const influenciadores = demoMode ? (DEMO.influenciadores||[]) : (await sb.from('influenciadores').select('id,nome').order('nome')).data || [];
-  const et = c ? c.etapa_funil : (defaultEtapa||'captacao');
-  document.getElementById('modal-box').innerHTML = `
-    <div class="modal-title">${c?(ro?'Ver lead':'Editar lead'):'Novo lead'}</div>
-    <div class="form-row"><label>Nome</label><input id="f-nome" value="${c?.nome||''}" placeholder="Nome do negócio" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Etapa do funil</label><select id="f-etapa" ${ro?'disabled':''}>${FUNIL_COLS.map(s=>`<option value="${s.id}"${et===s.id?' selected':''}>${s.label}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Segmento</label><input id="f-segmento" value="${c?.segmento||''}" placeholder="ex: clínica, barbearia" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Cidade</label><input id="f-cidade" value="${c?.cidade||''}" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Origem</label><select id="f-origem" onchange="document.getElementById('f-influenciador-row').style.display=this.value==='indicacao-influencer'?'':'none'" ${ro?'disabled':''}>${Object.entries(ORIGEM_LABELS).map(([v,l])=>`<option value="${v}"${(c?.origem||'prospeccao-ativa')===v?' selected':''}>${l}</option>`).join('')}</select></div>
-    <div class="form-row" id="f-influenciador-row" style="display:${c?.origem==='indicacao-influencer'?'':'none'}"><label>Influenciador</label><select id="f-influenciador" ${ro?'disabled':''}><option value="">—</option>${influenciadores.map(i=>`<option value="${i.id}"${c?.influenciador_id===i.id?' selected':''}>${i.nome}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Responsável</label><select id="f-resp" ${ro?'disabled':''}>${(profiles||[]).map(u=>`<option${c?.responsavel===u.name?' selected':''}>${u.name}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Valor estimado (R$/mês)</label><input id="f-valor" type="number" value="${c?.valor_estimado||''}" placeholder="0" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Resultado da R2</label><select id="f-resultado-r2" ${ro?'disabled':''}><option value="">—</option>${[['pedido','Pedido (fechou)'],['avanco','Avanço (próximo passo)'],['nao_venda','Não-venda']].map(([v,l])=>`<option value="${v}"${c?.resultado_r2===v?' selected':''}>${l}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Objeção em aberto</label><textarea id="f-objecao">${c?.objecao_aberta||''}</textarea></div>
-    <div class="form-row"><label>Tentativas de follow-up</label><input id="f-tentativas" type="number" min="0" value="${c?.tentativas_followup||0}" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Data prevista R1</label><input id="f-data-r1" type="date" value="${c?.data_r1_prevista?c.data_r1_prevista.slice(0,10):''}" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Data prevista R2</label><input id="f-data-r2" type="date" value="${c?.data_r2_prevista?c.data_r2_prevista.slice(0,10):''}" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Observações</label><textarea id="f-obs" ${ro?'disabled':''}>${c?.obs||''}</textarea></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Fechar</button>${!ro?`<button class="btn-save" onclick="saveLead('${id||''}')">Salvar</button>`:''}</div>
-  `;
-  openModal();
-}
-
-async function saveLead(id) {
-  const obj = {
-    nome: v('f-nome'), etapa_funil: v('f-etapa'), segmento: v('f-segmento'), cidade: v('f-cidade'),
-    origem: v('f-origem'), influenciador_id: v('f-influenciador')||null, responsavel: v('f-resp'),
-    valor_estimado: v('f-valor')||null, resultado_r2: v('f-resultado-r2')||null,
-    objecao_aberta: v('f-objecao'), tentativas_followup: parseInt(v('f-tentativas')||'0'),
-    data_r1_prevista: v('f-data-r1')||null, data_r2_prevista: v('f-data-r2')||null,
-    obs: v('f-obs'), updated_at: new Date().toISOString(),
-  };
-  if (!obj.nome) { alert('Informe o nome.'); return; }
-  if (id) await sb.from('leads').update(obj).eq('id',id);
-  else await sb.from('leads').insert(obj);
-  if (obj.etapa_funil === 'fechado' && id) await promoteLeadToClient(id);
-  closeModal();
-  renderPipeline();
+  await sb.from('clients').delete().eq('id',id);
+  renderPipeline(); if (activeTab==='clients') renderClients();
 }
 
 // ══════════════════════════════════════
-// CLIENTES
+// CLIENTS
 // ══════════════════════════════════════
 async function renderClients() {
   const ed = canEdit('clients');
   document.getElementById('btn-new-client').style.display = ed?'':'none';
-  const clients = demoMode ? DEMO.clients : (await sb.from('clientes').select('*').order('created_at',{ascending:false})).data;
-  const contratos = demoMode ? (DEMO.contratos||[]) : (await sb.from('contratos').select('*').eq('status','ativo')).data || [];
-  const valorPorCliente = {};
-  contratos.forEach(ct => { valorPorCliente[ct.cliente_id] = (valorPorCliente[ct.cliente_id]||0) + (parseFloat(ct.valor_mensal)||0); });
+  const clients = demoMode ? DEMO.clients : (await sb.from('clients').select('*').order('created_at',{ascending:false})).data;
   const tbody = document.getElementById('clients-tbody');
   const empty = document.getElementById('clients-empty');
   if (!(clients||[]).length) { tbody.innerHTML=''; empty.style.display='block'; return; }
@@ -2176,17 +2012,11 @@ async function renderClients() {
     <td style="font-weight:600;color:var(--cyan)">${c.nome}</td>
     <td><span class="badge ${c.status}">${statusLabel(c.status)}</span></td>
     <td style="color:var(--muted)">${c.servicos||'—'}</td>
-    <td style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12px">${valorPorCliente[c.id]?fmtMoney(valorPorCliente[c.id]):'—'}</td>
-    <td>${c.responsavel||'—'}</td>
+    <td style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12px">${c.valor?fmtMoney(c.valor):'—'}</td>
+    <td>${c.resp||'—'}</td>
     <td style="color:var(--muted);font-size:12px;max-width:200px">${c.proximo_passo||'—'}</td>
     <td onclick="event.stopPropagation()"><div style="display:flex;gap:5px;flex-wrap:wrap">${(c.repo_url||c.local_path)?`<button class="btn-sm project" onclick="openProjectModal('${c.id}')">▶ Abrir</button>`:''} ${ed?`<button class="btn-sm" onclick="openClientModal('${c.id}')">Editar</button><button class="btn-sm danger" onclick="deleteClient('${c.id}')">Excluir</button>`:''}</div></td>
   </tr>`).join('');
-}
-
-async function deleteClient(id) {
-  if (!confirm('Excluir?')) return;
-  await sb.from('clientes').delete().eq('id',id);
-  renderClients();
 }
 
 async function openClientModal(id, defaultStatus) {
@@ -2194,18 +2024,17 @@ async function openClientModal(id, defaultStatus) {
   let c = null;
   if (id) {
     if (demoMode) c = DEMO.clients.find((_,i)=>String(i)===String(id)) || DEMO.clients[0];
-    else { const { data } = await sb.from('clientes').select('*').eq('id',id).single(); c = data; }
+    else { const { data } = await sb.from('clients').select('*').eq('id',id).single(); c = data; }
   }
   const profiles = demoMode ? DEMO.profiles : (await sb.from('profiles').select('name').order('name')).data;
-  const st = c ? c.status : (defaultStatus||'ativo');
+  const st = c ? c.status : (defaultStatus||'prospect');
   document.getElementById('modal-box').innerHTML = `
-    <div class="modal-title">${c?(ro?'Ver cliente':'Editar cliente'):'Novo cliente (exceção, sem lead de origem)'}</div>
+    <div class="modal-title">${c?(ro?'Ver cliente':'Editar cliente'):'Novo cliente / prospect'}</div>
     <div class="form-row"><label>Nome</label><input id="f-nome" value="${c?.nome||''}" placeholder="Nome do cliente ou empresa" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Status</label><select id="f-status" ${ro?'disabled':''}>${['ativo','encerrado','suspenso'].map(s=>`<option value="${s}"${st===s?' selected':''}>${statusLabel(s)}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Segmento</label><input id="f-segmento" value="${c?.segmento||''}" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Cidade</label><input id="f-cidade" value="${c?.cidade||''}" ${ro?'disabled':''}></div>
+    <div class="form-row"><label>Status</label><select id="f-status" ${ro?'disabled':''}>${['prospect','proposta','negociando','ativo','encerrado'].map(s=>`<option value="${s}"${st===s?' selected':''}>${statusLabel(s)}</option>`).join('')}</select></div>
     <div class="form-row"><label>Serviços</label><input id="f-servicos" value="${c?.servicos||''}" placeholder="ex: Site, Dashboard, Automação" ${ro?'disabled':''}></div>
-    <div class="form-row"><label>Responsável</label><select id="f-resp" ${ro?'disabled':''}>${(profiles||[]).map(u=>`<option${c?.responsavel===u.name?' selected':''}>${u.name}</option>`).join('')}</select></div>
+    <div class="form-row"><label>Valor mensal (R$)</label><input id="f-valor" type="number" value="${c?.valor||''}" placeholder="0" ${ro?'disabled':''}></div>
+    <div class="form-row"><label>Responsável</label><select id="f-resp" ${ro?'disabled':''}>${(profiles||[]).map(u=>`<option${c?.resp===u.name?' selected':''}>${u.name}</option>`).join('')}</select></div>
     <div class="form-row"><label>Próximo passo</label><input id="f-passo" value="${c?.proximo_passo||''}" ${ro?'disabled':''}></div>
     <div class="form-row"><label>Repositório GitHub</label><input id="f-repo" type="url" value="${c?.repo_url||''}" placeholder="https://github.com/usuario/repo" ${ro?'disabled':''}></div>
     <div class="form-row"><label>Caminho local</label><input id="f-local-path" value="${c?.local_path||''}" placeholder="c:/Users/Fernando/Documents/projeto" ${ro?'disabled':''}></div>
@@ -2216,12 +2045,13 @@ async function openClientModal(id, defaultStatus) {
 }
 
 async function saveClient(id) {
-  const obj = {nome:v('f-nome'),status:v('f-status'),segmento:v('f-segmento'),cidade:v('f-cidade'),servicos:v('f-servicos'),responsavel:v('f-resp'),proximo_passo:v('f-passo'),repo_url:v('f-repo')||null,local_path:v('f-local-path')||null,obs:v('f-obs')};
+  const obj = {nome:v('f-nome'),status:v('f-status'),servicos:v('f-servicos'),valor:v('f-valor')||null,resp:v('f-resp'),proximo_passo:v('f-passo'),repo_url:v('f-repo')||null,local_path:v('f-local-path')||null,obs:v('f-obs')};
   if (!obj.nome) { alert('Informe o nome.'); return; }
-  if (id) await sb.from('clientes').update(obj).eq('id',id);
-  else { obj.data_entrada = new Date().toISOString().slice(0,10); await sb.from('clientes').insert(obj); }
+  if (id) await sb.from('clients').update(obj).eq('id',id);
+  else await sb.from('clients').insert(obj);
   closeModal();
-  renderClients();
+  if (activeTab==='pipeline') renderPipeline();
+  if (activeTab==='clients') renderClients();
 }
 
 function clientRowClick(id, hasProject) {
@@ -2232,7 +2062,7 @@ function clientRowClick(id, hasProject) {
 async function openProjectModal(id) {
   let c;
   if (demoMode) c = DEMO.clients.find((_,i)=>String(i)===String(id)) || DEMO.clients[0];
-  else { const { data } = await sb.from('clientes').select('*').eq('id',id).single(); c = data; }
+  else { const { data } = await sb.from('clients').select('*').eq('id',id).single(); c = data; }
   if (!c) return;
 
   const sess = c.last_session;
@@ -2300,59 +2130,17 @@ function projCopy(btn, text) {
 }
 
 // ══════════════════════════════════════
-// SUPORTE & SAÚDE DA CONTA (view derivada — sem tabela própria)
-// ══════════════════════════════════════
-async function renderSuporte() {
-  const grid = document.getElementById('suporte-grid');
-  if (!grid) return;
-  grid.innerHTML = '<div class="loading-state"><div class="spin-cyan"></div>Carregando...</div>';
-  let clientes, contratos, tasks;
-  if (demoMode) {
-    clientes = (DEMO.clients||[]).filter(c=>c.status==='ativo');
-    contratos = DEMO.contratos||[];
-    tasks = (DEMO.tasks||[]).filter(t=>t.status!=='concluido');
-  } else {
-    const [rc, rct, rt] = await Promise.all([
-      sb.from('clientes').select('*').eq('status','ativo'),
-      sb.from('contratos').select('*').eq('status','ativo'),
-      sb.from('tasks').select('*').neq('status','concluido'),
-    ]);
-    clientes = rc.data||[]; contratos = rct.data||[]; tasks = rt.data||[];
-  }
-  const now = Date.now();
-  const DAY = 86400000;
-
-  grid.innerHTML = clientes.map(c => {
-    const contrato = contratos.find(ct=>ct.cliente_id===c.id);
-    const tarefasVencidas = tasks.filter(t=>t.client_name===c.nome && t.prazo && new Date(t.prazo).getTime()<now).length;
-    const diasSemHandoff = c.handoff_at ? Math.floor((now-new Date(c.handoff_at).getTime())/DAY) : null;
-    const diasRenovacao = contrato?.data_renovacao ? Math.floor((new Date(contrato.data_renovacao).getTime()-now)/DAY) : null;
-    const alertas = [];
-    if (tarefasVencidas>0) alertas.push(`${tarefasVencidas} tarefa${tarefasVencidas!==1?'s':''} vencida${tarefasVencidas!==1?'s':''}`);
-    if (diasSemHandoff!==null && diasSemHandoff>14) alertas.push(`${diasSemHandoff}d sem handoff`);
-    if (diasRenovacao!==null && diasRenovacao<=30 && diasRenovacao>=0) alertas.push(`renova em ${diasRenovacao}d`);
-    const risco = alertas.length>0;
-    return `<div class="ov-team-item" style="${risco?'border-left:3px solid #ef4444':'border-left:3px solid var(--green)'}">
-      <div class="ov-team-av" style="background:${risco?'#ef4444':'var(--green)'}">${initials(c.nome)}</div>
-      <div><div class="ov-team-name">${c.nome}</div><div class="ov-team-role">${c.responsavel||'—'}</div></div>
-      <div class="ov-team-tasks">${risco?alertas.join(' · '):'✓ saudável'}</div>
-    </div>`;
-  }).join('') || '<div class="empty"><div class="empty-text">Nenhum cliente ativo.</div></div>';
-}
-
-// ══════════════════════════════════════
 // FINANCE
 // ══════════════════════════════════════
 async function renderFinance() {
   let clients, entries;
   if (demoMode) {
-    clients = (DEMO.contratos||[]).map(ct=>({nome:ct.nome,valor:ct.valor_mensal}));
+    clients = DEMO.clients.filter(c=>c.status==='ativo').map(c=>({nome:c.nome,valor:c.valor}));
     entries = DEMO.finance;
   } else {
-    const r1 = await sb.from('contratos').select('valor_mensal, clientes(nome)').eq('status','ativo');
+    const r1 = await sb.from('clients').select('nome,valor').eq('status','ativo');
     const r2 = await sb.from('finance_entries').select('*').order('data',{ascending:false});
-    clients = (r1.data||[]).map(ct=>({nome: ct.clientes?.nome || '—', valor: ct.valor_mensal}));
-    entries = r2.data;
+    clients = r1.data; entries = r2.data;
   }
   const mrr = (clients||[]).reduce((s,c)=>s+(parseFloat(c.valor)||0),0);
   document.getElementById('fin-mrr').textContent = fmtMoney(mrr);
@@ -2586,7 +2374,7 @@ async function renderHandoff() {
     try {
       const [r1, r2] = await Promise.all([
         sb.from('activity_log').select('*').order('created_at',{ascending:false}).limit(30),
-        sb.from('clientes').select('*').not('handoff_summary','is',null).order('handoff_at',{ascending:false}),
+        sb.from('clients').select('*').not('handoff_summary','is',null).order('handoff_at',{ascending:false}),
       ]);
       activities = r1.data || [];
       handoffs = r2.data || [];
@@ -3037,135 +2825,194 @@ function openStoriesCard() {
 function closeStoriesCard() { document.getElementById('stories-overlay').classList.remove('open'); }
 
 // ══════════════════════════════════════
-// INFLUENCIADORES / TOPO DE FUNIL
+// INFLUENCER
 // ══════════════════════════════════════
 async function renderInfluencer() {
   const wrap = document.getElementById('influencer-inner');
   if (!wrap) return;
   wrap.innerHTML = '<div class="loading-state"><div class="spin-cyan"></div>Carregando...</div>';
 
-  const ed = canEdit('influencer');
-  let influenciadores, campanhas, leadsIndicacao;
+  let influencers, jobs;
   if (demoMode) {
-    influenciadores = DEMO.influenciadores||[];
-    campanhas = DEMO.campanhas_indicacao||[];
-    leadsIndicacao = (DEMO.leads||[]).filter(l=>l.origem==='indicacao-influencer');
+    influencers = DEMO.influencers;
+    jobs = DEMO.influencer_jobs;
   } else {
-    const [r1, r2, r3] = await Promise.all([
-      sb.from('influenciadores').select('*').order('nome'),
-      sb.from('campanhas_indicacao').select('*, influenciadores(nome), clientes(nome)').order('data',{ascending:false}),
-      sb.from('leads').select('*').eq('origem','indicacao-influencer'),
-    ]);
-    influenciadores = r1.data || []; campanhas = r2.data || []; leadsIndicacao = r3.data || [];
+    try {
+      const [r1, r2] = await Promise.all([
+        sb.from('influencers').select('*').order('nome'),
+        sb.from('influencer_jobs').select('*').order('created_at', {ascending:false}),
+      ]);
+      if (r1.error) throw r1.error;
+      influencers = r1.data || [];
+      jobs = r2.data || [];
+    } catch(e) {
+      wrap.innerHTML = `
+        <div class="inf-empty" style="padding:80px 20px">
+          <div class="inf-empty-icon">⚡</div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)">Ative o modo DEMO para explorar</div>
+          <div style="font-size:13px;color:var(--muted);max-width:380px;margin:0 auto 20px;line-height:1.6">
+            Para dados reais, crie as tabelas <code style="background:rgba(0,200,232,.1);color:var(--cyan);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">influencers</code>
+            e <code style="background:rgba(0,200,232,.1);color:var(--cyan);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace">influencer_jobs</code> no Supabase.
+          </div>
+          <button class="btn-add" onclick="if(!demoMode)toggleDemo(); renderInfluencer()">Ver no modo DEMO</button>
+        </div>`;
+      return;
+    }
   }
 
-  const fechados = leadsIndicacao.filter(l=>l.etapa_funil==='fechado').length;
-  const taxaConv = leadsIndicacao.length ? Math.round(fechados/leadsIndicacao.length*100) : 0;
-  const statusFmtLabel = {reativo:'Reativo',script_criado:'Script criado',followup_dedicado:'Follow-up dedicado'};
+  const ed = canEdit('influencer');
+  const activeJobs    = jobs.filter(j => !j.publicado);
+  const publishedJobs = jobs.filter(j => j.publicado && !j.pago);
+  const paidJobs      = jobs.filter(j => j.pago);
+  const totalPaid     = paidJobs.reduce((s,j) => s+(parseFloat(j.valor)||0), 0);
+  const pendingPay    = publishedJobs.reduce((s,j) => s+(parseFloat(j.valor)||0), 0);
+  const thisMonthKey  = new Date().toISOString().slice(0,7);
+  const jobsThisMonth = jobs.filter(j => j.publicado && (j.created_at||'').slice(0,7)===thisMonthKey).length;
 
   wrap.innerHTML = `
     <div class="sec-header">
-      <div class="sec-title">Influenciadores / Topo de Funil</div>
-      ${ed?`<div style="display:flex;gap:8px"><button class="btn-add" onclick="openInfluencerModal()">+ Influenciador</button><button class="btn-add" onclick="openCampanhaModal()">+ Campanha de indicação</button></div>`:''}
+      <div class="sec-title">Influencer</div>
+      ${ed?`<button class="btn-add" onclick="openJobModal()">+ Novo Job</button>`:''}
     </div>
     <div class="inf-kpis">
-      <div class="inf-kpi"><div class="inf-kpi-label">Influenciadores</div><div class="inf-kpi-val c-cyan">${influenciadores.length}</div><div class="inf-kpi-sub">cadastrados</div></div>
-      <div class="inf-kpi"><div class="inf-kpi-label">Leads por indicação</div><div class="inf-kpi-val c-orange">${leadsIndicacao.length}</div><div class="inf-kpi-sub">origem = indicação de influencer</div></div>
-      <div class="inf-kpi"><div class="inf-kpi-label">Taxa de conversão</div><div class="inf-kpi-val c-green">${taxaConv}%</div><div class="inf-kpi-sub">${fechados} fechados de ${leadsIndicacao.length}</div></div>
-      <div class="inf-kpi"><div class="inf-kpi-label">Campanhas registradas</div><div class="inf-kpi-val c-purple">${campanhas.length}</div><div class="inf-kpi-sub">indicações rastreadas</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">Influencers Ativas</div><div class="inf-kpi-val c-cyan">${influencers.filter(i=>i.status==='ativo').length}</div><div class="inf-kpi-sub">parceiras da NEXO IA</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">Jobs em Produção</div><div class="inf-kpi-val c-orange">${activeJobs.length}</div><div class="inf-kpi-sub">roteiro · gravação · edição</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">Total Investido</div><div class="inf-kpi-val c-green" style="font-size:${totalPaid>=10000?'22px':'28px'}">${fmtMoney(totalPaid)}</div><div class="inf-kpi-sub">pagamentos realizados</div></div>
+      <div class="inf-kpi"><div class="inf-kpi-label">A Pagar</div><div class="inf-kpi-val c-purple" style="font-size:${pendingPay>=10000?'22px':'28px'}">${fmtMoney(pendingPay)}</div><div class="inf-kpi-sub">publicados, aguardando pgto</div></div>
     </div>
     <div class="inf-cards" id="inf-cards"></div>
-    ${campanhas.length>0?`<div class="inf-section-title">Campanhas de indicação</div><div class="inf-jobs-list" id="inf-campanhas"></div>`:''}
-    ${influenciadores.length===0?`<div class="inf-empty"><div class="inf-empty-icon">🎬</div><div class="inf-empty-text">Nenhum influenciador cadastrado ainda</div></div>`:''}
+    ${activeJobs.length>0?`<div class="inf-section-title">Jobs em produção — clique nas etapas para marcar</div><div class="inf-jobs-list" id="inf-active"></div>`:''}
+    ${publishedJobs.length>0?`<div class="inf-section-title">Publicados — aguardando pagamento</div><div class="inf-jobs-list" id="inf-pub"></div>`:''}
+    ${paidJobs.length>0?`<div class="inf-section-title">Pagos & Concluídos</div><div class="inf-jobs-list" id="inf-paid"></div>`:''}
+    ${jobs.length===0?`<div class="inf-empty"><div class="inf-empty-icon">🎬</div><div class="inf-empty-text">Nenhum job cadastrado ainda</div></div>`:''}
   `;
 
   const cardsEl = document.getElementById('inf-cards');
-  influenciadores.forEach(inf => {
-    const myLeads = leadsIndicacao.filter(l => l.influenciador_id===inf.id);
-    const myFechados = myLeads.filter(l=>l.etapa_funil==='fechado').length;
+  influencers.forEach(inf => {
+    const myJobs  = jobs.filter(j => j.influencer_id===inf.id);
+    const myPaid  = myJobs.filter(j=>j.pago).reduce((s,j)=>s+(parseFloat(j.valor)||0),0);
+    const myActive= myJobs.filter(j=>!j.publicado).length;
     cardsEl.innerHTML += `
       <div class="inf-card">
-        <div class="inf-card-status ${inf.status_formalizacao==='followup_dedicado'?'ativo':''}">${statusFmtLabel[inf.status_formalizacao]||inf.status_formalizacao}</div>
+        <div class="inf-card-status ${inf.status}">${inf.status}</div>
         <div class="inf-card-avatar">${initials(inf.nome)}</div>
         <div class="inf-card-info">
           <div class="inf-card-name">${inf.nome}</div>
-          <div class="inf-card-nicho">${inf.nicho||''}${inf.cidade?' · '+inf.cidade:''}</div>
-          <div class="inf-card-ig">${inf.plataforma||''}</div>
+          <div class="inf-card-nicho">${inf.nicho}</div>
+          <div class="inf-card-ig">${inf.instagram}</div>
         </div>
         <div class="inf-card-stats">
-          <div class="inf-stat"><span class="inf-stat-val">${myLeads.length}</span><span class="inf-stat-lbl">leads gerados</span></div>
-          <div class="inf-stat"><span class="inf-stat-val" style="color:var(--green)">${myFechados}</span><span class="inf-stat-lbl">fechados</span></div>
+          <div class="inf-stat"><span class="inf-stat-val">${fmtMoney(inf.valor_por_job||0)}</span><span class="inf-stat-lbl">por job</span></div>
+          <div class="inf-stat"><span class="inf-stat-val">${myJobs.length}</span><span class="inf-stat-lbl">jobs total</span></div>
+          <div class="inf-stat"><span class="inf-stat-val" style="color:var(--green)">${fmtMoney(myPaid)}</span><span class="inf-stat-lbl">pago</span></div>
         </div>
-        ${ed?`<div class="mkt-actions" style="margin-top:8px"><button class="btn-sm" onclick="openInfluencerModal('${inf.id}')">Editar</button><button class="btn-sm danger" onclick="deleteInfluenciador('${inf.id}')">×</button></div>`:''}
       </div>`;
   });
 
-  const campEl = document.getElementById('inf-campanhas');
-  if (campEl) {
-    campEl.innerHTML = campanhas.map(c=>`
+  function jobHtml(job) {
+    const stages = [
+      {key:'roteiro',  label:'Roteiro'},
+      {key:'gravacao', label:'Gravação'},
+      {key:'edicao',   label:'Edição'},
+      {key:'publicado',label:'Publicado'},
+      {key:'pago',     label:'Pago'},
+    ];
+    const stagesHtml = stages.map((s,i) => {
+      const done = !!job[s.key];
+      const isPago = s.key==='pago';
+      const line = i<stages.length-1
+        ? `<div class="inf-stage-line ${done&&!!job[stages[i+1].key]?'done':''}"></div>`
+        : '';
+      return `<div class="inf-stage-wrap">
+        <div class="inf-stage ${done?'done':''} ${isPago?'pago-stage':''}" onclick="${ed?`toggleJobStage('${job.id}','${s.key}')`:''}" title="${s.label}">
+          <div class="inf-stage-dot">${done?'✓':''}</div>
+          <div class="inf-stage-label">${s.label}</div>
+        </div>${line}
+      </div>`;
+    }).join('');
+    return `
       <div class="inf-job-item">
         <div>
-          <div class="inf-job-influencer">${c.influenciadores?.nome||c.influenciador_nome||'—'}</div>
-          <div class="inf-job-desc">${c.data}</div>
-          ${(c.clientes?.nome||c.cliente_nome)?`<div class="inf-job-client">→ vídeo de ${c.clientes?.nome||c.cliente_nome}</div>`:''}
+          <div class="inf-job-influencer">${job.influencer_nome}</div>
+          <div class="inf-job-desc">${job.descricao}</div>
+          ${job.cliente_alvo?`<div class="inf-job-client">→ ${job.cliente_alvo}</div>`:''}
         </div>
-        <div class="inf-job-valor">${c.leads_gerados} lead${c.leads_gerados!==1?'s':''}</div>
-        ${ed?`<button class="btn-sm danger" onclick="deleteCampanha('${c.id}')">×</button>`:''}
-      </div>`).join('');
+        <div class="inf-job-stages">${stagesHtml}</div>
+        <div class="inf-job-valor">${fmtMoney(job.valor||0)}</div>
+      </div>`;
   }
-}
 
-async function deleteInfluenciador(id) {
-  if (!confirm('Excluir?')) return;
-  await sb.from('influenciadores').delete().eq('id',id); renderInfluencer();
-}
-async function deleteCampanha(id) {
-  if (!confirm('Excluir?')) return;
-  await sb.from('campanhas_indicacao').delete().eq('id',id); renderInfluencer();
-}
-
-async function openInfluencerModal(id) {
-  let inf = null;
-  if (id) { const { data } = await sb.from('influenciadores').select('*').eq('id',id).single(); inf = data; }
-  document.getElementById('modal-box').innerHTML = `
-    <div class="modal-title">${inf?'Editar influenciador':'Novo influenciador'}</div>
-    <div class="form-row"><label>Nome</label><input id="f-inf-nome" value="${inf?.nome||''}"></div>
-    <div class="form-row"><label>Nicho</label><input id="f-inf-nicho" value="${inf?.nicho||''}" placeholder="ex: lifestyle, gastronomia"></div>
-    <div class="form-row"><label>Cidade</label><input id="f-inf-cidade" value="${inf?.cidade||''}"></div>
-    <div class="form-row"><label>Plataforma</label><input id="f-inf-plataforma" value="${inf?.plataforma||''}" placeholder="ex: Instagram, TikTok"></div>
-    <div class="form-row"><label>Formalização do canal</label><select id="f-inf-status">${[['reativo','Reativo'],['script_criado','Script criado'],['followup_dedicado','Follow-up dedicado']].map(([v,l])=>`<option value="${v}"${(inf?.status_formalizacao||'reativo')===v?' selected':''}>${l}</option>`).join('')}</select></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveInfluencer('${id||''}')">Salvar</button></div>
-  `;
-  openModal();
-}
-async function saveInfluencer(id) {
-  const obj = {nome:v('f-inf-nome'),nicho:v('f-inf-nicho'),cidade:v('f-inf-cidade'),plataforma:v('f-inf-plataforma'),status_formalizacao:v('f-inf-status')};
-  if (!obj.nome) { alert('Informe o nome.'); return; }
-  if (id) await sb.from('influenciadores').update(obj).eq('id',id);
-  else await sb.from('influenciadores').insert(obj);
-  closeModal(); renderInfluencer();
-}
-
-async function openCampanhaModal() {
-  const influenciadores = (await sb.from('influenciadores').select('id,nome').order('nome')).data || [];
-  const clientes = (await sb.from('clientes').select('id,nome').order('nome')).data || [];
-  document.getElementById('modal-box').innerHTML = `
-    <div class="modal-title">Nova campanha de indicação</div>
-    <div class="form-row"><label>Influenciador</label><select id="f-camp-inf">${influenciadores.map(i=>`<option value="${i.id}">${i.nome}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Cliente de origem (opcional)</label><select id="f-camp-cliente"><option value="">—</option>${clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select></div>
-    <div class="form-row"><label>Data</label><input id="f-camp-data" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
-    <div class="form-row"><label>Leads gerados</label><input id="f-camp-leads" type="number" min="0" value="0"></div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveCampanha()">Salvar</button></div>
-  `;
-  openModal();
-}
-async function saveCampanha() {
-  const infId = v('f-camp-inf');
-  if (!infId) { alert('Selecione o influenciador.'); return; }
-  await sb.from('campanhas_indicacao').insert({
-    influenciador_id: infId, cliente_origem_id: v('f-camp-cliente')||null,
-    data: v('f-camp-data'), leads_gerados: parseInt(v('f-camp-leads')||'0'),
+  ['inf-active','inf-pub','inf-paid'].forEach((elId,i) => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const list = [activeJobs, publishedJobs, paidJobs][i];
+    el.innerHTML = list.map(jobHtml).join('');
   });
+}
+
+async function toggleJobStage(jobId, stage) {
+  if (demoMode) {
+    const job = DEMO.influencer_jobs.find(j => j.id===jobId);
+    if (!job) return;
+    job[stage] = !job[stage];
+    if (stage==='pago' && job[stage]) job.publicado = true;
+    if (stage==='publicado' && !job[stage]) job.pago = false;
+    renderInfluencer();
+    return;
+  }
+  const job = (await sb.from('influencer_jobs').select('*').eq('id',jobId).single()).data;
+  if (!job) return;
+  const upd = {[stage]: !job[stage]};
+  if (stage==='pago' && upd[stage]) upd.publicado = true;
+  if (stage==='publicado' && !upd[stage]) upd.pago = false;
+  await sb.from('influencer_jobs').update(upd).eq('id',jobId);
+  renderInfluencer();
+}
+
+function openJobModal(jobId) {
+  const job = jobId ? (demoMode ? DEMO.influencer_jobs.find(j=>j.id===jobId) : null) : null;
+  const influencers = demoMode ? DEMO.influencers : [];
+  const infOptions = influencers.map(i => `<option value="${i.id}" data-nome="${i.nome}" data-valor="${i.valor_por_job}" ${job?.influencer_id===i.id?'selected':''}>${i.nome} — ${fmtMoney(i.valor_por_job)}</option>`).join('');
+  document.getElementById('modal-box').innerHTML = `
+    <div class="modal-title">${job?'Editar Job':'Novo Job de Influencer'}</div>
+    <div class="form-grid">
+      <div class="form-field"><label>Influencer</label>
+        <select id="f-inf-id" class="form-input" onchange="const o=this.options[this.selectedIndex];document.getElementById('f-inf-valor').value=o.dataset.valor||''">
+          <option value="">Selecione...</option>${infOptions}
+        </select>
+      </div>
+      <div class="form-field"><label>Valor (R$)</label><input id="f-inf-valor" class="form-input" type="number" placeholder="350" value="${job?.valor||''}"></div>
+      <div class="form-field" style="grid-column:span 2"><label>Descrição do Job</label><input id="f-inf-desc" class="form-input" placeholder="Ex: Reel — antes e depois da automação" value="${job?.descricao||''}"></div>
+      <div class="form-field" style="grid-column:span 2"><label>Cliente Alvo (opcional)</label><input id="f-inf-cliente" class="form-input" placeholder="Qual negócio será promovido?" value="${job?.cliente_alvo||''}"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:24px">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveJob('${jobId||''}')">Salvar</button>
+    </div>`;
+  openModal();
+}
+
+async function saveJob(jobId) {
+  const selEl = document.getElementById('f-inf-id');
+  const selOpt = selEl?.options[selEl.selectedIndex];
+  const infId   = v('f-inf-id');
+  const infNome = selOpt?.dataset.nome || '';
+  const desc    = v('f-inf-desc');
+  const valor   = parseFloat(v('f-inf-valor'))||0;
+  const cliente = v('f-inf-cliente');
+  if (!infId || !desc) { alert('Preencha influencer e descrição.'); return; }
+  if (demoMode) {
+    if (jobId) {
+      const job = DEMO.influencer_jobs.find(j=>j.id===jobId);
+      if (job) { job.influencer_id=infId; job.influencer_nome=infNome; job.descricao=desc; job.valor=valor; job.cliente_alvo=cliente; }
+    } else {
+      DEMO.influencer_jobs.unshift({id:'ij'+Date.now(),influencer_id:infId,influencer_nome:infNome,descricao:desc,valor,cliente_alvo:cliente,roteiro:false,gravacao:false,edicao:false,publicado:false,pago:false,created_at:new Date().toISOString()});
+    }
+    closeModal(); renderInfluencer(); return;
+  }
+  const obj = {influencer_id:infId, influencer_nome:infNome, descricao:desc, valor, cliente_alvo:cliente};
+  if (jobId) await sb.from('influencer_jobs').update(obj).eq('id',jobId);
+  else await sb.from('influencer_jobs').insert(obj);
   closeModal(); renderInfluencer();
 }
 

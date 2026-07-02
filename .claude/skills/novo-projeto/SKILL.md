@@ -75,32 +75,35 @@ Esse projeto herda automaticamente o tom de voz, marca e contexto do negócio de
 
 ### Passo 5 — Criar .nexo-status.md e registrar no dashboard
 
+`/novo-projeto` sempre cria o registro em `leads` (funil pré-fechamento) — nunca em `clientes` diretamente, mesmo que a conversa já pareça bem encaminhada. A promoção pra cliente fechado é feita depois, pelo `/sync` (ou direto na dashboard, na aba Funil Comercial), nunca aqui.
+
 Criar o arquivo `.nexo-status.md` dentro da pasta do projeto com os dados coletados na entrevista:
 
 ```markdown
 ---
-supabase_id: 
-status: prospect
+lead_id: 
+cliente_id: 
+status: captacao
 valor: 0
 servicos: [entregas mencionadas na entrevista]
-proximo_passo: Enviar proposta
+proximo_passo: Agendar R1
 resp: Mario Brandao
 obs: 
 ---
 ```
 
-Em seguida, executar o registro no Supabase via curl (credenciais em `_config/nexo-db.md`):
+Em seguida, executar o registro na tabela `leads` via curl (credenciais em `_config/nexo-db.md`):
 
 ```bash
-curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients" \
-  -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0" \
+curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/leads" \
+  -H "apikey: SB_SERVICE" \
+  -H "Authorization: Bearer SB_SERVICE" \
   -H "Content-Type: application/json" \
   -H "Prefer: return=representation" \
-  -d "{\"nome\":\"NOME_DO_CLIENTE\",\"status\":\"prospect\",\"valor\":0,\"servicos\":\"SERVICOS\",\"resp\":\"Mario Brandao\",\"proximo_passo\":\"Enviar proposta\"}"
+  -d "{\"nome\":\"NOME_DO_CLIENTE\",\"etapa_funil\":\"captacao\",\"valor_estimado\":0,\"obs\":\"SERVICOS\",\"responsavel\":\"Mario Brandao\"}"
 ```
 
-Salvar o `id` retornado no campo `supabase_id` do `.nexo-status.md`.
+Salvar o `id` retornado no campo `lead_id` do `.nexo-status.md` (não em `supabase_id` — esse nome ficou ambíguo desde que existe a distinção lead/cliente).
 
 Se o curl falhar, criar o arquivo `.nexo-status.md` mesmo assim — o `/sync` conseguirá criar o registro depois.
 

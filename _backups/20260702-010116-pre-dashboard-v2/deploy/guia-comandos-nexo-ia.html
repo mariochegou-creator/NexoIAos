@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexoIAos — Guia de Comandos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #050e1f;
+      --surface:     #081422;
+      --surface2:    #0d1e35;
+      --border:      rgba(0,200,232,0.12);
+      --border-h:    rgba(0,200,232,0.35);
+      --cyan:        #00c8e8;
+      --cyan-dim:    rgba(0,200,232,0.12);
+      --cyan-glow:   rgba(0,200,232,0.25);
+      --orange:      #f97316;
+      --orange-dim:  rgba(249,115,22,0.12);
+      --green:       #22c55e;
+      --green-dim:   rgba(34,197,94,0.1);
+      --purple:      #a78bfa;
+      --purple-dim:  rgba(167,139,250,0.1);
+      --yellow:      #eab308;
+      --yellow-dim:  rgba(234,179,8,0.1);
+      --slate:       #94a3b8;
+      --slate-dim:   rgba(148,163,184,0.08);
+      --text:        #e2e8f0;
+      --muted:       #64748b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR SPOTLIGHT ── */
+    #spotlight {
+      position: fixed;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,232,0.06) 0%, rgba(0,200,232,0.025) 40%, transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+
+    /* ── GRID BG ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,232,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,232,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 30%, transparent 80%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 32px; height: 64px;
+      background: rgba(5,14,31,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem; font-weight: 500;
+      color: var(--cyan); letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--text); }
+    .logo .os { font-size: 0.8em; color: var(--muted); font-weight: 400; margin-left: 2px; }
+
+    .badge-version {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--cyan); background: var(--cyan-dim);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 3px 10px;
+    }
+
+    .h-spacer { flex: 1; }
+
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 12px; background: transparent; cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: var(--border-h); color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 960px; margin: 0 auto;
+      padding: 56px 32px 32px;
+      position: relative; z-index: 1;
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 500;
+      color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 16px;
+    }
+    .hero-label::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero-title {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 55%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 15px; color: var(--muted);
+      max-width: 560px; line-height: 1.7; margin-bottom: 32px;
+    }
+    .hero-sub code {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan); font-size: 13px;
+      background: var(--cyan-dim); border-radius: 4px;
+      padding: 1px 6px;
+    }
+
+    .stats-bar {
+      display: flex; gap: 32px; flex-wrap: wrap;
+    }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; font-weight: 700;
+      color: var(--cyan); line-height: 1;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.05em; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      max-width: 960px; margin: 0 auto;
+      padding: 0 32px 32px;
+      position: relative; z-index: 1;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 13px 18px 13px 44px;
+      color: var(--text); font-size: 14px;
+      font-family: 'Inter', sans-serif; outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='6.5' cy='6.5' r='4'/%3E%3Cline x1='10' y1='10' x2='14' y2='14'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: 16px center;
+    }
+    .search-input:focus {
+      border-color: var(--border-h);
+      box-shadow: 0 0 0 3px rgba(0,200,232,0.08);
+    }
+    .search-input::placeholder { color: var(--muted); }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 960px; margin: 0 auto;
+      padding: 0 32px 60px;
+      display: flex; flex-direction: column; gap: 48px;
+      position: relative; z-index: 1;
+    }
+
+    /* ── CATEGORY ── */
+    .category-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .category-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 17px;
+    }
+    .category-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .category-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .category-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 12px;
+    }
+
+    /* ── CARD ── */
+    .cmd-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 22px;
+      transition: all 0.2s; cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .cmd-card::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,200,232,0.2), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .cmd-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,200,232,0.08);
+    }
+    .cmd-card:hover::after { opacity: 1; }
+
+    .cmd-slug {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px; font-weight: 600;
+      margin-bottom: 8px; display: inline-block;
+      padding: 3px 9px; border-radius: 6px;
+    }
+    .cmd-title {
+      font-size: 13.5px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .cmd-desc {
+      font-size: 12px; color: var(--muted);
+      line-height: 1.6; margin-bottom: 14px;
+    }
+    .cmd-triggers { display: flex; flex-wrap: wrap; gap: 4px; }
+    .trigger {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--muted);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px; padding: 2px 8px;
+    }
+
+    /* ── CATEGORY COLORS ── */
+    /* Setup — cyan */
+    .cat-setup .category-icon { background: var(--cyan-dim); }
+    .cat-setup .category-name { color: var(--cyan); }
+    .cat-setup .cmd-slug { color: var(--cyan); background: var(--cyan-dim); }
+    .cat-setup .cmd-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 20px rgba(0,200,232,0.1); }
+
+    /* Vendas — green */
+    .cat-vendas .category-icon { background: var(--green-dim); }
+    .cat-vendas .category-name { color: var(--green); }
+    .cat-vendas .cmd-slug { color: var(--green); background: var(--green-dim); }
+    .cat-vendas .cmd-card:hover { border-color: rgba(34,197,94,0.35); box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 20px rgba(34,197,94,0.1); }
+
+    /* Clientes — purple */
+    .cat-clientes .category-icon { background: var(--purple-dim); }
+    .cat-clientes .category-name { color: var(--purple); }
+    .cat-clientes .cmd-slug { color: var(--purple); background: var(--purple-dim); }
+    .cat-clientes .cmd-card:hover { border-color: rgba(167,139,250,0.35); box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.1); }
+
+    /* Conteudo — orange */
+    .cat-conteudo .category-icon { background: var(--orange-dim); }
+    .cat-conteudo .category-name { color: var(--orange); }
+    .cat-conteudo .cmd-slug { color: var(--orange); background: var(--orange-dim); }
+    .cat-conteudo .cmd-card:hover { border-color: rgba(249,115,22,0.35); box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 20px rgba(249,115,22,0.1); }
+
+    /* SEO — yellow */
+    .cat-seo .category-icon { background: var(--yellow-dim); }
+    .cat-seo .category-name { color: var(--yellow); }
+    .cat-seo .cmd-slug { color: var(--yellow); background: var(--yellow-dim); }
+    .cat-seo .cmd-card:hover { border-color: rgba(234,179,8,0.35); box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 20px rgba(234,179,8,0.1); }
+
+    /* Analise — slate */
+    .cat-sistema .category-icon { background: var(--slate-dim); }
+    .cat-sistema .category-name { color: var(--slate); }
+    .cat-sistema .cmd-slug { color: var(--slate); background: var(--slate-dim); }
+    .cat-sistema .cmd-card:hover { border-color: rgba(148,163,184,0.25); }
+
+    /* ── HIDDEN ── */
+    .cmd-card.hidden { display: none; }
+
+    /* ── NO RESULTS ── */
+    #no-results {
+      display: none; text-align: center;
+      padding: 80px 20px; color: var(--muted);
+    }
+    #no-results .nr-icon {
+      font-size: 40px; margin-bottom: 16px; opacity: 0.4;
+    }
+    #no-results p { font-size: 14px; margin-bottom: 6px; }
+    #no-results span { font-size: 12px; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 40px 32px;
+      color: var(--muted); font-size: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: 20px; position: relative; z-index: 1;
+    }
+    footer strong { color: var(--cyan); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      header { padding: 0 16px; }
+      .hero, .search-wrap, .content { padding-left: 16px; padding-right: 16px; }
+      .hero-title { font-size: 28px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .stats-bar { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="spotlight"></div>
+
+<header>
+  <div class="logo">NEXO<span>IA</span><span class="os">os</span></div>
+  <span class="badge-version">NexoIAos v1</span>
+  <div class="h-spacer"></div>
+  <a href="dashboard-nexo-ia.html" class="btn-back">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="10,2 4,8 10,14"/></svg>
+    Dashboard
+  </a>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Sistema operacional da NEXO IA</div>
+  <div class="hero-title">Guia de Comandos</div>
+  <div class="hero-sub">
+    Todos os comandos do <strong style="color:var(--cyan)">NexoIAos</strong>. Digite <code>/comando</code> no chat ou fale pelo microfone — o sistema reconhece contexto e executa.
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">25</div><div class="stat-label">Comandos</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Categorias</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Projetos</div></div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="search"
+    placeholder="Buscar por nome ou função... (ex: roteiro, seo, proposta)"
+    oninput="filterCards(this.value)">
+</div>
+
+<div class="content" id="content">
+
+  <!-- ═══ SETUP & SISTEMA ═══ -->
+  <div class="cat-setup" id="cat-setup">
+    <div class="category-header">
+      <div class="category-icon">⚙️</div>
+      <div>
+        <div class="category-name">Setup & Sistema</div>
+        <div class="category-desc">Configurar, iniciar e manter o sistema</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="instalar setup primeiro configurar nexoiaos">
+        <div class="cmd-slug">/instalar</div>
+        <div class="cmd-title">Instalar o NexoIAos</div>
+        <div class="cmd-desc">Faz o setup inicial do sistema. Entrevista sobre a empresa, tom de voz e identidade visual. Preenche toda a memória do projeto.</div>
+        <div class="cmd-triggers"><span class="trigger">instalar o nexoiaos</span><span class="trigger">primeiro setup</span><span class="trigger">/instalar</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="abrir sessao dia comecar">
+        <div class="cmd-slug">/abrir</div>
+        <div class="cmd-title">Abrir sessão de trabalho</div>
+        <div class="cmd-desc">Carrega a memória do negócio e devolve um resumo do contexto atual. Ideal pra usar no começo de cada conversa.</div>
+        <div class="cmd-triggers"><span class="trigger">abrir</span><span class="trigger">começar o dia</span><span class="trigger">/abrir</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="atualizar varrer projeto contexto memoria">
+        <div class="cmd-slug">/atualizar</div>
+        <div class="cmd-title">Atualizar contexto do projeto</div>
+        <div class="cmd-desc">Varre o workspace inteiro e atualiza os arquivos de memória que ficaram desatualizados em relação ao que existe nas pastas.</div>
+        <div class="cmd-triggers"><span class="trigger">atualiza</span><span class="trigger">varre o projeto</span><span class="trigger">/atualizar</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="salvar github commit push backup">
+        <div class="cmd-slug">/salvar</div>
+        <div class="cmd-title">Salvar no GitHub</div>
+        <div class="cmd-desc">Faz commit e push de tudo que mudou. Pergunta a mensagem ou gera automaticamente. Mantém o trabalho seguro e acessível de qualquer computador.</div>
+        <div class="cmd-triggers"><span class="trigger">salvar</span><span class="trigger">commit</span><span class="trigger">push</span><span class="trigger">/salvar</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="mapear rotinas automatizar tarefas skills criar">
+        <div class="cmd-slug">/mapear-rotinas</div>
+        <div class="cmd-title">Mapear tarefas repetitivas</div>
+        <div class="cmd-desc">Entrevista sobre o que você repete toda semana e cria skills personalizadas pra automatizar. Expande o sistema com o seu jeito de trabalhar.</div>
+        <div class="cmd-triggers"><span class="trigger">criar skills</span><span class="trigger">automatizar tarefas</span><span class="trigger">/mapear-rotinas</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="sync nexoiaos atualizar repositorio original update novidades">
+        <div class="cmd-slug">/sync-nexoiaos</div>
+        <div class="cmd-title">Verificar atualizações do NexoIAos</div>
+        <div class="cmd-desc">Checa se o repositório NexoIAos recebeu novidades — skills, templates, melhorias. Você decide o que absorver antes de qualquer merge.</div>
+        <div class="cmd-triggers"><span class="trigger">tem atualização?</span><span class="trigger">novidades do nexoiaos</span><span class="trigger">/sync-nexoiaos</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ VENDAS ═══ -->
+  <div class="cat-vendas" id="cat-vendas">
+    <div class="category-header">
+      <div class="category-icon">💰</div>
+      <div>
+        <div class="category-name">Vendas — SPIN Selling</div>
+        <div class="category-desc">Do primeiro contato ao fechamento</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="r1 reuniao diagnostico spin transcricao analise">
+        <div class="cmd-slug">/r1</div>
+        <div class="cmd-title">Analisar reunião de diagnóstico</div>
+        <div class="cmd-desc">Cola a transcrição da R1 e recebe um mapa cirúrgico: problema → solução. Duas rotas pra cada dor — enxuta e robusta. Calibrado pra cidade pequena.</div>
+        <div class="cmd-triggers"><span class="trigger">analisa a R1</span><span class="trigger">transcrição da reunião</span><span class="trigger">/r1</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="r2 proposta solucao fechamento apresentar reuniao">
+        <div class="cmd-slug">/r2</div>
+        <div class="cmd-title">Preparar e analisar R2</div>
+        <div class="cmd-desc">Monta o roteiro completo da segunda reunião: reconexão, dor antes do preço, ancoragem, objeções típicas e fechamento com próximo passo concreto.</div>
+        <div class="cmd-triggers"><span class="trigger">prepara a R2</span><span class="trigger">roteiro da R2</span><span class="trigger">analisa a R2</span><span class="trigger">/r2</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="apn proposta personalizada apresentacao negocio cliente">
+        <div class="cmd-slug">/apn</div>
+        <div class="cmd-title">Gerar proposta personalizada</div>
+        <div class="cmd-desc">Monta a APN — apresentação de proposta feita exclusivamente pro negócio do cliente. Puxa tudo do diagnóstico da R1: dores, números, concorrentes, cidade.</div>
+        <div class="cmd-triggers"><span class="trigger">monta a APN</span><span class="trigger">cria a proposta</span><span class="trigger">faz a proposta do [negócio]</span><span class="trigger">/apn</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="follow-up acompanhamento cliente sumiu nao fechou mensagem retomar">
+        <div class="cmd-slug">/follow-up</div>
+        <div class="cmd-title">Mensagem de follow-up</div>
+        <div class="cmd-desc">Gera a mensagem certa pra cada situação pós-reunião: preço, "vou pensar", sumiu, ceticismo. Nunca pressão — reacende a implicação que o próprio cliente confirmou.</div>
+        <div class="cmd-triggers"><span class="trigger">não fechou, o que faço</span><span class="trigger">sumiu depois da R2</span><span class="trigger">follow-up pra [cliente]</span><span class="trigger">/follow-up</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ CLIENTES & PROJETOS ═══ -->
+  <div class="cat-clientes" id="cat-clientes">
+    <div class="category-header">
+      <div class="category-icon">📁</div>
+      <div>
+        <div class="category-name">Clientes & Projetos</div>
+        <div class="category-desc">Estruturar, acompanhar e reportar</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="novo projeto cliente pasta estrutura criar">
+        <div class="cmd-slug">/novo-projeto</div>
+        <div class="cmd-title">Criar pasta de novo cliente</div>
+        <div class="cmd-desc">Entrevista rápida e cria a estrutura completa: CLAUDE.md dedicado, subpastas por entrega, briefing e estratégia iniciais.</div>
+        <div class="cmd-triggers"><span class="trigger">novo cliente</span><span class="trigger">começar projeto pra X</span><span class="trigger">/novo-projeto</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="onboarding primeira semana kickoff cliente fechou">
+        <div class="cmd-slug">/onboarding</div>
+        <div class="cmd-title">Onboarding de novo cliente</div>
+        <div class="cmd-desc">Estrutura a primeira semana: o que coletar no kickoff, o que entregar em cada dia, como alinhar expectativa. Gera checklist que aparece no dashboard.</div>
+        <div class="cmd-triggers"><span class="trigger">cliente fechou</span><span class="trigger">onboarding de [cliente]</span><span class="trigger">primeira semana com [cliente]</span><span class="trigger">/onboarding</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="sync dashboard atualizar supabase sincronizar projeto">
+        <div class="cmd-slug">/sync</div>
+        <div class="cmd-title">Sincronizar com o dashboard</div>
+        <div class="cmd-desc">Lê o .nexo-status.md do cliente, pergunta as observações, coleta os commits e faz upsert no Supabase. O projeto aparece atualizado na dashboard.</div>
+        <div class="cmd-triggers"><span class="trigger">sync</span><span class="trigger">atualizar dashboard</span><span class="trigger">manda pro dash</span><span class="trigger">/sync</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="relatorio cliente mensal resultados entrega mes">
+        <div class="cmd-slug">/relatorio-cliente</div>
+        <div class="cmd-title">Relatório mensal do cliente</div>
+        <div class="cmd-desc">Gera o relatório do mês: o que foi feito, o que moveu, o que vem a seguir. Linguagem simples — feito pra dono de negócio, não pra técnico.</div>
+        <div class="cmd-triggers"><span class="trigger">relatório do [cliente]</span><span class="trigger">fechamento do mês</span><span class="trigger">/relatorio-cliente</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ CONTEÚDO & MARKETING ═══ -->
+  <div class="cat-conteudo" id="cat-conteudo">
+    <div class="category-header">
+      <div class="category-icon">🎬</div>
+      <div>
+        <div class="category-name">Conteúdo & Marketing</div>
+        <div class="category-desc">Vídeos, posts, carrosséis e publicação</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="roteiro reel influencer video negocio nicho">
+        <div class="cmd-slug">/roteiro</div>
+        <div class="cmd-title">Roteiro de Reel para influencer</div>
+        <div class="cmd-desc">Pesquisa vídeos virais do nicho, analisa por que viralizaram e cria dois arquivos: cenas (para quem filma) e fala (para a influencer estudar).</div>
+        <div class="cmd-triggers"><span class="trigger">criar roteiro</span><span class="trigger">reel pra [negócio]</span><span class="trigger">/roteiro</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="roteiro viral musica trends modelo video nicho qualquer">
+        <div class="cmd-slug">/roteiro-viral</div>
+        <div class="cmd-title">Roteiro viral para qualquer nicho</div>
+        <div class="cmd-desc">Busca músicas e vídeos em alta em qualquer segmento e gera pacote completo: roteiro + legendas + guia de filmagem + guia de edição.</div>
+        <div class="cmd-triggers"><span class="trigger">gera roteiro viral</span><span class="trigger">busca conteúdo em alta</span><span class="trigger">roteiro pra modelo</span><span class="trigger">/roteiro-viral</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="carrossel post instagram imagem visual conteudo png">
+        <div class="cmd-slug">/carrossel</div>
+        <div class="cmd-title">Carrossel e posts visuais</div>
+        <div class="cmd-desc">Cria carrosséis e posts pra Instagram/TikTok/LinkedIn com identidade visual da marca. Gera HTML estilizado + PNG 1080×1350. Legenda pronta no final.</div>
+        <div class="cmd-triggers"><span class="trigger">carrossel</span><span class="trigger">post instagram</span><span class="trigger">criar imagem</span><span class="trigger">/carrossel</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="publicar tema conteudo blog seo post completo instagram">
+        <div class="cmd-slug">/publicar-tema</div>
+        <div class="cmd-title">Conteúdo completo de um tema</div>
+        <div class="cmd-desc">A partir de um tema, orquestra tudo: artigo de blog SEO, carrossel resumo e legendas pra Instagram, Facebook e LinkedIn — tudo amarrado.</div>
+        <div class="cmd-triggers"><span class="trigger">publicar tema</span><span class="trigger">gera o conteúdo do tema X</span><span class="trigger">/publicar-tema</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="aprovar post publicar instagram facebook meta graph">
+        <div class="cmd-slug">/aprovar-post</div>
+        <div class="cmd-title">Aprovar e publicar post</div>
+        <div class="cmd-desc">Publica o post da fila: muda o status de draft pra publicado, faz commit e push (Netlify deploya) e posta no Instagram + Facebook via Meta Graph API.</div>
+        <div class="cmd-triggers"><span class="trigger">aprovar post X</span><span class="trigger">publicar o post do tema Y</span><span class="trigger">/aprovar-post X</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="email profissional rascunho comunicacao escrever">
+        <div class="cmd-slug">/email-profissional</div>
+        <div class="cmd-title">Rascunho de email</div>
+        <div class="cmd-desc">Escreve emails profissionais calibrados ao destinatário e ao objetivo. Do cliente ao fornecedor — qualquer contexto, tom ajustado.</div>
+        <div class="cmd-triggers"><span class="trigger">escreve um email pra</span><span class="trigger">como eu respondo isso</span><span class="trigger">/email-profissional</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="responder avaliacoes google reviews gmb negocio">
+        <div class="cmd-slug">/responder-avaliacoes</div>
+        <div class="cmd-title">Responder avaliações do Google</div>
+        <div class="cmd-desc">Escreve respostas humanas pras reviews do Google Meu Negócio. Tom natural com o nome do cliente, agradecimento variado, frase concreta sobre o negócio.</div>
+        <div class="cmd-triggers"><span class="trigger">responder avaliação</span><span class="trigger">review do google</span><span class="trigger">/responder-avaliacoes</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ SEO & ANÚNCIOS ═══ -->
+  <div class="cat-seo" id="cat-seo">
+    <div class="category-header">
+      <div class="category-icon">🔍</div>
+      <div>
+        <div class="category-name">SEO & Anúncios</div>
+        <div class="category-desc">Aparecer no Google, nas IAs e em anúncios pagos</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="seo geo google palavras chave aparecer ia chatgpt gemini perplexity">
+        <div class="cmd-slug">/seo</div>
+        <div class="cmd-title">SEO + GEO completo</div>
+        <div class="cmd-desc">Fluxo de 8 passos: pesquisa de demanda, análise de concorrência, Google Meu Negócio, otimização on-page, estratégia de conteúdo, Google Ads e GEO (ChatGPT, Gemini, Perplexity).</div>
+        <div class="cmd-triggers"><span class="trigger">seo</span><span class="trigger">aparecer no google</span><span class="trigger">aparecer nas IAs</span><span class="trigger">google meu negócio</span><span class="trigger">/seo</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="anuncio google ads campanha csv palavras chave estrutura">
+        <div class="cmd-slug">/anuncio-google</div>
+        <div class="cmd-title">Campanha Google Ads</div>
+        <div class="cmd-desc">Cria estrutura completa de campanha Search: grupos de anúncios, RSAs, extensões e palavras negativas. Gera CSV pronto pra importar no Google Ads Editor.</div>
+        <div class="cmd-triggers"><span class="trigger">criar campanha google ads</span><span class="trigger">csv pro google ads</span><span class="trigger">/anuncio-google</span></div>
+      </div>
+
+      <div class="cmd-card" data-search="relatorio ads performance campanha meta google kpi semanal">
+        <div class="cmd-slug">/relatorio-ads</div>
+        <div class="cmd-title">Relatório de anúncios</div>
+        <div class="cmd-desc">Gera relatório semanal de performance do Google Ads + Meta Ads. KPIs, top criativos, alertas de queima de orçamento e recomendações pra semana seguinte.</div>
+        <div class="cmd-triggers"><span class="trigger">relatório de ads</span><span class="trigger">performance da semana</span><span class="trigger">relatorio meta</span><span class="trigger">/relatorio-ads</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ ANÁLISE DE DADOS ═══ -->
+  <div class="cat-sistema" id="cat-analise">
+    <div class="category-header">
+      <div class="category-icon">📊</div>
+      <div>
+        <div class="category-name">Análise de Dados</div>
+        <div class="category-desc">Extrair insights de arquivos e relatórios</div>
+      </div>
+      <div class="category-line"></div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="cmd-card" data-search="analisar dados csv excel arquivo relatorio insights extrair">
+        <div class="cmd-slug">/analisar-dados</div>
+        <div class="cmd-title">Analisar arquivo de dados</div>
+        <div class="cmd-desc">Lê CSV, Excel, TXT ou JSON e gera um resumo executivo com os principais insights, tendências e recomendações prontas pra apresentar.</div>
+        <div class="cmd-triggers"><span class="trigger">analisa esse arquivo</span><span class="trigger">o que mostram esses dados</span><span class="trigger">resume esses resultados</span><span class="trigger">/analisar-dados</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NO RESULTS -->
+  <div id="no-results">
+    <div class="nr-icon">⌕</div>
+    <p>Nenhum comando encontrado para "<span id="search-term"></span>"</p>
+    <span>Tenta uma palavra diferente ou fale com o Claude pra criar uma skill nova.</span>
+  </div>
+
+</div>
+
+<footer>
+  <strong>NEXO IA</strong> — NexoIAos &nbsp;·&nbsp; Sistema interno &nbsp;·&nbsp; Não compartilhar externamente
+</footer>
+
+<script>
+  // Spotlight cursor
+  const spot = document.getElementById('spotlight');
+  document.addEventListener('mousemove', e => {
+    spot.style.left = e.clientX + 'px';
+    spot.style.top  = e.clientY + 'px';
+  });
+
+  // Search
+  function filterCards(query) {
+    const q = query.toLowerCase().trim();
+    document.getElementById('search-term').textContent = query;
+    let totalVisible = 0;
+
+    document.querySelectorAll('.cmd-card').forEach(card => {
+      const searchData = (card.dataset.search || '') + ' ' + card.textContent.toLowerCase();
+      const visible = !q || searchData.includes(q);
+      card.classList.toggle('hidden', !visible);
+      if (visible) totalVisible++;
+    });
+
+    document.querySelectorAll('.cat-setup,.cat-vendas,.cat-clientes,.cat-conteudo,.cat-seo,.cat-sistema').forEach(cat => {
+      cat.style.display = cat.querySelectorAll('.cmd-card:not(.hidden)').length === 0 ? 'none' : '';
+    });
+
+    document.getElementById('no-results').style.display = totalVisible === 0 && q ? 'block' : 'none';
+  }
+
+  document.getElementById('search').addEventListener('keydown', e => {
+    if (e.key === 'Escape') { e.target.value = ''; filterCards(''); }
+  });
+</script>
+</body>
+</html>

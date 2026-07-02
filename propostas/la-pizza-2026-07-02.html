@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano La Pizza — preparado pela NEXO IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+
+  body {
+    background:
+      radial-gradient(circle at 15% 0%, rgba(0,200,232,0.08), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(249,115,22,0.06), transparent 40%),
+      #050e1f;
+    color: #e2e8f0;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 0 60px 0;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  .topbar { height: 6px; background: linear-gradient(90deg, #00c8e8, #0891b2); }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,200,232,0.12);
+    padding: 26px 0 18px 0;
+    margin-bottom: 40px;
+  }
+  .wordmark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: #e2e8f0;
+    text-transform: uppercase;
+  }
+  .wordmark span { color: #00c8e8; }
+  .prep-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: right;
+  }
+  .prep-tag strong { color: #94a3b8; }
+
+  .hero { margin-bottom: 44px; padding-top: 8px; }
+  .hero .kicker {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f97316;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 27px;
+    line-height: 1.3;
+    margin: 0 0 14px 0;
+    color: #f8fafc;
+  }
+  .hero p { font-size: 15px; color: #94a3b8; margin: 0; max-width: 620px; }
+
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f8fafc;
+    margin-top: 50px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    position: relative;
+  }
+  h2::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 46px; height: 3px;
+    background: #00c8e8;
+    border-radius: 2px;
+  }
+
+  .quote-list { list-style: none; margin: 0; padding: 0; }
+  .quote-list li {
+    background: #081422;
+    border-left: 3px solid #00c8e8;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: #cbd5e1;
+  }
+
+  .card {
+    background: #081422;
+    border: 1px solid rgba(0,200,232,0.12);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .card h3 { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; color: #f8fafc; margin: 0 0 8px 0; }
+  .card .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #f97316;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.26);
+    border-radius: 6px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+  }
+  .card .tag.blue {
+    color: #00c8e8;
+    background: rgba(0,200,232,0.1);
+    border-color: rgba(0,200,232,0.3);
+  }
+  .card p { margin: 0 0 8px 0; color: #cbd5e1; }
+  .card p:last-child { margin-bottom: 0; }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(0,200,232,0.12), rgba(249,115,22,0.04));
+    border: 1px solid rgba(0,200,232,0.35);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin: 16px 0;
+    box-shadow: 0 0 24px rgba(0,200,232,0.08);
+  }
+  .anchor-line {
+    font-size: 13.5px;
+    color: #94a3b8;
+    margin: 0 0 16px 0;
+  }
+  .anchor-line .old {
+    font-family: 'JetBrains Mono', monospace;
+    color: #64748b;
+    text-decoration: line-through;
+  }
+  .anchor-line .free {
+    font-family: 'JetBrains Mono', monospace;
+    color: #34d399;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .price-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+  .price-item { flex: 1; min-width: 180px; }
+  .price-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .price-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+  .price-period { font-size: 13px; color: #94a3b8; }
+
+  .ref-box {
+    background: rgba(0,200,232,0.06);
+    border: 1px solid rgba(0,200,232,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #a5d8ea;
+  }
+
+  .steps { counter-reset: step; list-style: none; margin: 0; padding: 0; }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 4px 0 4px 38px;
+    margin-bottom: 10px;
+    color: #e2e8f0;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 2px;
+    width: 26px; height: 26px;
+    background: rgba(0,200,232,0.14);
+    border: 1px solid rgba(0,200,232,0.45);
+    border-radius: 50%;
+    color: #00c8e8;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .objetivo-box {
+    background: #081422;
+    border-left: 3px solid #00c8e8;
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: -20px 0 44px 0;
+    font-size: 14.5px;
+    color: #e2e8f0;
+  }
+  .objetivo-box strong { color: #00c8e8; }
+
+  .validity-box {
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.28);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #fbbf9d;
+  }
+  .validity-box strong { color: #f97316; }
+
+  .cta-box {
+    background: linear-gradient(135deg, rgba(0,200,232,0.14), rgba(0,200,232,0.03));
+    border: 1px solid rgba(0,200,232,0.4);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-top: 22px;
+    box-shadow: 0 0 24px rgba(0,200,232,0.1);
+  }
+  .cta-box p { margin: 0; color: #f8fafc; font-size: 15px; }
+  .cta-box .cta-action { color: #00c8e8; font-weight: 700; }
+
+  .footer-note {
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0,200,232,0.12);
+    font-size: 12px;
+    color: #64748b;
+  }
+  .signature {
+    margin-top: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: #475569;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="wrap">
+
+  <div class="header">
+    <div class="wordmark">NEXO <span>IA</span></div>
+    <div class="prep-tag">Plano de trabalho<br><strong>preparado pra LA PIZZA</strong></div>
+  </div>
+
+  <div class="hero">
+    <div class="kicker">Proposta · 02 de julho de 2026</div>
+    <h1>Parar de perder conteúdo pra gente que some e mostrar pra Serra Dourada a qualidade que a La Pizza já tem.</h1>
+    <p>Depois da nossa conversa, isso é o que a gente entendeu do seu momento e o que propomos fazer a partir daí.</p>
+  </div>
+
+  <div class="objetivo-box">
+    <strong>Objetivo desta proposta:</strong> tirar a La Pizza da dependência de gente que promete conteúdo e some, colocando no lugar uma rotina de gravação com prazo garantido — e junto com isso, recuperar o Google Meu Negócio e dar ação direta pra terça e quarta, os dias mais fracos da casa.
+  </div>
+
+  <h2>O que ouvimos de você</h2>
+  <ul class="quote-list">
+    <li>"Ela recebeu batata, frango, refrigerante, 3 pizzas... não me entregou um vídeo" — sobre a última pessoa contratada pra fazer conteúdo.</li>
+    <li>"Ultimamente eu não tô tendo tempo nem pra fazer isso" — sobre gravar conteúdo sozinha.</li>
+    <li>"Tinha muitas pessoas que não compravam aqui porque tinha muita dúvida da qualidade" — sobre a desconfiança do público quanto à origem dos ingredientes.</li>
+    <li>Terça e quarta esvaziados, enquanto o fim de semana já lotou a ponto de estourar a capacidade uma vez.</li>
+    <li>"Recentemente perdeu a 100" no Google — acesso que ainda não foi recuperado.</li>
+  </ul>
+
+  <h2>Diagnóstico</h2>
+
+  <div class="card">
+    <div class="tag">Custa confiança e tempo de divulgação</div>
+    <h3>Duas contratações de conteúdo que não entregaram</h3>
+    <p>Pagamento em produto sem contrapartida garantida — uma delas já com mais de um mês de espera por um vídeo que nunca veio.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag blue">Custa frequência e consistência</div>
+    <h3>Sem tempo pra gravar sozinha</h3>
+    <p>Quase 3.100 seguidores já construídos no Instagram, mas o conteúdo parado deixa esse público sem alimento.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag">Custa cliente que nem chega a experimentar</div>
+    <h3>Desconfiança sobre origem e qualidade dos ingredientes</h3>
+    <p>Você mesma identificou: gente que não compra por dúvida da qualidade — antes mesmo de provar.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag blue">Custa faturamento nos dias parados</div>
+    <h3>Terça e quarta mortos, fim de semana no limite</h3>
+    <p>Enquanto sábado e domingo já estouraram a capacidade da casa, terça e quarta seguem sem nenhuma ação direcionada.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag">Custa cliente novo achando a concorrência primeiro</div>
+    <h3>Google Meu Negócio fora do ar</h3>
+    <p>Um dos canais mais baratos de descoberta de cliente novo, parado — e a correção não custa nada.</p>
+  </div>
+
+  <h2>O plano</h2>
+
+  <div class="card">
+    <h3>1. Divulgação com prazo garantido</h3>
+    <p>Contrato formal com prazo de entrega fixo (2-3 dias) e 2 conteúdos por semana, gravados nos horários que você já tem livre — manhã cedo ou terça/quarta, sem atropelar seu dia cheio.</p>
+  </div>
+
+  <div class="card">
+    <h3>2. Conteúdo de bastidor pra vencer a desconfiança</h3>
+    <p>Prioridade, nas primeiras semanas, pra vídeos de preparo, ingrediente e processo — no formato que você mesma descreveu (tipo o pedido saindo na hora, na frente do cliente).</p>
+  </div>
+
+  <div class="card">
+    <h3>3. Google Meu Negócio de volta ao ar</h3>
+    <p>Reativação do acesso e reotimização completa do perfil — fotos atuais, horário, link do WhatsApp. Ação imediata, sem custo.</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Terça e quarta com ação direcionada</h3>
+    <p>Promoção divulgada no que você já usa (status, Instagram) primeiro. Tráfego pago só entra depois, como segunda etapa, se ainda for necessário.</p>
+  </div>
+
+  <h2>Resultados esperados</h2>
+  <div class="card">
+    <p>Conteúdo saindo toda semana sem depender de ninguém sumir. Google e Instagram mostrando a pizzaria que você realmente tem. Sem prometer virar terça em sábado — mas com terça e quarta deixando de ser os dias mortos que são hoje.</p>
+  </div>
+
+  <h2>Investimento</h2>
+
+  <div class="highlight-box">
+    <p class="anchor-line">Site, rebranding das redes sociais e dashboard — que normalmente custariam <span class="old">R$ 1.499</span> de implementação — entram <span class="free">de graça</span> no seu plano.</p>
+    <div class="price-grid">
+      <div class="price-item">
+        <div class="label">Implementação (único)</div>
+        <div class="price-row"><span class="price-value">R$ 997</span></div>
+      </div>
+      <div class="price-item">
+        <div class="label">Manutenção</div>
+        <div class="price-row"><span class="price-value">R$ 297</span><span class="price-period">/ mês</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ref-box">
+    A implementação cobre contrato, calendário de conteúdo, recuperação do Google e as primeiras gravações. A manutenção cobre o conteúdo recorrente e o acompanhamento.
+  </div>
+
+  <div class="ref-box">
+    Tráfego pago fica de fora dessa proposta por agora — entra como próximo passo natural depois que a base orgânica estiver rodando redondo, sem custo de decisão hoje.
+  </div>
+
+  <div class="validity-box">
+    <strong>Proposta válida até 09 de julho de 2026.</strong> Fechando até essa data, site, rebranding das redes sociais e dashboard entram de graça, como descrito acima. Depois dessa data, essa condição não fica garantida — o valor de implementação passa a ser recalculado com esses itens à parte.
+  </div>
+
+  <h2>Como começamos</h2>
+  <ol class="steps">
+    <li>Recuperação do acesso do Google Meu Negócio — até 04 de julho, não depende de gravação.</li>
+    <li>Calendário de conteúdo formalizado, com a primeira gravação marcada até 07 de julho, no seu horário livre.</li>
+    <li>Primeiro conteúdo de bastidor no ar até 09 de julho.</li>
+  </ol>
+
+  <div class="cta-box">
+    <p>Pra começar, é só <span class="cta-action">responder essa mensagem confirmando</span> ou chamar no WhatsApp — a gente já agenda a recuperação do Google pra essa semana.</p>
+  </div>
+
+  <div class="footer-note">
+    A Nexo já cuida do WhatsApp automatizado que você usa hoje — e funciona. É o mesmo time entregando o resto. A gente aplica tecnologia pra mover o ponteiro de faturamento de negócios locais — o objetivo é sempre resultado mensurável, não site ou dashboard por si só.
+  </div>
+
+  <div class="signature">Plano de trabalho preparado especialmente pra LA PIZZA</div>
+
+</div>
+</body>
+</html>

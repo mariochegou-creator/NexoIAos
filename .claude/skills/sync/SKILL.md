@@ -2,8 +2,8 @@
 name: sync
 description: >
   Sincroniza o cliente atual com o dashboard da NEXO IA. Lê .nexo-status.md da pasta do cliente,
-  faz upsert no Supabase e confirma. Use quando disser "sync", "/sync", "atualizar dashboard",
-  "sincronizar", "manda pro dash".
+  faz upsert no Supabase (em `leads` ou `clientes`+`contratos`, dependendo do estágio) e confirma.
+  Use quando disser "sync", "/sync", "atualizar dashboard", "sincronizar", "manda pro dash".
 ---
 
 # /sync — Sincronizar cliente com o dashboard NEXO IA
@@ -14,6 +14,14 @@ description: >
 SB_URL=https://norgsipmgxbakfmkqcnl.supabase.co
 SB_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0
 ```
+
+## Modelo de dados
+
+Desde a reorganização do schema, o funil comercial vive em duas tabelas:
+- **`leads`** — do primeiro contato até o fechamento (ou perda). Estágios: `captacao`, `r1_agendada`, `r1_feita`, `apn_enviada`, `r2_agendada`, `r2_feita`, `follow_up`, `fechado`, `perdido`.
+- **`clientes`** + **`contratos`** — só depois de fechado. Estágios: `ativo`, `encerrado`, `suspenso`.
+
+O `.nexo-status.md` continua sendo a fonte da verdade local, mas agora guarda **dois** IDs possíveis (`lead_id` e `cliente_id`) em vez de um `supabase_id` genérico.
 
 ## Workflow
 
@@ -30,8 +38,9 @@ Verificar se existe `.nexo-status.md` na pasta do cliente.
 
 ```markdown
 ---
-supabase_id: 
-status: prospect
+lead_id: 
+cliente_id: 
+status: captacao
 valor: 0
 servicos: 
 proximo_passo: 
@@ -53,11 +62,11 @@ local_path:
 
 Aguardar a resposta. Se o usuário digitar algo, substituir o campo `obs` no `.nexo-status.md`. Se responder "não" ou "pular", manter o valor atual.
 
-Depois, se o usuário tiver descrito mudanças no contexto da conversa (ex: "fechamos o contrato por R$ 3.000", "mudou pra ativo"), atualizar os campos correspondentes também.
+Depois, se o usuário tiver descrito mudanças no contexto da conversa (ex: "marcou a R1 pra quinta", "fechamos o contrato por R$ 3.000", "virou cliente ativo"), atualizar os campos correspondentes também.
 
 Campos disponíveis:
-- `status`: prospect | proposta | negociando | ativo | encerrado
-- `valor`: número sem R$ ou formatação
+- `status`: um dos 9 estágios de funil (`captacao`, `r1_agendada`, `r1_feita`, `apn_enviada`, `r2_agendada`, `r2_feita`, `follow_up`, `fechado`, `perdido`) **ou** um dos 3 estágios de cliente fechado (`ativo`, `encerrado`, `suspenso`)
+- `valor`: número sem R$ ou formatação — valor estimado (se ainda é lead) ou valor mensal do contrato (se já é cliente)
 - `servicos`: texto livre
 - `proximo_passo`: texto livre
 - `resp`: nome completo do responsável (Mario Brandao / Lucas Warner / Rian Martins)
@@ -65,31 +74,35 @@ Campos disponíveis:
 - `repo_url`: URL do repositório GitHub do projeto deste cliente
 - `local_path`: caminho local da pasta no computador (ex: c:/Users/Fernando/Documents/projeto)
 
-### Passo 4 — Executar o upsert via curl
+### Passo 4 — Decidir tabela de destino e executar o upsert
 
-**Se `supabase_id` está vazio (primeira vez):**
+**Se `status` é um dos 9 estágios de funil** → o registro vive em `leads`.
 
-Executar via Bash:
+- Se `lead_id` está vazio (primeira vez): `POST /rest/v1/leads` com `nome`, `etapa_funil: STATUS`, `valor_estimado: VALOR`, `responsavel: RESP`, `obs: OBS`. Salvar o `id` retornado em `lead_id`.
+- Se `lead_id` já existe: `PATCH /rest/v1/leads?id=eq.LEAD_ID` com os mesmos campos (mais `updated_at` = agora).
+
+**Se `status` é `ativo`, `encerrado` ou `suspenso` e `cliente_id` está vazio** → é uma **promoção** de lead pra cliente. Isso só deve acontecer uma vez por negócio.
+
+Antes de promover, **confirmar explicitamente com o usuário**:
+> "Esse lead vai virar cliente [ativo/encerrado] agora — confirma? (isso cria o registro de contrato no Supabase)"
+
+Se confirmado:
+1. `POST /rest/v1/clientes` com `nome`, `status: STATUS`, `responsavel: RESP`, `obs: OBS`, `repo_url: REPO_URL`, `local_path: LOCAL_PATH`, e `lead_id: LEAD_ID` (preserva o rastro de origem — **não apagar** `lead_id` do `.nexo-status.md`).
+2. Salvar o `id` retornado em `cliente_id`.
+3. Se `valor > 0`: `POST /rest/v1/contratos` com `cliente_id: CLIENTE_ID`, `valor_mensal: VALOR`, `status: 'ativo'`.
+
+**Se `status` é `ativo`/`encerrado`/`suspenso` e `cliente_id` já existe** → fluxo normal, sem promoção:
+- `PATCH /rest/v1/clientes?id=eq.CLIENTE_ID` com `status`, `servicos`, `resp`→`responsavel`, `proximo_passo`, `repo_url`, `local_path`, `obs`.
+- Se `valor` mudou: atualizar o contrato ativo desse cliente (`PATCH /rest/v1/contratos?cliente_id=eq.CLIENTE_ID&status=eq.ativo` com `valor_mensal: VALOR`), ou criar um novo se não existir nenhum ainda.
+
+Exemplo de curl (ajustar tabela/campos conforme o caso acima):
 ```bash
-curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients" \
+curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/TABELA" \
   -H "apikey: SB_KEY" \
   -H "Authorization: Bearer SB_KEY" \
   -H "Content-Type: application/json" \
   -H "Prefer: return=representation" \
-  -d "{\"nome\":\"NOME\",\"status\":\"STATUS\",\"valor\":VALOR,\"servicos\":\"SERVICOS\",\"resp\":\"RESP\",\"proximo_passo\":\"PASSO\",\"obs\":\"OBS\"}"
-```
-
-Pegar o campo `id` do JSON retornado e salvar em `supabase_id` no `.nexo-status.md`.
-
-**Se `supabase_id` já existe:**
-
-Executar via Bash:
-```bash
-curl -s -X PATCH "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients?id=eq.SUPABASE_ID" \
-  -H "apikey: SB_KEY" \
-  -H "Authorization: Bearer SB_KEY" \
-  -H "Content-Type: application/json" \
-  -d "{\"status\":\"STATUS\",\"valor\":VALOR,\"servicos\":\"SERVICOS\",\"resp\":\"RESP\",\"proximo_passo\":\"PASSO\",\"repo_url\":\"REPO_URL\",\"local_path\":\"LOCAL_PATH\",\"obs\":\"OBS\"}"
+  -d "{...campos...}"
 ```
 
 ### Passo 4b — Coletar últimos commits do projeto
@@ -102,7 +115,9 @@ git log --oneline -10 2>/dev/null
 Se retornar commits, armazenar como array de strings para usar no Passo 5.
 Se não for um repo git, `commits` fica como array vazio `[]`.
 
-### Passo 5 — Registrar handoff
+### Passo 5 — Registrar handoff (só faz sentido pra cliente, não pra lead)
+
+Handoff (sessão de trabalho, commits) só existe depois que o projeto tem código — ou seja, só depois da promoção pra `clientes`. Se ainda é `lead`, pular este passo.
 
 Perguntar ao usuário (ou inferir do contexto da conversa):
 1. **O que foi feito nessa sessão?** (resumo em 1-3 frases)
@@ -111,7 +126,7 @@ Perguntar ao usuário (ou inferir do contexto da conversa):
 Salvar no registro do cliente via PATCH:
 
 ```bash
-curl -s -X PATCH "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clients?id=eq.SUPABASE_ID" \
+curl -s -X PATCH "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/clientes?id=eq.CLIENTE_ID" \
   -H "apikey: SB_KEY" \
   -H "Authorization: Bearer SB_KEY" \
   -H "Content-Type: application/json" \
@@ -124,6 +139,8 @@ Se não houver commits, usar `[]`.
 
 ### Passo 5b — Registrar no feed de atividade
 
+Sempre executar, seja lead ou cliente (usa o nome, não o id):
+
 ```bash
 curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/activity_log" \
   -H "apikey: SB_KEY" \
@@ -134,7 +151,7 @@ curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/activity_log" 
 
 ### Passo 6 — Sincronizar tarefas (se existirem)
 
-Se a pasta tiver um arquivo de tarefas (`tarefas.md` ou similar), extrair as tarefas com título, responsável e status, e fazer upsert:
+Se a pasta tiver um arquivo de tarefas (`tarefas.md` ou similar), extrair as tarefas com título, responsável e status, e fazer upsert (sem mudança — `tasks.client_name` continua sendo texto livre, funciona igual para lead ou cliente):
 
 ```bash
 # Primeiro apagar as tarefas antigas desse cliente
@@ -153,20 +170,22 @@ curl -s -X POST "https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1/tasks" \
 
 Se não tiver arquivo de tarefas, pular este passo.
 
-### Passo 6 — Confirmar
+### Passo 7 — Confirmar
 
 Responder em formato curto:
 
 ```
 ✓ Dashboard atualizado — [Nome do cliente]
-  Status: [status]  |  Valor: R$ [valor]
+  [Lead: etapa STATUS | Cliente: status STATUS]  |  Valor: R$ [valor]
   Próximo passo: [proximo_passo]
 ```
 
 ## Regras
 
-- Sempre salvar o `supabase_id` retornado no `.nexo-status.md` após o primeiro POST
+- Sempre salvar o `lead_id` retornado no `.nexo-status.md` após o primeiro `POST` em `leads`, e o `cliente_id` após a promoção
 - Nunca apagar o `.nexo-status.md` — ele é o vínculo entre a pasta e o Supabase
+- Nunca apagar `lead_id` depois que o cliente for promovido — é o rastro de origem (útil pra saber se veio de prospecção ativa ou indicação de influencer)
+- Promoção lead→cliente **sempre pede confirmação explícita** antes de criar `clientes`+`contratos` — evita duplicar se `/sync` rodar duas vezes seguidas com `status: ativo`
 - Se o curl retornar erro, mostrar o erro e sugerir verificar a conexão
 - `valor` deve ser enviado como número puro (ex: 2500, não "R$ 2.500")
 - Substituir todos os placeholders (NOME, STATUS, VALOR etc.) antes de executar o curl

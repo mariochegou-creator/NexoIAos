@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>R1 — La Pizza</title>
+<style>
+  @page { size: A4; margin: 22mm 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    background: #050e1f;
+    color: #e2e8f0;
+    font-family: 'Segoe UI', Inter, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,200,232,0.25);
+    padding-bottom: 14px;
+    margin-bottom: 24px;
+  }
+  .logo { font-family: 'Consolas', 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
+  .logo .nexo { color: #00c8e8; }
+  .logo .ia { color: #e2e8f0; }
+  .doc-tag { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #64748b; }
+  h1 { font-size: 22px; font-weight: 800; margin: 0 0 4px 0; color: #e2e8f0; }
+  .subtitle { font-family: 'Consolas', 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; margin-bottom: 22px; }
+  .note {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.28);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 11.5px;
+    color: #fbbf7a;
+    margin-bottom: 24px;
+  }
+  h2 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #00c8e8;
+    border-bottom: 1px solid rgba(0,200,232,0.18);
+    padding-bottom: 6px;
+    margin-top: 30px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e2e8f0;
+    background: rgba(0,200,232,0.06);
+    border-left: 3px solid #00c8e8;
+    padding: 6px 10px;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    border-radius: 0 6px 6px 0;
+  }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 20px; }
+  li { margin-bottom: 4px; }
+  strong { color: #ffffff; }
+  .block {
+    background: #081422;
+    border: 1px solid rgba(0,200,232,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .block .row { margin-bottom: 6px; }
+  .row-label { color: #64748b; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .recomendacao {
+    color: #22c55e;
+    font-weight: 600;
+  }
+  .footer {
+    margin-top: 40px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(0,200,232,0.15);
+    font-family: 'Consolas', 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #64748b;
+    text-align: center;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, rgba(0,200,232,0.08), rgba(0,200,232,0.02));
+    border: 1px solid rgba(0,200,232,0.3);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo"><span class="nexo">NEXO</span><span class="ia">IA</span></div>
+  <div class="doc-tag">Diagnóstico R1 · Uso interno</div>
+</div>
+
+<h1>R1 — La Pizza</h1>
+<div class="subtitle">02 de julho de 2026 · Responsável: Mario Brandao</div>
+
+<div class="note">
+  <strong>Nota sobre a fonte:</strong> a transcrição original chegou com um problema de encoding (texto letra-espaçada, artefato de conversão UTF-16). O conteúdo foi reconstruído a partir dela — alguns trechos pontuais ficam sinalizados como ambíguos ao longo do documento em vez de supostos.
+</div>
+
+<h2>Diagnóstico SPIN</h2>
+
+<div class="block">
+  <div class="row"><span class="row-label">Situação</span></div>
+  <ul>
+    <li>Trabalha com 3 linhas de cardápio: tradicional, clássica (mais qualidade) e gourmet/"top" (costela, camarão, morango nevado) — diferencial de mercado.</li>
+    <li>Já teve noite de pico (~50 pedidos) que estourou a capacidade, sem sistema de autoatendimento na época.</li>
+    <li>Hoje já tem chatbot de WhatsApp + link de cardápio digital pra pedido.</li>
+    <li>Nunca rodou tráfego pago.</li>
+    <li>Posta no Instagram quase todo dia, ela mesma, intercalando conteúdo de pizza com conteúdo leve.</li>
+    <li>Google Meu Negócio existe mas está com acesso/senha perdido há um tempo indefinido.</li>
+    <li>Já tentou parceria com duas divulgadoras informais (permuta por comida), ambas com problema de entrega.</li>
+    <li>Terça, quarta e quinta são os dias mais fracos de movimento.</li>
+  </ul>
+</div>
+
+<div class="block">
+  <div class="row"><span class="row-label">Problemas levantados (nas palavras da dona)</span></div>
+  <ol>
+    <li>"Ela não me entregou um vídeo" — divulgadora recebeu comida em permuta e sumiu; voltou, se desculpou, sumiu de novo — já 1 mês e 15 dias.</li>
+    <li>Segunda divulgadora pediu "outros conteúdos" em troca de "outras pizzas" sem compromisso claro.</li>
+    <li>Google Meu Negócio fora do controle dela ("todo dia eu tô esperando" o marido recuperar o acesso).</li>
+    <li>Fotos antigas no Instagram, sem atualizar.</li>
+    <li>"Eu não tenho tempo" pra gravar mais conteúdo — "a gente tá cansado".</li>
+    <li>Cliente às vezes não consegue fechar pedido pelo link do cardápio digital, ela dá suporte manual.</li>
+    <li>Falta de planejamento de datas comemorativas — corre em cima da hora.</li>
+  </ol>
+</div>
+
+<div class="block">
+  <div class="row"><span class="row-label">Implicações desenvolvidas</span></div>
+  <p>A permuta sem entrega tem custo direto e recorrente — verbalizado, mas não somado em R$. Ela ligou explicitamente a falta de conteúdo de bastidor à desconfiança histórica do público ("as pessoas tinham muita dúvida da qualidade... eu bati muito nessa tecla, de mostrar o preparo") — aqui a implicação de reputação ficou clara.</p>
+  <div class="row" style="margin-top:10px"><span class="row-label">Ficou na mesa</span></div>
+  <p>Quanto o Google Meu Negócio fora do ar custa em clientes perdidos, quanto tempo de suporte manual no WhatsApp representa por semana, e quanto os dias fracos (terça a quinta) representam em faturamento perdido — nenhum desses foi quantificado na call.</p>
+  <div class="row" style="margin-top:10px"><span class="row-label">Sinais de necessidade explícita</span></div>
+  <p>"Eu quero fazer um trabalho bem feito com vocês, com certeza." Reagiu bem à sugestão de tráfego pago. Pediu prioridade de conteúdo pros dias fracos. Engajou nos exemplos de formato de vídeo sugeridos na call.</p>
+</div>
+
+<h2>Soluções por problema</h2>
+
+<div class="block">
+  <h3>1 — Conteúdo de divulgação sem confiabilidade (permuta informal)</h3>
+  <p><strong>Custo real:</strong> comida dada de graça, sem contrapartida, 2 vezes recorrentes.</p>
+  <p><strong>Solução:</strong> formalização com contrato (já em andamento) + calendário fixo de 2 conteúdos/semana com a Manu, com prazo de entrega definido.</p>
+  <p class="recomendacao">Recomendação: já está no caminho certo — reforçar na proposta que isso resolve exatamente essa dor.</p>
+</div>
+
+<div class="block">
+  <h3>2 — Google Meu Negócio fora de controle</h3>
+  <p><strong>Custo real:</strong> não quantificado, mas é geralmente o canal nº1 de descoberta de negócio local.</p>
+  <p><strong>Solução enxuta (R$ 0):</strong> recuperar o acesso e a Nexo assume a gestão — fotos, categoria, horário, link de pedido direto.</p>
+  <p class="recomendacao">Recomendação: prioridade alta e imediata — base antes de qualquer campanha paga.</p>
+</div>
+
+<div class="block">
+  <h3>3 — Falta de tempo pra criar conteúdo consistente</h3>
+  <p><strong>Custo real:</strong> menos frequência de postagem, sem padrão.</p>
+  <p><strong>Solução enxuta:</strong> calendário fixo (2 posts/semana) produzido pela Nexo + Manu, priorizando terça a quinta e vídeos de bastidor/preparo.</p>
+  <p><strong>Com investimento:</strong> impulsionar os vídeos que melhor performarem — só depois da base orgânica validada.</p>
+  <p class="recomendacao">Recomendação: rota enxuta primeiro — é o que já está sendo fechado.</p>
+</div>
+
+<div class="block">
+  <h3>4 — Pedido "travando" no chatbot do WhatsApp</h3>
+  <p><strong>Custo real:</strong> não quantificado — vale perguntar quantos pedidos/semana isso afeta.</p>
+  <p><strong>Solução enxuta:</strong> revisar o fluxo/UX do link de cardápio digital atual.</p>
+  <p class="recomendacao">Recomendação: não urgente pra proposta agora — registrar como ponto de atenção pro onboarding.</p>
+</div>
+
+<div class="block">
+  <h3>5 — Tráfego pago (sugestão da Nexo, não dor explícita)</h3>
+  <p><strong>Solução enxuta primeiro:</strong> GMN + conteúdo orgânico consistente antes de qualquer verba paga.</p>
+  <p><strong>Com investimento:</strong> campanha de 30 dias com criativos da Manu, focada em captar contato no WhatsApp — só depois do orgânico rodando.</p>
+  <p class="recomendacao">Recomendação: manter como próximo passo, fora da proposta inicial.</p>
+</div>
+
+<h2>Leitura de orçamento</h2>
+<p>A call não travou em preço em nenhum momento. O sinal mais forte de orçamento disponível foi ela mesma já "pagar" hoje por divulgação — só que de forma ineficiente (comida em permuta, repetidamente, sem retorno). Âncora forte pra proposta: o valor mensal da Nexo provavelmente já é próximo ou menor do que ela perdia sem entrega.</p>
+
+<h2>Onde a R1 podia ter ido mais fundo</h2>
+<ol>
+  <li>"Você falou que a divulgadora sumiu 2 vezes te devendo conteúdo — dá pra estimar quanto em comida/tempo isso já te custou nos últimos meses?"</li>
+  <li>"Com o Google Meu Negócio fora do ar, você tem ideia de quantas buscas por 'pizzaria' na região você pode estar perdendo por dia?"</li>
+  <li>"Se terça a quinta virassem tão fortes quanto sexta/sábado, quanto isso representaria de faturamento a mais no mês?"</li>
+</ol>
+
+<div class="summary-box">
+  <div class="row-label" style="margin-bottom:6px">Resumo pra proposta</div>
+  <p style="margin:0">La Pizza já reconhece o problema e está inclinada a fechar. Problema central: falta de processo confiável de conteúdo (permutas informais que não entregam) somado a um Google Meu Negócio fora do ar — dois canais de descoberta hoje inativos. Rota recomendada: 100% enxuta — recuperar e assumir o GMN, calendário fixo de 2 conteúdos/semana com a Manu priorizando terça a quinta e vídeos de bastidor/preparo. Tráfego pago fica como próximo passo, após a base orgânica rodar. Resultado prometido: presença de descoberta restaurada + conteúdo consistente e confiável, puxando os dias mais fracos da semana.</p>
+</div>
+
+<div class="footer">NEXO IA — Diagnóstico gerado via /r1 · Documento interno, não enviar ao cliente</div>
+
+</body>
+</html>
