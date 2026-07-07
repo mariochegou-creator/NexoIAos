@@ -41,7 +41,7 @@ Sync com o dashboard (contínuo, em qualquer etapa)
 
 **Onde está documentado:** `saidas/playbook-vendas-nexo-ia.md` e `saidas/scripts-prospeccao.md`
 
-**Quem faz:** Fernando e Lucas
+**Quem faz:** Fernando
 
 **Um segundo canal, hoje orgânico:** quando um vídeo de influencer feito pra um cliente viraliza ou circula bem, outros donos de negócio veem, vão atrás dela e ela direciona pra Nexo. Ou seja, o trabalho de divulgação de um cliente (etapa 8, entrega recorrente) volta pro topo do funil e gera lead novo — mesmo sem ser um fluxo desenhado de propósito. Hoje isso é reativo (depende do vídeo viralizar e da influencer lembrar de indicar) e não tem script, follow-up ou registro formal como a prospecção ativa tem. Dá pra formalizar: por exemplo, pedir pra influencer sempre mencionar/marcar a Nexo no vídeo, ou ter uma resposta padrão pronta pra quando ela for indicar alguém.
 

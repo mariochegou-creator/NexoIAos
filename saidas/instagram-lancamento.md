@@ -53,7 +53,7 @@ Sites, dashboards e automações são o como.
 Mais faturamento, mais clientes, mais controle
 é o porquê você contrata a gente.
 
-Somos Fernando, Lucas e Rian.
+Somos Fernando e Rian.
 Tecnologia aplicada. Resultado concreto.
 
 👇 Link na bio pra conversar.

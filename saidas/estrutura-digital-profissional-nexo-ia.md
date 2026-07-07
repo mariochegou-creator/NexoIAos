@@ -51,7 +51,7 @@ Isso já é uma estrutura de conversão completa e bem pensada. **Não recrie �
 // quem toca isso aqui
 Gente, não departamento.
 
-A NEXO IA é Fernando e Lucas tocando a operação, com Rian no
+A NEXO IA é Fernando tocando a operação, com Rian no
 financeiro. Sem call center, sem terceirizar pra quem não conhece
 seu negócio. Quem te atende é quem entrega.
 
@@ -177,7 +177,7 @@ Lead responde com a dor → IDENTIFICAR:
    - É dono/decisor? (se não for, pedir contato do dono)
    - Tem negócio físico ativo? (descartar curioso/concorrente)
    ↓
-Se qualificado → Resposta humana (Fernando/Lucas):
+Se qualificado → Resposta humana (Fernando):
    "Faz sentido. Pra eu te mostrar algo certeiro pro seu caso
    (não um pacote genérico), bora marcar uns 30-40min essa
    semana — pode ser por aqui mesmo ou presencial. Qual fica

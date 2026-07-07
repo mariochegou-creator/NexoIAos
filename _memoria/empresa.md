@@ -8,7 +8,7 @@
 **Posicionamento:** Não vendemos tecnologia. Entregamos resultado. A tecnologia é o instrumento.
 **Perfil:** Consultoria orientada a resultado
 **Atende clientes:** Donos de negócio local que querem crescer e sabem que tecnologia pode ajudar, mas não sabem por onde começar.
-**Equipe:** 3 pessoas — Fernando e Lucas (operacional), Rian (financeiro)
+**Equipe:** 2 pessoas — Fernando (operacional), Rian (financeiro)
 **Ferramentas:** Canva (design), Gemini / Veo 3 (geração de imagem), CapCut (vídeo/motion), MazyOS (operação interna)
 **Principais entregas:** Sites profissionais, dashboards com métricas personalizadas, automações de processo
 **Canal Instagram:** @nexo.iabr — Nome do perfil: "NEXO IA | IA que gera resultado"

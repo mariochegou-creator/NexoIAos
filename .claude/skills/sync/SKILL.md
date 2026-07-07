@@ -69,7 +69,7 @@ Campos disponíveis:
 - `valor`: número sem R$ ou formatação — valor estimado (se ainda é lead) ou valor mensal do contrato (se já é cliente)
 - `servicos`: texto livre
 - `proximo_passo`: texto livre
-- `resp`: nome completo do responsável (Mario Brandao / Lucas Warner / Rian Martins)
+- `resp`: nome completo do responsável (Mario Brandao / Rian Martins)
 - `obs`: texto livre
 - `repo_url`: URL do repositório GitHub do projeto deste cliente
 - `local_path`: caminho local da pasta no computador (ex: c:/Users/Fernando/Documents/projeto)

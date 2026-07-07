@@ -1416,7 +1416,7 @@
                 <tr>
                   <th>Seção</th>
                   <th>Admin <span style="color:var(--cyan)">(Fernando)</span></th>
-                  <th>Operacional <span style="color:var(--purple)">(Lucas)</span></th>
+                  <th>Operacional</th>
                   <th>Financeiro <span style="color:var(--orange)">(Rian)</span></th>
                 </tr>
               </thead>
@@ -1694,9 +1694,9 @@ const DEMO = {
   goal: 18000,
   clients: [
     { id:'dc1', nome: 'Clínica São Lucas',        status: 'ativo',     responsavel: 'Mario Brandao', segmento:'Clínica',    cidade:'Franca, SP', servicos:'Site + Dashboard',      proximo_passo:'Renovação em agosto', handoff_summary: 'Site entregue, versão mobile aprovada pelo cliente.', handoff_next: 'Configurar automação de avaliações Google', handoff_by: 'Mario Brandao', handoff_at: new Date(Date.now()-18000000).toISOString() },
-    { id:'dc2', nome: 'Restaurante Bella Vista',  status: 'ativo',     responsavel: 'Lucas Warner',  segmento:'Restaurante', cidade:'Franca, SP', servicos:'Automação WhatsApp',    proximo_passo:'Entregar relatório do mês' },
+    { id:'dc2', nome: 'Restaurante Bella Vista',  status: 'ativo',     responsavel: 'Mario Brandao',  segmento:'Restaurante', cidade:'Franca, SP', servicos:'Automação WhatsApp',    proximo_passo:'Entregar relatório do mês' },
     { id:'dc3', nome: 'Studio Fitness Pro',       status: 'ativo',     responsavel: 'Mario Brandao', segmento:'Academia',   cidade:'Franca, SP', servicos:'Dashboard',             proximo_passo:'Configurar automação de agendamento' },
-    { id:'dc4', nome: 'Advocacia Mendes & Filho', status: 'ativo',     responsavel: 'Lucas Warner',  segmento:'Serviços',   cidade:'Franca, SP', servicos:'Dashboard mensal',      proximo_passo:'Revisão do dashboard mensal' },
+    { id:'dc4', nome: 'Advocacia Mendes & Filho', status: 'ativo',     responsavel: 'Mario Brandao',  segmento:'Serviços',   cidade:'Franca, SP', servicos:'Dashboard mensal',      proximo_passo:'Revisão do dashboard mensal' },
     { id:'dc5', nome: 'Construtora Alfa',         status: 'encerrado',responsavel: 'Mario Brandao', segmento:'Construção', cidade:'Franca, SP', servicos:'',                      proximo_passo:'' },
   ],
   contratos: [
@@ -1707,13 +1707,13 @@ const DEMO = {
   ],
   leads: [
     { id:'dl1', nome:'Farmácia Popular Centro', etapa_funil:'captacao',     responsavel:'Mario Brandao', valor_estimado:2500, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl2', nome:'Escola de Idiomas Talk',  etapa_funil:'r1_agendada',  responsavel:'Lucas Warner',  valor_estimado:3100, origem:'prospeccao-ativa',    tentativas_followup:0 },
+    { id:'dl2', nome:'Escola de Idiomas Talk',  etapa_funil:'r1_agendada',  responsavel:'Mario Brandao',  valor_estimado:3100, origem:'prospeccao-ativa',    tentativas_followup:0 },
     { id:'dl3', nome:'Salão Beleza Rara',       etapa_funil:'r1_feita',     responsavel:'Mario Brandao', valor_estimado:1700, origem:'indicacao-influencer', influenciador_id:'di1', tentativas_followup:0 },
-    { id:'dl4', nome:'Ótica Visão Clara',       etapa_funil:'apn_enviada',  responsavel:'Lucas Warner',  valor_estimado:1800, origem:'prospeccao-ativa',    tentativas_followup:0 },
+    { id:'dl4', nome:'Ótica Visão Clara',       etapa_funil:'apn_enviada',  responsavel:'Mario Brandao',  valor_estimado:1800, origem:'prospeccao-ativa',    tentativas_followup:0 },
     { id:'dl5', nome:'Pet Shop Amigo Fiel',     etapa_funil:'r2_agendada',  responsavel:'Mario Brandao', valor_estimado:2200, origem:'prospeccao-ativa',    tentativas_followup:0 },
-    { id:'dl6', nome:'Barbearia Corte Nobre',   etapa_funil:'r2_feita',     responsavel:'Lucas Warner',  valor_estimado:1500, origem:'indicacao-influencer', influenciador_id:'di2', tentativas_followup:0 },
+    { id:'dl6', nome:'Barbearia Corte Nobre',   etapa_funil:'r2_feita',     responsavel:'Mario Brandao',  valor_estimado:1500, origem:'indicacao-influencer', influenciador_id:'di2', tentativas_followup:0 },
     { id:'dl7', nome:'Doceria Sabor Doce',      etapa_funil:'follow_up',    responsavel:'Mario Brandao', valor_estimado:1300, origem:'prospeccao-ativa',    tentativas_followup:2, objecao_aberta:'Achou o preço alto, mandei a rota enxuta' },
-    { id:'dl8', nome:'Clínica Odonto Sorriso',  etapa_funil:'fechado',      responsavel:'Lucas Warner',  valor_estimado:2900, origem:'prospeccao-ativa',    resultado_r2:'pedido' },
+    { id:'dl8', nome:'Clínica Odonto Sorriso',  etapa_funil:'fechado',      responsavel:'Mario Brandao',  valor_estimado:2900, origem:'prospeccao-ativa',    resultado_r2:'pedido' },
     { id:'dl9', nome:'Loja Moda Urbana',        etapa_funil:'perdido',      responsavel:'Mario Brandao', valor_estimado:1600, origem:'prospeccao-ativa',    resultado_r2:'nao_venda' },
   ],
   influenciadores: [
@@ -1726,15 +1726,14 @@ const DEMO = {
   ],
   tasks: [
     { title: 'Reunião de alinhamento mensal',          resp: 'Mario Brandao', status: 'em_andamento', client_name: 'Clínica São Lucas'        },
-    { title: 'Entregar relatório de performance',      resp: 'Lucas Warner',  status: 'pendente',     client_name: 'Restaurante Bella Vista'   },
+    { title: 'Entregar relatório de performance',      resp: 'Mario Brandao',  status: 'pendente',     client_name: 'Restaurante Bella Vista'   },
     { title: 'Configurar automação de agendamento',    resp: 'Mario Brandao', status: 'pendente',     client_name: 'Studio Fitness Pro'        },
     { title: 'Revisão do dashboard mensal',            resp: 'Rian Martins',  status: 'em_andamento', client_name: 'Advocacia Mendes & Filho'  },
     { title: 'Proposta comercial — Pet Shop',          resp: 'Mario Brandao', status: 'pendente',     client_name: 'Pet Shop Amigo Fiel'       },
-    { title: 'Follow-up Ótica Visão Clara',            resp: 'Lucas Warner',  status: 'pendente',     client_name: 'Ótica Visão Clara'         },
+    { title: 'Follow-up Ótica Visão Clara',            resp: 'Mario Brandao',  status: 'pendente',     client_name: 'Ótica Visão Clara'         },
   ],
   profiles: [
     { id: 'demo-1', name: 'Mario Brandao', role: 'admin',       color: '#00c8e8' },
-    { id: 'demo-2', name: 'Lucas Warner',  role: 'operacional', color: '#7b5ccc' },
     { id: 'demo-3', name: 'Rian Martins',  role: 'financeiro',  color: '#f97316' },
   ],
   finance: [
@@ -1752,7 +1751,7 @@ const DEMO = {
   ],
   activities: [
     { description:'Site entregue — versão mobile aprovada pelo cliente', user_name:'Mario Brandao', client_name:'Clínica São Lucas', created_at: new Date(Date.now()-3600000).toISOString() },
-    { description:'Automação de agendamento configurada e testada', user_name:'Lucas Warner', client_name:'Studio Fitness Pro', created_at: new Date(Date.now()-7200000).toISOString() },
+    { description:'Automação de agendamento configurada e testada', user_name:'Mario Brandao', client_name:'Studio Fitness Pro', created_at: new Date(Date.now()-7200000).toISOString() },
     { description:'Proposta enviada por WhatsApp, aguardando resposta', user_name:'Mario Brandao', client_name:'Pet Shop Amigo Fiel', created_at: new Date(Date.now()-18000000).toISOString() },
     { description:'Dashboard mensal revisado e exportado em PDF', user_name:'Rian Martins', client_name:'Advocacia Mendes & Filho', created_at: new Date(Date.now()-86400000).toISOString() },
     { description:'Reunião de alinhamento — próximo ciclo definido', user_name:'Mario Brandao', client_name:'Restaurante Bella Vista', created_at: new Date(Date.now()-172800000).toISOString() },
