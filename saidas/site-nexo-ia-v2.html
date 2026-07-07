@@ -305,6 +305,18 @@
     .compare-row .good { color: var(--cyan); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
     @media (max-width:800px) { .invest-layout { grid-template-columns: 1fr; } }
 
+    /* ── DIAGNÓSTICO GRATUITO ── */
+    .diag-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+      background: linear-gradient(135deg, rgba(0,200,232,0.08), rgba(249,115,22,0.05));
+      border: 1px solid var(--border-h); border-radius: 14px;
+      padding: 1.75rem 2rem; margin-bottom: 2.5rem;
+    }
+    .diag-banner-text strong { display: block; font-size: 1.05rem; margin-bottom: 0.3rem; }
+    .diag-banner-text p { font-size: 0.875rem; color: var(--muted); max-width: 480px; }
+    .diag-banner .btn-primary { flex-shrink: 0; white-space: nowrap; }
+    @media (max-width:700px) { .diag-banner { flex-direction: column; align-items: flex-start; text-align: left; } }
+
     /* ── CTA ── */
     #cta { text-align: center; position: relative; overflow: hidden; }
     #cta::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.06) 0%, transparent 70%); }
@@ -358,10 +370,6 @@
         <div class="stat">
           <span class="stat-num" data-target="15">0</span>
           <span class="stat-label">dias de implementação</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num" data-target="700" data-prefix="R$">0</span>
-          <span class="stat-label">setup único</span>
         </div>
         <div class="stat">
           <span class="stat-num">sem</span>
@@ -722,21 +730,30 @@
   <div class="container">
     <div class="section-head fi">
       <div class="section-label">// investimento</div>
-      <h2 class="section-h2">Preço justo.<br>Resultado claro.</h2>
+      <h2 class="section-h2">Investimento sob medida.<br>Resultado claro.</h2>
     </div>
+
+    <div class="diag-banner fi">
+      <div class="diag-banner-text">
+        <strong>Não sabe se faz sentido pro seu negócio?</strong>
+        <p>Faça um diagnóstico gratuito e sem compromisso — a gente te mostra exatamente o que vai mover o seu faturamento.</p>
+      </div>
+      <a href="https://form.typeform.com/to/QbiFuBya" target="_blank" rel="noopener noreferrer" class="btn-primary">Diagnóstico gratuito →</a>
+    </div>
+
     <div class="invest-layout">
 
       <div class="price-card fi">
         <div class="price-tag">✦ Mais escolhido</div>
         <div class="price-main">
-          <div class="label">Implementação única</div>
-          <div class="amount"><span class="currency">R$</span>700</div>
+          <div class="label">Implementação</div>
+          <div class="amount" style="font-size:1.6rem">Sob consulta</div>
           <div class="desc">Site profissional + dashboard + configuração completa</div>
         </div>
         <div class="price-divider"></div>
         <div class="price-recurring">
           <div class="label">Mensalidade</div>
-          <div class="amount">R$300<span style="font-size:1rem;color:var(--muted)">/mês</span></div>
+          <div class="amount" style="font-size:1.2rem">Definida no diagnóstico</div>
           <div class="desc">Hospedagem, suporte, atualizações e dashboard ativo</div>
         </div>
         <div class="includes-list">
@@ -751,30 +768,6 @@
       </div>
 
       <div class="invest-right fi d2">
-        <div class="compare-card">
-          <h4>Compare com as alternativas</h4>
-          <div class="compare-row">
-            <span class="label">Funcionário meio período</span>
-            <span class="bad">R$1.400+/mês</span>
-          </div>
-          <div class="compare-row">
-            <span class="label">Agência de marketing</span>
-            <span class="bad">R$2.000+/mês</span>
-          </div>
-          <div class="compare-row">
-            <span class="label">Freelancer de site</span>
-            <span class="bad">R$1.500+ sem suporte</span>
-          </div>
-          <div class="compare-row">
-            <span class="label">NEXO IA (implementação)</span>
-            <span class="good">R$700</span>
-          </div>
-          <div class="compare-row">
-            <span class="label">NEXO IA (mensalidade)</span>
-            <span class="good">R$300/mês</span>
-          </div>
-        </div>
-
         <div class="compare-card">
           <h4>O que você controla</h4>
           <div class="compare-row">

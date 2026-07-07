@@ -251,6 +251,61 @@
   .cta-box p { margin: 0; color: #f8fafc; font-size: 15px; }
   .cta-box .cta-action { color: #00c8e8; font-weight: 700; }
 
+  .bonus-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #34d399;
+    margin: 0 0 16px 0;
+  }
+  .bundle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,200,232,0.14);
+  }
+  .bundle-item:last-of-type { border-bottom: none; }
+  .bundle-item .desc { color: #e2e8f0; font-size: 14.5px; font-weight: 600; }
+  .bundle-item .old { font-family: 'JetBrains Mono', monospace; color: #64748b; text-decoration: line-through; font-size: 12.5px; margin-right: 10px; }
+  .bundle-item .free { font-family: 'JetBrains Mono', monospace; color: #34d399; font-weight: 700; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .savings-badge {
+    display: inline-block;
+    background: rgba(74,222,128,0.12);
+    border: 1px solid rgba(74,222,128,0.35);
+    color: #4ade80;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-top: 16px;
+  }
+  .price-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0,200,232,0.2);
+  }
+  .price-total .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #94a3b8; }
+  .price-total .price-value { font-size: 26px; color: #00c8e8; }
+  .included-list { margin: 8px 0 0 0; padding: 0; list-style: none; }
+  .included-list li {
+    font-size: 11.5px;
+    color: #94a3b8;
+    padding: 2px 0 2px 14px;
+    position: relative;
+  }
+  .included-list li::before {
+    content: "·";
+    position: absolute;
+    left: 2px;
+    color: #00c8e8;
+  }
+
   .footer-note {
     margin-top: 48px;
     padding-top: 18px;
@@ -278,47 +333,48 @@
 
   <div class="hero">
     <div class="kicker">Proposta · 02 de julho de 2026</div>
-    <h1>Parar de perder conteúdo pra gente que some e mostrar pra Serra Dourada a qualidade que a La Pizza já tem.</h1>
+    <h1>Gravação de conteúdo profissional pra La Pizza — pra provar, pra quem ainda desconfia, a qualidade que você sabe que tem.</h1>
     <p>Depois da nossa conversa, isso é o que a gente entendeu do seu momento e o que propomos fazer a partir daí.</p>
   </div>
 
   <div class="objetivo-box">
-    <strong>Objetivo desta proposta:</strong> tirar a La Pizza da dependência de gente que promete conteúdo e some, colocando no lugar uma rotina de gravação com prazo garantido — e junto com isso, recuperar o Google Meu Negócio e dar ação direta pra terça e quarta, os dias mais fracos da casa.
+    <strong>Objetivo desta proposta:</strong> entregar a gravação de conteúdo com o profissionalismo que você veio buscar — sem repetir o que aconteceu com quem prometeu e sumiu — e usar esse padrão pra mostrar, na tela, o preparo e o processo que já convencem quem prova. É a prova que falta chegar em quem ainda não é cliente.
   </div>
 
   <h2>O que ouvimos de você</h2>
   <ul class="quote-list">
-    <li>"Ela recebeu batata, frango, refrigerante, 3 pizzas... não me entregou um vídeo" — sobre a última pessoa contratada pra fazer conteúdo.</li>
-    <li>"Ultimamente eu não tô tendo tempo nem pra fazer isso" — sobre gravar conteúdo sozinha.</li>
+    <li>"Eu quero fazer um trabalho bem feito com vocês, com certeza" — sobre querer levar a gravação de conteúdo mais a sério, com profissionalismo.</li>
     <li>"Tinha muitas pessoas que não compravam aqui porque tinha muita dúvida da qualidade" — sobre a desconfiança do público quanto à origem dos ingredientes.</li>
+    <li>"Ultimamente eu não tô tendo tempo nem pra fazer isso" — sobre gravar conteúdo sozinha.</li>
     <li>Terça e quarta esvaziados, enquanto o fim de semana já lotou a ponto de estourar a capacidade uma vez.</li>
+    <li>"Ela recebeu batata, frango, refrigerante, 3 pizzas... não me entregou um vídeo" — sobre a última pessoa contratada pra fazer conteúdo.</li>
     <li>"Recentemente perdeu a 100" no Google — acesso que ainda não foi recuperado.</li>
   </ul>
 
   <h2>Diagnóstico</h2>
 
   <div class="card">
-    <div class="tag">Custa confiança e tempo de divulgação</div>
-    <h3>Duas contratações de conteúdo que não entregaram</h3>
-    <p>Pagamento em produto sem contrapartida garantida — uma delas já com mais de um mês de espera por um vídeo que nunca veio.</p>
-  </div>
-
-  <div class="card">
-    <div class="tag blue">Custa frequência e consistência</div>
-    <h3>Sem tempo pra gravar sozinha</h3>
-    <p>Quase 3.100 seguidores já construídos no Instagram, mas o conteúdo parado deixa esse público sem alimento.</p>
-  </div>
-
-  <div class="card">
     <div class="tag">Custa cliente que nem chega a experimentar</div>
-    <h3>Desconfiança sobre origem e qualidade dos ingredientes</h3>
-    <p>Você mesma identificou: gente que não compra por dúvida da qualidade — antes mesmo de provar.</p>
+    <h3>Falta conteúdo gravado com o profissionalismo que prova a qualidade</h3>
+    <p>Você mesma disse que quer "fazer um trabalho bem feito" — e o motivo é claro: tem gente que não compra por dúvida da qualidade, antes mesmo de provar. Sem gravação profissional mostrando o preparo, essa dúvida nunca é respondida.</p>
   </div>
 
   <div class="card">
     <div class="tag blue">Custa faturamento nos dias parados</div>
     <h3>Terça e quarta mortos, fim de semana no limite</h3>
-    <p>Enquanto sábado e domingo já estouraram a capacidade da casa, terça e quarta seguem sem nenhuma ação direcionada.</p>
+    <p>Enquanto sábado e domingo já estouraram a capacidade da casa, terça e quarta seguem sem nenhuma ação direcionada pra atrair quem ainda não é cliente.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag blue">Custa frequência e consistência</div>
+    <h3>Sem tempo pra gravar sozinha</h3>
+    <p>Quase 3.100 seguidores já construídos no Instagram, mas o conteúdo parado deixa esse público — e quem ainda desconfia — sem a prova que faltava.</p>
+  </div>
+
+  <div class="card">
+    <div class="tag">Custa confiança e tempo de divulgação</div>
+    <h3>Duas contratações de conteúdo que não entregaram</h3>
+    <p>Pagamento em produto sem contrapartida garantida — uma delas já com mais de um mês de espera por um vídeo que nunca veio. É parte do motivo de essa prova ainda não ter saído do papel.</p>
   </div>
 
   <div class="card">
@@ -330,48 +386,90 @@
   <h2>O plano</h2>
 
   <div class="card">
-    <h3>1. Divulgação com prazo garantido</h3>
-    <p>Contrato formal com prazo de entrega fixo (2-3 dias) e 2 conteúdos por semana, gravados nos horários que você já tem livre — manhã cedo ou terça/quarta, sem atropelar seu dia cheio.</p>
+    <h3>1. Gravação de conteúdo profissional, com prova ao vivo do preparo</h3>
+    <p>É o que você veio buscar: conteúdo gravado com profissionalismo, não mais amador ou dependente de quem promete e some. Prioridade máxima desde a primeira semana pra vídeos de preparo, ingrediente e processo — no formato que você mesma descreveu (tipo o pedido saindo na hora, na frente do cliente). É a prova que faz quem desconfia decidir provar.</p>
   </div>
 
   <div class="card">
-    <h3>2. Conteúdo de bastidor pra vencer a desconfiança</h3>
-    <p>Prioridade, nas primeiras semanas, pra vídeos de preparo, ingrediente e processo — no formato que você mesma descreveu (tipo o pedido saindo na hora, na frente do cliente).</p>
+    <h3>2. Terça e quarta como vitrine dessa prova</h3>
+    <p>Esse conteúdo de bastidor entra primeiro nos dias fracos, puxando junto uma promoção divulgada no que você já usa (status, Instagram). Tráfego pago só entra depois, como segunda etapa, se ainda for necessário.</p>
   </div>
 
   <div class="card">
-    <h3>3. Google Meu Negócio de volta ao ar</h3>
+    <h3>3. Gravação nos seus horários livres</h3>
+    <p>2 conteúdos por semana, gravados nos horários que você já tem livre — manhã cedo ou terça/quarta — sem atropelar seu dia cheio.</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Contrato com prazo de entrega garantido</h3>
+    <p>Prazo de entrega fixo (2-3 dias), por escrito — pra essa prova nunca mais ficar parada como aconteceu nas duas tentativas anteriores.</p>
+  </div>
+
+  <div class="card">
+    <h3>5. Google Meu Negócio de volta ao ar</h3>
     <p>Reativação do acesso e reotimização completa do perfil — fotos atuais, horário, link do WhatsApp. Ação imediata, sem custo.</p>
-  </div>
-
-  <div class="card">
-    <h3>4. Terça e quarta com ação direcionada</h3>
-    <p>Promoção divulgada no que você já usa (status, Instagram) primeiro. Tráfego pago só entra depois, como segunda etapa, se ainda for necessário.</p>
   </div>
 
   <h2>Resultados esperados</h2>
   <div class="card">
-    <p>Conteúdo saindo toda semana sem depender de ninguém sumir. Google e Instagram mostrando a pizzaria que você realmente tem. Sem prometer virar terça em sábado — mas com terça e quarta deixando de ser os dias mortos que são hoje.</p>
+    <p>Quem hoje desconfia da qualidade passa a ver, na tela, exatamente o que quem já prova elogia — o preparo, o processo, a cozinha. Essa prova entra primeiro nos dias mais fracos, terça e quarta, sem prometer virá-los em sábado. Google e Instagram voltam a mostrar a pizzaria que você realmente tem.</p>
   </div>
 
   <h2>Investimento</h2>
 
   <div class="highlight-box">
-    <p class="anchor-line">Site, rebranding das redes sociais e dashboard — que normalmente custariam <span class="old">R$ 1.499</span> de implementação — entram <span class="free">de graça</span> no seu plano.</p>
+    <div class="bonus-title">🎁 De brinde por fechar com a Nexo IA</div>
+    <div class="bundle-item">
+      <span class="desc">Site profissional</span>
+      <span><span class="old">R$ 300</span><span class="free">Grátis</span></span>
+    </div>
+    <div class="bundle-item">
+      <span class="desc">Rebranding das redes sociais</span>
+      <span><span class="old">R$ 202</span><span class="free">Grátis</span></span>
+    </div>
+    <div class="bundle-item">
+      <span class="desc">Dashboard personalizado</span>
+      <span><span class="old">R$ 997</span><span class="free">Grátis</span></span>
+    </div>
+    <span class="savings-badge">Implementação que normalmente sairia R$ 1.499 — de graça no seu plano</span>
+  </div>
+
+  <div class="card">
+    <h3>Por que ter um site importa</h3>
+    <p>Hoje a La Pizza existe só dentro do Instagram e do WhatsApp — depende do algoritmo pra aparecer. Um site profissional é o endereço fixo da pizzaria na internet: reúne num só lugar as fotos, o cardápio e o conteúdo de preparo que vamos gravar, e aparece pra quem pesquisa "pizzaria Serra Dourada" no Google — sem depender de rede social pra ser encontrado.</p>
+  </div>
+
+  <div class="card">
+    <h3>Por que ter uma dashboard importa</h3>
+    <p>Hoje o controle de pedido, de dia fraco e de dia cheio provavelmente está na sua cabeça ou em anotação solta. Um dashboard organiza isso automaticamente: quanto entrou, o que mais vendeu, quais dias realmente estão fracos — tudo num só lugar, no celular, a qualquer hora. Compensa muito mais que caneta e papel: não erra conta, não se perde numa anotação jogada fora, e te dá decisão baseada em número real, não em achismo.</p>
+  </div>
+
+  <div class="highlight-box">
     <div class="price-grid">
       <div class="price-item">
-        <div class="label">Implementação (único)</div>
-        <div class="price-row"><span class="price-value">R$ 997</span></div>
+        <div class="label">Gravação de conteúdo</div>
+        <div class="price-row"><span class="price-value">R$ 1.297</span><span class="price-period">/ mês</span></div>
+        <ul class="included-list">
+          <li>Cronograma de conteúdo</li>
+          <li>Roteirização</li>
+          <li>Pesquisa de mercado</li>
+          <li>Filmagem</li>
+          <li>Edição</li>
+        </ul>
       </div>
       <div class="price-item">
-        <div class="label">Manutenção</div>
-        <div class="price-row"><span class="price-value">R$ 297</span><span class="price-period">/ mês</span></div>
+        <div class="label">Manutenção do site e dashboard</div>
+        <div class="price-row"><span class="price-value">R$ 203</span><span class="price-period">/ mês</span></div>
       </div>
+    </div>
+    <div class="price-total">
+      <span class="label">Total mensal</span>
+      <span class="price-value">R$ 1.500 / mês</span>
     </div>
   </div>
 
   <div class="ref-box">
-    A implementação cobre contrato, calendário de conteúdo, recuperação do Google e as primeiras gravações. A manutenção cobre o conteúdo recorrente e o acompanhamento.
+    A gravação de conteúdo cobre contrato, calendário de conteúdo, recuperação do Google e as gravações recorrentes. A manutenção de R$ 203/mês é o que mantém site e dashboard no ar, depois da implementação gratuita de ambos.
   </div>
 
   <div class="ref-box">
@@ -379,7 +477,7 @@
   </div>
 
   <div class="validity-box">
-    <strong>Proposta válida até 09 de julho de 2026.</strong> Fechando até essa data, site, rebranding das redes sociais e dashboard entram de graça, como descrito acima. Depois dessa data, essa condição não fica garantida — o valor de implementação passa a ser recalculado com esses itens à parte.
+    <strong>Proposta válida até 09 de julho de 2026.</strong> Fechando até essa data, a implementação de site, rebranding das redes sociais e dashboard sai de graça, como descrito acima. Depois dessa data, essa condição não fica garantida — o valor mensal passa a ser recalculado com esses itens à parte.
   </div>
 
   <h2>Como começamos</h2>
