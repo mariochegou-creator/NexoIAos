@@ -314,9 +314,12 @@
     .pipeline-board { display:flex; gap:14px; overflow-x:auto; padding-bottom:16px; }
     .pipeline-col { flex:0 0 230px; }
     .col-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:8px 8px 0 0; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-    .col-body { background:var(--surface); border:1px solid var(--border); border-top:none; border-radius:0 0 10px 10px; padding:10px; min-height:180px; display:flex; flex-direction:column; gap:8px; backdrop-filter:blur(8px); }
-    .pipeline-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:border .2s,transform .2s,box-shadow .2s; backdrop-filter:blur(8px); overflow-wrap:anywhere; word-break:break-word; }
+    .col-body { background:var(--surface); border:1px solid var(--border); border-top:none; border-radius:0 0 10px 10px; padding:10px; min-height:180px; display:flex; flex-direction:column; gap:8px; backdrop-filter:blur(8px); transition:background .15s,outline .15s; }
+    .col-body.drag-over { outline:2px dashed var(--cyan); outline-offset:-4px; background:var(--cyan-dim); }
+    .pipeline-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:border .2s,transform .2s,box-shadow .2s,opacity .15s; backdrop-filter:blur(8px); overflow-wrap:anywhere; word-break:break-word; }
     .pipeline-card:hover { border-color:var(--border-h); transform:translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .pipeline-card.dragging { opacity:.4; }
+    .pipeline-card[draggable="true"] { cursor:grab; }
     .pc-name { font-size:14px; font-weight:600; margin-bottom:4px; }
     .pc-val { font-size:12px; color:var(--cyan); font-weight:600; }
     .pc-resp { font-size:11px; color:var(--muted); margin-top:3px; }
@@ -2850,8 +2853,8 @@ async function renderPipeline(f) {
     const cards = (leads||[]).filter(c=>c.etapa_funil===col.id);
     return `<div class="pipeline-col col-${col.id}">
       <div class="col-header"><span>${col.label}</span><span style="font-size:18px;font-weight:900">${cards.length}</span></div>
-      <div class="col-body">
-        ${cards.map(c=>{ const p = origemPorLead[c.id]; const next = nextFunilStage(c.etapa_funil); return `<div class="pipeline-card" onclick="openLeadModal('${c.id}')">
+      <div class="col-body" ${ed?`ondragover="onColDragOver(event)" ondragleave="onColDragLeave(event)" ondrop="onColDrop(event,'${col.id}')"`:''}>
+        ${cards.map(c=>{ const p = origemPorLead[c.id]; const next = nextFunilStage(c.etapa_funil); return `<div class="pipeline-card" onclick="openLeadModal('${c.id}')" ${ed?`draggable="true" ondragstart="onLeadDragStart(event,'${c.id}','${c.etapa_funil}')" ondragend="onLeadDragEnd(event)"`:''}>
           <div class="pc-name">${c.nome}</div>
           ${p?`<div class="pc-resp" style="opacity:.9"><span style="display:inline-block;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:700;background:${scoreColor(p.score)}22;color:${scoreColor(p.score)}">${p.score}</span> ${c.segmento||''}</div>`:(c.segmento?`<div class="pc-resp" style="opacity:.9">${c.segmento}</div>`:'')}
           ${c.cidade?`<div class="pc-resp" style="opacity:.7">${c.cidade}</div>`:''}
@@ -2878,7 +2881,8 @@ async function moveLead(id, etapa_funil) {
   if (demoMode) {
     const l = (DEMO.leads||[]).find(x=>x.id===id); if (l) l.etapa_funil = etapa_funil;
   } else {
-    await sb.from('leads').update({etapa_funil, updated_at:new Date().toISOString()}).eq('id',id);
+    const { error } = await sb.from('leads').update({etapa_funil, updated_at:new Date().toISOString()}).eq('id',id);
+    if (error) { alert('Não foi possível mover o lead: ' + error.message); renderPipeline(); return; }
   }
   if (etapa_funil === 'fechado') await promoteLeadToClient(id);
   renderPipeline();
@@ -2891,6 +2895,41 @@ async function deleteLead(id) {
     await sb.from('leads').delete().eq('id',id);
   }
   renderPipeline();
+}
+
+// ── Arrastar e soltar leads entre etapas do funil ──
+let draggedLeadId = null;
+let draggedFromEtapa = null;
+
+function onLeadDragStart(e, id, etapaAtual) {
+  draggedLeadId = id;
+  draggedFromEtapa = etapaAtual;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', id);
+  e.currentTarget.classList.add('dragging');
+}
+function onLeadDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.col-body.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  draggedLeadId = null;
+  draggedFromEtapa = null;
+}
+function onColDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+function onColDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+async function onColDrop(e, etapaId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const id = draggedLeadId || e.dataTransfer.getData('text/plain');
+  const from = draggedFromEtapa;
+  draggedLeadId = null; draggedFromEtapa = null;
+  if (!id || from === etapaId) return;
+  await moveLead(id, etapaId);
 }
 
 // Promove um lead fechado para cliente + contrato, preservando o lead_id de origem.

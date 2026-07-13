@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin:0; width:260px; background:#07080f; color:#e2e8f0; font-family:'Segoe UI',Arial,sans-serif; }
+  .wrap { padding:18px; }
+  h1 { font-size:13px; font-weight:700; margin:0 0 4px; color:#00c8e8; }
+  p { font-size:11px; color:#94a3b8; margin:0 0 14px; line-height:1.5; }
+  button { width:100%; background:#00c8e8; color:#02030a; border:none; border-radius:8px; padding:10px; font-size:13px; font-weight:700; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:default; }
+  button:hover:not(:disabled) { background:#00a8c8; }
+  #status { margin-top:10px; font-size:11px; color:#94a3b8; min-height:14px; text-align:center; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Corrigir Dashboard NEXO IA</h1>
+    <p>Se o dashboard estiver mostrando uma versão antiga, clique abaixo. Isso limpa só o cache desse site (não afeta seu login nem outros sites).</p>
+    <button id="btn">Corrigir agora</button>
+    <div id="status"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

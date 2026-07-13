@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "NEXO IA — Corrigir Dashboard",
+  "version": "1.0",
+  "description": "Limpa o cache do navegador pro Dashboard da NEXO IA quando ele mostrar uma versão desatualizada, sem mexer no seu login.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Corrigir Dashboard NEXO IA"
+  },
+  "permissions": ["browsingData", "tabs"],
+  "host_permissions": ["https://dashboard.nexoialocal.com.br/*"]
+}
