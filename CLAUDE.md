@@ -19,7 +19,7 @@ Aplicamos IA para mover o ponteiro de faturamento de negócios locais. Não vend
 
 Nossa IA analisa o negócio do cliente e implementa o que vai gerar resultado. Sites, dashboards e automações são os meios — nunca o argumento de venda.
 
-Time: 2 pessoas — Fernando (operacional), Rian (financeiro).
+Time: 2 pessoas — Mario Brandao (operacional), Rian (financeiro).
 
 ## Clientes ativos
 

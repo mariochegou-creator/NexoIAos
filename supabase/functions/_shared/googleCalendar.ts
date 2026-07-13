@@ -47,3 +47,69 @@ export async function getValidGoogleToken(userId: string): Promise<string | null
 
   return refreshed.access_token;
 }
+
+const CALENDAR_API = "https://www.googleapis.com/calendar/v3/calendars/primary/events";
+
+interface TaskRow {
+  id: string;
+  title: string;
+  status: string;
+  client_name: string | null;
+  prazo: string | null;
+  assigned_user_id: string | null;
+  google_event_id: string | null;
+}
+
+// Cria/atualiza/remove o evento equivalente no Google Calendar do responsável pela tarefa.
+// Sem prazo não vira evento. Não faz nada (silenciosamente) se o responsável não tiver o Calendar conectado.
+export async function syncTaskToGoogleCalendar(task: TaskRow) {
+  if (!task.assigned_user_id) return;
+
+  const token = await getValidGoogleToken(task.assigned_user_id);
+  if (!token) return;
+
+  const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+  const summary = task.client_name ? `[${task.client_name}] ${task.title}` : task.title;
+
+  if (!task.prazo) {
+    if (task.google_event_id) {
+      await fetch(`${CALENDAR_API}/${task.google_event_id}`, { method: "DELETE", headers });
+      await supabaseAdmin.from("tasks").update({ google_event_id: null }).eq("id", task.id);
+    }
+    return;
+  }
+
+  // `prazo` guarda hora local (America/Bahia) sem conversão — manda o horário cru
+  // pro Google junto com o timeZone, em vez de converter pra UTC (o valor não é UTC de verdade).
+  const TIME_ZONE = "America/Bahia";
+  const hasTime = task.prazo.includes("T") && task.prazo.slice(11, 16) !== "00:00";
+  const body: Record<string, unknown> = { summary };
+  if (hasTime) {
+    const localDateTime = task.prazo.slice(0, 19); // "YYYY-MM-DDTHH:MM:SS", sem offset
+    const start = new Date(`${localDateTime}Z`); // só pra fazer aritmética de +1h, sem usar como valor final
+    const endLocal = new Date(start.getTime() + 60 * 60 * 1000).toISOString().slice(0, 19);
+    body.start = { dateTime: localDateTime, timeZone: TIME_ZONE };
+    body.end = { dateTime: endLocal, timeZone: TIME_ZONE };
+  } else {
+    const day = task.prazo.slice(0, 10);
+    const next = new Date(`${day}T00:00:00Z`);
+    next.setUTCDate(next.getUTCDate() + 1);
+    body.start = { date: day };
+    body.end = { date: next.toISOString().slice(0, 10) };
+  }
+
+  if (!task.google_event_id) {
+    const created = await fetch(CALENDAR_API, { method: "POST", headers, body: JSON.stringify(body) })
+      .then((r) => r.json());
+    if (created?.id) {
+      await supabaseAdmin.from("tasks").update({ google_event_id: created.id }).eq("id", task.id);
+    }
+    return;
+  }
+
+  await fetch(`${CALENDAR_API}/${task.google_event_id}`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(body),
+  });
+}

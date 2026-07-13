@@ -17,6 +17,9 @@ Thumbs.db
 # Dependências
 node_modules/
 
+# Cache local do wrangler (Cloudflare Pages)
+.wrangler/
+
 # Arquivos temporários
 *.log
 *.tmp
