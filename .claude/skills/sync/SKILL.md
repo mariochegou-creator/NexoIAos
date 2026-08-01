@@ -8,12 +8,30 @@ description: >
 
 # /sync — Sincronizar cliente com o dashboard NEXO IA
 
-## Credenciais (não alterar)
+## Credenciais
+
+A chave **nunca** fica escrita neste ficheiro. A skill lê de variáveis de ambiente:
 
 ```
 SB_URL=https://norgsipmgxbakfmkqcnl.supabase.co
-SB_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vcmdzaXBtZ3hiYWtmbWtxY25sIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTk5NjE5MywiZXhwIjoyMDk3NTcyMTkzfQ.UswVzMm_b1WrYloUxvieB-PSjM56znqv3-2gJay0mA0
+SB_KEY=<lido de $env:NEXO_SB_SERVICE_KEY>
 ```
+
+Antes de correr o `/sync`, a chave tem de estar no ambiente. Definir uma vez, de forma
+persistente, no PowerShell:
+
+```powershell
+[Environment]::SetEnvironmentVariable("NEXO_SB_SERVICE_KEY", "<chave-nova>", "User")
+```
+
+(Reabrir o terminal depois de definir.) Se `NEXO_SB_SERVICE_KEY` não existir, parar e pedir
+ao utilizador para a definir — não continuar sem chave, e nunca escrever a chave num ficheiro
+do repositório.
+
+> **Contexto:** a versão anterior desta skill tinha a chave `service_role` em texto limpo, e o
+> repositório esteve público. Essa chave tem de ser rodada no Supabase (Project Settings →
+> API Keys → `service_role` → Roll) e a nova nunca deve voltar para dentro de um ficheiro
+> versionado. A `service_role` ignora as políticas de RLS — quem a tiver tem acesso total.
 
 ## Modelo de dados
 

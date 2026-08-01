@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXO IA — IA que move o seu faturamento</title>
+  <meta name="description" content="Aplicamos IA para mover o ponteiro de faturamento de negócios locais. Site, dashboard e automações em até 15 dias.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #050e1f;
+      --surface:     #081422;
+      --surface2:    #0d1e35;
+      --border:      rgba(0,200,232,0.12);
+      --border-h:    rgba(0,200,232,0.3);
+      --cyan:        #00c8e8;
+      --cyan-dim:    rgba(0,200,232,0.12);
+      --orange:      #f97316;
+      --orange-dim:  rgba(249,115,22,0.12);
+      --text:        #e2e8f0;
+      --muted:       #64748b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6; overflow-x: hidden;
+    }
+
+    /* ── SPOTLIGHT ── */
+    #spotlight {
+      position: fixed; width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,232,0.07) 0%, rgba(0,200,232,0.03) 40%, transparent 70%);
+      pointer-events: none; transform: translate(-50%,-50%); z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+      background: rgba(5,14,31,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 500; color: var(--cyan); letter-spacing: 0.05em; }
+    .nav-logo span { color: var(--text); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { background: var(--cyan); color: #050e1f; padding: 0.5rem 1.25rem; border-radius: 6px; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+    .nav-internal { color: rgba(100,116,139,0.35); font-size: 16px; text-decoration: none; transition: color 0.2s; padding: 4px; }
+    .nav-internal:hover { color: var(--cyan); }
+    @media (max-width:768px) { .nav-links { display: none; } }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--cyan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; }
+    .section-h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .section-sub { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 520px; }
+    .section-head { margin-bottom: 3.5rem; }
+    .section-head.center { text-align: center; }
+    .section-head.center .section-sub { margin: 0 auto; }
+
+    /* ── SCROLL FADE ── */
+    .fi { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .fi.d1 { transition-delay: 0.05s; }
+    .fi.d2 { transition-delay: 0.12s; }
+    .fi.d3 { transition-delay: 0.19s; }
+    .fi.d4 { transition-delay: 0.26s; }
+    .fi.vis { opacity: 1; transform: none; }
+
+    /* ── BUTTONS ── */
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--cyan); color: #050e1f; padding: 0.875rem 1.75rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 24px rgba(0,200,232,0.3); }
+    .btn-primary:hover { box-shadow: 0 0 36px rgba(0,200,232,0.5); transform: translateY(-1px); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); color: var(--text); padding: 0.875rem 1.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; background: transparent; }
+    .btn-secondary:hover { border-color: var(--border-h); background: var(--cyan-dim); }
+
+    /* ── HERO ── */
+    #hero { min-height: 100vh; padding-top: 64px; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,232,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,232,0.03) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%); }
+    .hero-inner { max-width: 1200px; margin: 0 auto; padding: 2rem; width: 100%; display: flex; align-items: center; gap: 4rem; position: relative; z-index: 1; }
+    .hero-left { flex: 1; min-width: 0; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--cyan-dim); border: 1px solid var(--border); color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; padding: 0.35rem 0.85rem; border-radius: 100px; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero-h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.08; margin-bottom: 1.25rem; letter-spacing: -0.03em; }
+    .hero-h1 .grad { background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 55%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-p { font-size: 1.05rem; color: var(--muted); max-width: 460px; margin-bottom: 2.25rem; line-height: 1.75; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.75rem; }
+    .hero-stats { display: flex; gap: 2.5rem; }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 700; color: var(--cyan); line-height: 1; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* Hero right */
+    .hero-right { flex: 1; position: relative; min-width: 0; }
+
+    /* ── DASHBOARD MOCKUP (hero) ── */
+    .dash-mock {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(0,200,232,0.2);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,200,232,0.05), 0 0 60px rgba(0,200,232,0.05);
+      transform: perspective(800px) rotateY(-4deg) rotateX(2deg);
+      transition: transform 0.4s ease;
+    }
+    .dash-mock:hover { transform: perspective(800px) rotateY(0deg) rotateX(0deg); }
+    .dm-bar {
+      background: #030c18; padding: 8px 12px;
+      display: flex; align-items: center; gap: 5px;
+      border-bottom: 1px solid rgba(0,200,232,0.08);
+    }
+    .dm-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dm-dot.r { background: #ff5f57; }
+    .dm-dot.y { background: #febc2e; }
+    .dm-dot.g { background: #28c840; }
+    .dm-url { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-left: 8px; flex: 1; }
+    .dm-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--cyan); background: var(--cyan-dim); border: 1px solid rgba(0,200,232,0.15); border-radius: 4px; padding: 1px 6px; }
+    .dm-body { display: flex; background: #040c18; height: 320px; }
+    .dm-sidebar {
+      width: 44px; background: #030a14;
+      border-right: 1px solid rgba(0,200,232,0.07);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 10px 0; gap: 6px;
+    }
+    .dm-sb-logo {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: var(--cyan); color: #050e1f;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 6px;
+    }
+    .dm-sb-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; cursor: default;
+    }
+    .dm-sb-icon.active { background: rgba(0,200,232,0.1); }
+    .dm-main { flex: 1; padding: 10px 12px; overflow: hidden; }
+    .dm-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .dm-section-title { font-size: 11px; font-weight: 700; color: var(--text); }
+    .dm-user-chip { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 2px 7px; }
+    .dm-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; margin-bottom: 10px; }
+    .dm-kpi { background: rgba(0,200,232,0.04); border: 1px solid rgba(0,200,232,0.09); border-radius: 6px; padding: 7px 8px; }
+    .dm-kpi-label { font-size: 8px; color: var(--muted); margin-bottom: 3px; }
+    .dm-kpi-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--cyan); line-height: 1; }
+    .dm-kpi-chg { font-size: 8px; color: #22c55e; margin-top: 3px; }
+    .dm-kpi-chg.warn { color: var(--orange); }
+    .dm-table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .dm-tbl-title { font-size: 10px; font-weight: 700; color: var(--text); }
+    .dm-tbl-btn { font-size: 9px; color: var(--cyan); background: var(--cyan-dim); border-radius: 4px; padding: 2px 7px; font-family: 'JetBrains Mono', monospace; }
+    .dm-table { border: 1px solid rgba(0,200,232,0.08); border-radius: 7px; overflow: hidden; }
+    .dm-row { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 9px; }
+    .dm-row:last-child { border-bottom: none; }
+    .dm-row-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dm-row-dot.g { background: #22c55e; }
+    .dm-row-dot.o { background: var(--orange); }
+    .dm-row-dot.p { background: #a78bfa; }
+    .dm-row-name { flex: 1; color: var(--text); font-weight: 600; }
+    .dm-row-tag { font-size: 8px; border-radius: 4px; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; }
+    .dm-row-tag.at { color: #22c55e; background: rgba(34,197,94,0.1); }
+    .dm-row-tag.ng { color: var(--orange); background: rgba(249,115,22,0.1); }
+    .dm-row-tag.pr { color: #a78bfa; background: rgba(167,139,250,0.1); }
+    .dm-row-val { font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 8px; }
+
+    @media (max-width:900px) { .hero-inner { flex-direction: column; } .hero-right { width: 100%; max-width: 500px; margin: 0 auto; } .dash-mock { transform: none; } }
+
+    /* ── PROBLEMA ── */
+    .problema-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .pain-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; transition: all 0.2s; }
+    .pain-card:hover { border-color: var(--border-h); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .pain-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .pain-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+    @media (max-width:700px) { .problema-grid { grid-template-columns: 1fr; } }
+
+    /* ── PRODUTO ── */
+    .produto-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .feature-list { display: flex; flex-direction: column; gap: 1.1rem; }
+    .feature-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .feature-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .feature-text h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .feature-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    @media (max-width:800px) { .produto-layout { grid-template-columns: 1fr; } }
+
+    /* ── WEBSITE MOCKUP (produto) ── */
+    .site-mock {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(0,200,232,0.18);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,200,232,0.04);
+      transform: perspective(700px) rotateY(4deg) rotateX(2deg);
+      transition: transform 0.4s ease;
+    }
+    .site-mock:hover { transform: perspective(700px) rotateY(0deg) rotateX(0deg); }
+    .sm-bar {
+      background: #e8ecf0; padding: 8px 12px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .sm-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .sm-dot.r { background: #ff5f57; }
+    .sm-dot.y { background: #febc2e; }
+    .sm-dot.g { background: #28c840; }
+    .sm-url { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b; margin-left: 8px; flex: 1; background: #fff; border-radius: 4px; padding: 2px 8px; }
+    .sm-body { background: #0a0a18; }
+    .sm-nav-bar {
+      background: #0f1629; border-bottom: 1px solid rgba(0,200,232,0.1);
+      padding: 0 16px; height: 36px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .sm-nav-logo { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; }
+    .sm-nav-links-bar { display: flex; gap: 12px; }
+    .sm-nav-link { font-size: 8px; color: #94a3b8; }
+    .sm-nav-wpp { background: #25d366; color: #fff; font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .sm-hero-area {
+      background: linear-gradient(135deg, #050e1f 0%, #0d1e35 100%);
+      padding: 24px 20px; border-bottom: 1px solid rgba(0,200,232,0.08);
+      position: relative; overflow: hidden;
+    }
+    .sm-hero-area::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.08) 0%, transparent 70%); }
+    .sm-hero-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 8px; color: var(--cyan); background: var(--cyan-dim); border: 1px solid rgba(0,200,232,0.2); border-radius: 100px; padding: 2px 8px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+    .sm-hero-badge::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--cyan); }
+    .sm-hero-h1 { font-size: 18px; font-weight: 900; line-height: 1.1; margin-bottom: 6px; letter-spacing: -0.02em; color: #ffffff; }
+    .sm-hero-h1 span { color: var(--cyan); }
+    .sm-hero-p { font-size: 8px; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; max-width: 200px; }
+    .sm-hero-btns { display: flex; gap: 6px; }
+    .sm-btn-p { background: var(--cyan); color: #050e1f; font-size: 8px; font-weight: 700; padding: 5px 12px; border-radius: 5px; }
+    .sm-btn-s { border: 1px solid rgba(0,200,232,0.3); color: var(--text); font-size: 8px; padding: 5px 10px; border-radius: 5px; }
+    .sm-services {
+      background: #f8fafc; padding: 14px 16px;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+    }
+    .sm-svc { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; text-align: center; }
+    .sm-svc-icon { font-size: 16px; margin-bottom: 4px; }
+    .sm-svc-name { font-size: 8px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+    .sm-svc-price { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; color: #0ea5e9; }
+    .sm-whatsapp-strip { background: #075e54; padding: 6px 16px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 8px; color: #fff; font-weight: 600; }
+
+    /* ── DASHBOARD SECTION ── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; transition: all 0.2s; }
+    .metric-card:hover { border-color: var(--border-h); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.4); }
+    .metric-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+    .metric-name { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+    .metric-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .metric-chart { display: flex; align-items: center; gap: 1rem; }
+    .donut { width: 60px; height: 60px; flex-shrink: 0; }
+    .donut circle { fill: none; stroke-width: 5; stroke-linecap: round; }
+    .d-bg { stroke: rgba(255,255,255,0.06); }
+    .d-val { stroke-dashoffset: 0; transform-origin: center; transform: rotate(-90deg); transition: stroke-dasharray 1.2s ease; }
+    .d-c { stroke: var(--cyan); } .d-o { stroke: var(--orange); } .d-p { stroke: #a78bfa; } .d-g { stroke: #22c55e; }
+    .metric-info .value { font-size: 1.3rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text); line-height: 1; }
+    .metric-info .label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .metric-info .change { font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #22c55e; margin-top: 0.4rem; }
+    .metric-card.custom { border-style: dashed; border-color: rgba(0,200,232,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.75rem; min-height: 130px; }
+    .metric-card.custom .plus { width: 40px; height: 40px; border-radius: 50%; border: 1.5px dashed var(--cyan); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--cyan); }
+    .metric-card.custom p { font-size: 0.8rem; color: var(--muted); }
+    @media (max-width:700px) { .metrics-grid { grid-template-columns: 1fr; } }
+
+    /* ── PROCESSO ── */
+    .processo-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; position: relative; }
+    .processo-steps::before { content: ''; position: absolute; top: 28px; left: calc(12.5% + 20px); right: calc(12.5% + 20px); height: 1px; background: linear-gradient(90deg, var(--border), var(--cyan-dim), var(--border)); }
+    .step-card { text-align: center; position: relative; }
+    .step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; color: var(--cyan); margin: 0 auto 1.25rem; position: relative; z-index: 1; }
+    .step-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    @media (max-width:700px) { .processo-steps { grid-template-columns: 1fr 1fr; } .processo-steps::before { display: none; } }
+
+    /* ── INVESTIMENTO ── */
+    #investimento { background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%); }
+    .invest-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    .price-card { background: rgba(8,20,34,0.8); border: 1px solid var(--border-h); border-radius: 16px; padding: 2.5rem; position: relative; overflow: hidden; }
+    .price-card::before { content: ''; position: absolute; top: -60px; left: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.1) 0%, transparent 70%); }
+    .price-card::after { content: ''; position: absolute; bottom: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%); }
+    .price-tag { display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, var(--cyan-dim), var(--orange-dim)); border: 1px solid var(--border); color: var(--text); font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 100px; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+    .price-main { position: relative; z-index: 1; margin-bottom: 2rem; }
+    .price-main .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .price-main .amount { font-size: 3rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--cyan); line-height: 1; }
+    .price-main .currency { font-size: 1.5rem; vertical-align: top; margin-top: 0.4rem; display: inline-block; }
+    .price-main .desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.35rem; }
+    .price-divider { height: 1px; background: var(--border); margin: 1.5rem 0; position: relative; z-index: 1; }
+    .price-recurring { position: relative; z-index: 1; }
+    .price-recurring .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .price-recurring .amount { font-size: 1.75rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--orange); }
+    .price-recurring .desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.35rem; }
+    .price-cta { display: block; margin-top: 2rem; background: var(--cyan); color: #050e1f; text-align: center; padding: 0.875rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; box-shadow: 0 0 20px rgba(0,200,232,0.25); position: relative; z-index: 1; }
+    .price-cta:hover { box-shadow: 0 0 36px rgba(0,200,232,0.45); }
+    .includes-list { display: flex; flex-direction: column; gap: 0.85rem; position: relative; z-index: 1; margin-top: 1.5rem; }
+    .include-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--text); }
+    .include-item .check { color: var(--cyan); font-size: 0.9rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .invest-right { display: flex; flex-direction: column; gap: 1.25rem; }
+    .compare-card { background: rgba(8,20,34,0.8); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .compare-card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; color: var(--muted); }
+    .compare-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-row .label { color: var(--muted); }
+    .compare-row .bad { color: #ef4444; font-weight: 600; }
+    .compare-row .good { color: var(--cyan); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+    @media (max-width:800px) { .invest-layout { grid-template-columns: 1fr; } }
+
+    /* ── CTA ── */
+    #cta { text-align: center; position: relative; overflow: hidden; }
+    #cta::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,232,0.06) 0%, transparent 70%); }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-inner h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .cta-inner p { color: var(--muted); font-size: 1.05rem; max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; }
+    .footer-logo { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--cyan); font-weight: 500; margin-bottom: 0.5rem; }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<div id="spotlight"></div>
+
+<!-- NAV -->
+<!-- ATENÇÃO: substitua [SEU_NUMERO] pelo número com DDI, ex: 5544999999999 -->
+<nav>
+  <div class="nav-logo">NEXO<span>IA</span></div>
+  <ul class="nav-links">
+    <li><a href="#produto">O que entregamos</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#processo">Como funciona</a></li>
+    <li><a href="#investimento">Investimento</a></li>
+  </ul>
+  <a href="https://wa.me/55[SEU_NUMERO]" class="nav-cta">Falar agora</a>
+  <a href="dashboard-nexo-ia.html" class="nav-internal" title="Área interna">⚙</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+
+    <div class="hero-left">
+      <div class="hero-badge fi">IA para negócios locais</div>
+      <h1 class="hero-h1 fi">
+        <span class="grad">IA que move<br>o seu faturamento.</span>
+      </h1>
+      <p class="hero-p fi">
+        Seu negócio não precisa de mais esforço. Precisa de estrutura. A NEXO IA faz o diagnóstico, implementa e você acompanha o resultado.
+      </p>
+      <div class="hero-actions fi">
+        <a href="https://wa.me/55[SEU_NUMERO]" class="btn-primary">Falar no WhatsApp →</a>
+        <a href="#produto" class="btn-secondary">Como funciona</a>
+      </div>
+      <div class="hero-stats fi">
+        <div class="stat">
+          <span class="stat-num" data-target="15">0</span>
+          <span class="stat-label">dias de implementação</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="700" data-prefix="R$">0</span>
+          <span class="stat-label">setup único</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">sem</span>
+          <span class="stat-label">contrato de fidelidade</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard mockup -->
+    <div class="hero-right fi d2">
+      <div class="dash-mock">
+        <div class="dm-bar">
+          <div class="dm-dot r"></div><div class="dm-dot y"></div><div class="dm-dot g"></div>
+          <span class="dm-url">nexoia.app/dashboard</span>
+          <span class="dm-badge">interno</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-sidebar">
+            <div class="dm-sb-logo">N</div>
+            <div class="dm-sb-icon active">📊</div>
+            <div class="dm-sb-icon">🔄</div>
+            <div class="dm-sb-icon">👥</div>
+            <div class="dm-sb-icon">💰</div>
+            <div class="dm-sb-icon">📋</div>
+          </div>
+          <div class="dm-main">
+            <div class="dm-topbar">
+              <span class="dm-section-title">Visão geral</span>
+              <span class="dm-user-chip">Fernando · admin</span>
+            </div>
+            <div class="dm-kpis">
+              <div class="dm-kpi">
+                <div class="dm-kpi-label">MRR</div>
+                <div class="dm-kpi-val">R$8.4k</div>
+                <div class="dm-kpi-chg">▲ +12%</div>
+              </div>
+              <div class="dm-kpi">
+                <div class="dm-kpi-label">Clientes ativos</div>
+                <div class="dm-kpi-val">4</div>
+                <div class="dm-kpi-chg">▲ +1</div>
+              </div>
+              <div class="dm-kpi">
+                <div class="dm-kpi-label">Ticket médio</div>
+                <div class="dm-kpi-val">R$380</div>
+                <div class="dm-kpi-chg">● estável</div>
+              </div>
+              <div class="dm-kpi">
+                <div class="dm-kpi-label">Propostas</div>
+                <div class="dm-kpi-val">2</div>
+                <div class="dm-kpi-chg warn">● abertas</div>
+              </div>
+            </div>
+            <div class="dm-table-header">
+              <span class="dm-tbl-title">Clientes</span>
+              <span class="dm-tbl-btn">+ Novo cliente</span>
+            </div>
+            <div class="dm-table">
+              <div class="dm-row">
+                <div class="dm-row-dot g"></div>
+                <span class="dm-row-name">Barbearia Guilherme</span>
+                <span class="dm-row-tag at">ativo</span>
+                <span class="dm-row-val">R$300/mês</span>
+              </div>
+              <div class="dm-row">
+                <div class="dm-row-dot g"></div>
+                <span class="dm-row-name">Studio Hair</span>
+                <span class="dm-row-tag at">ativo</span>
+                <span class="dm-row-val">R$300/mês</span>
+              </div>
+              <div class="dm-row">
+                <div class="dm-row-dot o"></div>
+                <span class="dm-row-name">Mafia Multimarca</span>
+                <span class="dm-row-tag ng">negoc.</span>
+                <span class="dm-row-val">—</span>
+              </div>
+              <div class="dm-row">
+                <div class="dm-row-dot p"></div>
+                <span class="dm-row-name">Clínica Estetica X</span>
+                <span class="dm-row-tag pr">proposta</span>
+                <span class="dm-row-val">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <div class="container">
+    <div class="section-head fi">
+      <div class="section-label">// o problema</div>
+      <h2 class="section-h2">Você perde cliente<br>sem perceber.</h2>
+      <p class="section-sub">Não é falta de dedicação. É falta de estrutura. Todo dono de negócio local enfrenta os mesmos três problemas.</p>
+    </div>
+    <div class="problema-grid">
+      <div class="pain-card fi d1">
+        <div class="pain-icon">⏰</div>
+        <h3>Você não estava disponível</h3>
+        <p>Cliente mandou às 22h. Você viu às 8h. Nesse intervalo ele pesquisou, escolheu e fechou com o concorrente. Acontece todo dia — e você nem fica sabendo.</p>
+      </div>
+      <div class="pain-card fi d2">
+        <div class="pain-icon">📊</div>
+        <h3>Você não sabe os números</h3>
+        <p>Quanto você faturou essa semana? Qual produto vende mais? A maioria dos donos não sabe responder de cabeça — e isso custa caro em cada decisão que toma.</p>
+      </div>
+      <div class="pain-card fi d3">
+        <div class="pain-icon">🌐</div>
+        <h3>Seu digital não converte</h3>
+        <p>Site desatualizado, sem WhatsApp integrado, sem captura de contato. O cliente chega, não encontra o que precisa e vai embora sem deixar rastro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTO -->
+<section id="produto">
+  <div class="container">
+    <div class="produto-layout">
+
+      <div>
+        <div class="section-label fi">// o que entregamos</div>
+        <h2 class="section-h2 fi">Presença digital<br>que converte.</h2>
+        <p class="section-sub fi" style="margin-bottom:2.5rem">
+          Cada entrega é construída do zero pro seu negócio — sem template genérico, sem enrolação, sem surpresa no preço.
+        </p>
+        <div class="feature-list">
+          <div class="feature-item fi d1">
+            <div class="feature-icon">🎨</div>
+            <div class="feature-text">
+              <h4>Design exclusivo pro seu negócio</h4>
+              <p>Criado do zero pra refletir a identidade da sua marca. Não é template de agência.</p>
+            </div>
+          </div>
+          <div class="feature-item fi d2">
+            <div class="feature-icon">📱</div>
+            <div class="feature-text">
+              <h4>100% responsivo</h4>
+              <p>Funciona perfeito no celular — onde mais de 80% dos seus clientes vão acessar.</p>
+            </div>
+          </div>
+          <div class="feature-item fi d3">
+            <div class="feature-icon">💬</div>
+            <div class="feature-text">
+              <h4>WhatsApp integrado</h4>
+              <p>Botão de contato direto. O cliente chega já aquecido — você só precisa fechar.</p>
+            </div>
+          </div>
+          <div class="feature-item fi d4">
+            <div class="feature-icon">🚀</div>
+            <div class="feature-text">
+              <h4>No ar em até 15 dias</h4>
+              <p>Do briefing ao ar, sem enrolação. Você acompanha cada etapa direto pelo WhatsApp.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website mockup -->
+      <div class="fi d2">
+        <div class="site-mock">
+          <div class="sm-bar">
+            <div class="sm-dot r"></div><div class="sm-dot y"></div><div class="sm-dot g"></div>
+            <span class="sm-url">barbeariadogu.com.br</span>
+          </div>
+          <div class="sm-body">
+            <div class="sm-nav-bar">
+              <div class="sm-nav-logo">BARBER GU.</div>
+              <div class="sm-nav-links-bar">
+                <span class="sm-nav-link">Serviços</span>
+                <span class="sm-nav-link">Galeria</span>
+                <span class="sm-nav-link">Sobre</span>
+              </div>
+              <div class="sm-nav-wpp">WhatsApp</div>
+            </div>
+            <div class="sm-hero-area">
+              <div class="sm-hero-badge">Agendamento online disponível</div>
+              <div class="sm-hero-h1">Cortes que<br><span>definem estilo.</span></div>
+              <div class="sm-hero-p">A barbearia preferida do bairro desde 2018. Agendamento rápido, sem fila de espera.</div>
+              <div class="sm-hero-btns">
+                <div class="sm-btn-p">Agendar horário →</div>
+                <div class="sm-btn-s">Ver trabalhos</div>
+              </div>
+            </div>
+            <div class="sm-services">
+              <div class="sm-svc">
+                <div class="sm-svc-icon">✂️</div>
+                <div class="sm-svc-name">Corte</div>
+                <div class="sm-svc-price">R$35</div>
+              </div>
+              <div class="sm-svc">
+                <div class="sm-svc-icon">💈</div>
+                <div class="sm-svc-name">Barba</div>
+                <div class="sm-svc-price">R$25</div>
+              </div>
+              <div class="sm-svc">
+                <div class="sm-svc-icon">🔥</div>
+                <div class="sm-svc-name">Combo</div>
+                <div class="sm-svc-price">R$55</div>
+              </div>
+            </div>
+            <div class="sm-whatsapp-strip">
+              💬 &nbsp; Falar no WhatsApp — resposta em menos de 5 minutos
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+  <div class="container">
+    <div class="section-head center fi">
+      <div class="section-label">// diferencial</div>
+      <h2 class="section-h2">Dashboard com as métricas<br>que movem o seu negócio.</h2>
+      <p class="section-sub">A NEXO IA identifica o que vale monitorar pro seu tipo de negócio e monta um painel exclusivo — você acessa de qualquer dispositivo, em tempo real.</p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card fi d1">
+        <div class="metric-header">
+          <span class="metric-name">Faturamento</span>
+          <span class="metric-badge">mensal</span>
+        </div>
+        <div class="metric-chart">
+          <svg class="donut" viewBox="0 0 84 84">
+            <circle class="d-bg" cx="42" cy="42" r="32" stroke-dasharray="201 201"/>
+            <circle class="d-val d-c" cx="42" cy="42" r="32" stroke-dasharray="0 201" data-val="158"/>
+          </svg>
+          <div class="metric-info">
+            <div class="value">R$28k</div>
+            <div class="label">esse mês</div>
+            <div class="change">▲ +12% vs mês anterior</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card fi d2">
+        <div class="metric-header">
+          <span class="metric-name">Despesas</span>
+          <span class="metric-badge">mensal</span>
+        </div>
+        <div class="metric-chart">
+          <svg class="donut" viewBox="0 0 84 84">
+            <circle class="d-bg" cx="42" cy="42" r="32" stroke-dasharray="201 201"/>
+            <circle class="d-val d-o" cx="42" cy="42" r="32" stroke-dasharray="0 201" data-val="95"/>
+          </svg>
+          <div class="metric-info">
+            <div class="value">R$11k</div>
+            <div class="label">custos totais</div>
+            <div class="change" style="color:#f97316">▼ −3% vs meta</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card fi d3">
+        <div class="metric-header">
+          <span class="metric-name">Estoque</span>
+          <span class="metric-badge">tempo real</span>
+        </div>
+        <div class="metric-chart">
+          <svg class="donut" viewBox="0 0 84 84">
+            <circle class="d-bg" cx="42" cy="42" r="32" stroke-dasharray="201 201"/>
+            <circle class="d-val d-g" cx="42" cy="42" r="32" stroke-dasharray="0 201" data-val="140"/>
+          </svg>
+          <div class="metric-info">
+            <div class="value">247</div>
+            <div class="label">itens disponíveis</div>
+            <div class="change" style="color:#22c55e">● 8 alertas de reposição</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card fi d1">
+        <div class="metric-header">
+          <span class="metric-name">Clientes</span>
+          <span class="metric-badge">acumulado</span>
+        </div>
+        <div class="metric-chart">
+          <svg class="donut" viewBox="0 0 84 84">
+            <circle class="d-bg" cx="42" cy="42" r="32" stroke-dasharray="201 201"/>
+            <circle class="d-val d-p" cx="42" cy="42" r="32" stroke-dasharray="0 201" data-val="170"/>
+          </svg>
+          <div class="metric-info">
+            <div class="value">184</div>
+            <div class="label">clientes ativos</div>
+            <div class="change" style="color:#a78bfa">▲ +22 este mês</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card fi d2">
+        <div class="metric-header">
+          <span class="metric-name">Meta do mês</span>
+          <span class="metric-badge">trimestral</span>
+        </div>
+        <div class="metric-chart">
+          <svg class="donut" viewBox="0 0 84 84">
+            <circle class="d-bg" cx="42" cy="42" r="32" stroke-dasharray="201 201"/>
+            <circle class="d-val d-c" cx="42" cy="42" r="32" stroke-dasharray="0 201" data-val="120"/>
+          </svg>
+          <div class="metric-info">
+            <div class="value">60%</div>
+            <div class="label">da meta atingida</div>
+            <div class="change">● 1 mês e 12 dias restantes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card custom fi d3">
+        <div class="plus">+</div>
+        <p>Adicione a métrica<br>que faz sentido<br>pro seu negócio</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section id="processo">
+  <div class="container">
+    <div class="section-head center fi">
+      <div class="section-label">// como funciona</div>
+      <h2 class="section-h2">Do primeiro contato<br>ao ar em 4 etapas.</h2>
+    </div>
+    <div class="processo-steps">
+      <div class="step-card fi d1">
+        <div class="step-num">01</div>
+        <h3>Descoberta</h3>
+        <p>Entendemos o seu negócio — o que você vende, quem é seu cliente e o que impede de crescer.</p>
+      </div>
+      <div class="step-card fi d2">
+        <div class="step-num">02</div>
+        <h3>Diagnóstico</h3>
+        <p>Nossa IA analisa e identifica o que vai mover o faturamento. A gente apresenta o plano — você aprova.</p>
+      </div>
+      <div class="step-card fi d3">
+        <div class="step-num">03</div>
+        <h3>Implementação</h3>
+        <p>Construímos tudo em até 15 dias. Você acompanha o andamento direto pelo WhatsApp.</p>
+      </div>
+      <div class="step-card fi d4">
+        <div class="step-num">04</div>
+        <h3>Suporte contínuo</h3>
+        <p>Ajustes, atualizações, novos dados no dashboard. A gente fica do lado enquanto o negócio cresce.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTIMENTO -->
+<section id="investimento">
+  <div class="container">
+    <div class="section-head fi">
+      <div class="section-label">// investimento</div>
+      <h2 class="section-h2">Preço justo.<br>Resultado claro.</h2>
+    </div>
+    <div class="invest-layout">
+
+      <div class="price-card fi">
+        <div class="price-tag">✦ Mais escolhido</div>
+        <div class="price-main">
+          <div class="label">Implementação única</div>
+          <div class="amount"><span class="currency">R$</span>700</div>
+          <div class="desc">Site profissional + dashboard + configuração completa</div>
+        </div>
+        <div class="price-divider"></div>
+        <div class="price-recurring">
+          <div class="label">Mensalidade</div>
+          <div class="amount">R$300<span style="font-size:1rem;color:var(--muted)">/mês</span></div>
+          <div class="desc">Hospedagem, suporte, atualizações e dashboard ativo</div>
+        </div>
+        <div class="includes-list">
+          <div class="include-item"><span class="check">✓</span> Site profissional personalizado</div>
+          <div class="include-item"><span class="check">✓</span> Dashboard com as métricas do seu negócio</div>
+          <div class="include-item"><span class="check">✓</span> WhatsApp integrado</div>
+          <div class="include-item"><span class="check">✓</span> No ar em até 15 dias</div>
+          <div class="include-item"><span class="check">✓</span> Suporte direto via WhatsApp</div>
+          <div class="include-item"><span class="check">✓</span> Sem contrato de fidelidade</div>
+        </div>
+        <a href="https://wa.me/55[SEU_NUMERO]" class="price-cta">Começar agora →</a>
+      </div>
+
+      <div class="invest-right fi d2">
+        <div class="compare-card">
+          <h4>Compare com as alternativas</h4>
+          <div class="compare-row">
+            <span class="label">Funcionário meio período</span>
+            <span class="bad">R$1.400+/mês</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Agência de marketing</span>
+            <span class="bad">R$2.000+/mês</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Freelancer de site</span>
+            <span class="bad">R$1.500+ sem suporte</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">NEXO IA (implementação)</span>
+            <span class="good">R$700</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">NEXO IA (mensalidade)</span>
+            <span class="good">R$300/mês</span>
+          </div>
+        </div>
+
+        <div class="compare-card">
+          <h4>O que você controla</h4>
+          <div class="compare-row">
+            <span class="label">Presença digital que converte</span>
+            <span class="good">✓</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Dashboard em tempo real</span>
+            <span class="good">✓</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Suporte contínuo sem fila</span>
+            <span class="good">✓</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Sem contrato de fidelidade</span>
+            <span class="good">✓</span>
+          </div>
+          <div class="compare-row">
+            <span class="label">Cancela quando quiser</span>
+            <span class="good">✓</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="section-label fi" style="display:block;text-align:center;margin-bottom:1rem">// próximo passo</div>
+      <h2 class="fi">Pronto pra mover<br>o seu faturamento?</h2>
+      <p class="fi">Conversa sem compromisso. Nossa IA analisa o seu negócio e mostramos exatamente o que vai gerar resultado.</p>
+      <div class="cta-actions fi">
+        <a href="https://wa.me/55[SEU_NUMERO]" class="btn-primary">Falar no WhatsApp →</a>
+        <a href="mailto:mariochegou@gmail.com" class="btn-secondary">Enviar e-mail</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NEXO IA</div>
+  <div class="footer-copy">© 2026 NEXO IA · IA que gera resultado · @nexo.iabr</div>
+</footer>
+
+<script>
+  // Spotlight
+  const spotlight = document.getElementById('spotlight');
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2, cx = mx, cy = my;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function animateSpot() { cx += (mx-cx)*0.1; cy += (my-cy)*0.1; spotlight.style.left = cx+'px'; spotlight.style.top = cy+'px'; requestAnimationFrame(animateSpot); })();
+
+  // Scroll fade-in
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+  // Counter animation
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const prefix = el.dataset.prefix || '';
+    let current = 0, step = target / 50;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = prefix + Math.floor(current);
+      if (current >= target) clearInterval(timer);
+    }, 30);
+  }
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); cObs.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-target]').forEach(el => cObs.observe(el));
+
+  // Donut animation
+  const donutObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const circle = e.target;
+        const val = circle.dataset.val;
+        setTimeout(() => { circle.style.strokeDasharray = val + ' 201'; }, 100);
+        donutObs.unobserve(circle);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.d-val[data-val]').forEach(el => donutObs.observe(el));
+</script>
+</body>
+</html>

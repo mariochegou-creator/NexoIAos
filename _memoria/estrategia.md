@@ -13,6 +13,11 @@ Crescimento — a operação existe, mas a entrada de novos clientes é o gargal
 
 Candidata a virar skill via `/mapear-rotinas`.
 
+**Alvo da prospeção *(definido em 29/07/2026)*:** academias, delivery e stands/lojas de carros,
+com faturação até 100 mil/mês. Prospetar dentro destes três nichos em vez de "negócio local" em
+geral — a mensagem fica mais afiada e a lista de leads mais fácil de construir.
+O David (SDR) trata da fria.
+
 ## Posicionamento de venda
 
 Nunca vender entregável (site, dashboard). Sempre vender resultado (mais clientes, mais controle, mais faturamento). Os entregáveis são o como — o resultado é o porquê o cliente compra.
