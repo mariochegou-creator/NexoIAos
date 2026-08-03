@@ -1,0 +1,28 @@
+# Nexo Treino na VPS — convive com o nexo_crm (Traefik do easy-install em 80/443).
+#
+# ANTES DO PRIMEIRO DEPLOY, confirmar na VPS (ver README, passo 0):
+#   1. O nome da rede do Traefik:      docker network ls
+#   2. O nome do certresolver:         docker inspect <container-frontend-do-crm> | grep -i traefik
+# e ajustar os dois marcadores <CONFIRMAR-*> abaixo. Não mexer na config do CRM —
+# este container só se ANEXA à rede existente via labels.
+#
+# Subir:  docker compose -p nexo_treino up -d --build
+
+services:
+  roleplay:
+    build: .
+    container_name: nexo_treino
+    restart: unless-stopped
+    env_file: .env
+    networks: [traefik-net]
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.treino.rule=Host(`treino.nexoia.app`)
+      - traefik.http.routers.treino.entrypoints=websecure
+      - traefik.http.routers.treino.tls.certresolver=<CONFIRMAR-RESOLVER>
+      - traefik.http.services.treino.loadbalancer.server.port=8787
+
+networks:
+  traefik-net:
+    external: true
+    name: <CONFIRMAR-REDE>
