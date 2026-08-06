@@ -52,6 +52,112 @@ PALAVRAS_PROIBIDAS = [
 # Casadas sem fronteira de palavra (o \b não funciona com '$').
 PROIBIDAS_LITERAIS = ["r$"]
 
+# ---------------------------------------------------------------------------
+# O crivo (Cofre de Abordagens) — os 5 pontos que separam abordagem de disparo
+# ---------------------------------------------------------------------------
+# O dono compra o RESULTADO e o tempo devolvido. Como a gente produz (IA
+# inclusive) é assunto nosso: citar a ferramenta no primeiro contato entrega o
+# jogo e convida a objeção "então eu faço sozinho com IA".
+PALAVRAS_FERRAMENTA = [
+    "ia", "inteligência artificial", "inteligencia artificial", "automação",
+    "automacao", "automatizar", "automatizado", "chatbot", "bot", "robô", "robo",
+    "sistema", "plataforma", "software", "ferramenta", "tecnologia", "algoritmo",
+    "crm", "dashboard", "integração", "integracao", "api",
+]
+
+# "Adorei seu perfil" é a digital do disparo em massa: elogio que serve pra
+# qualquer negócio prova que ninguém olhou aquele negócio. Observação
+# verificável é a única personalização que ninguém confunde com robô.
+ELOGIOS_GENERICOS = [
+    "adorei o perfil", "adorei seu perfil", "amei o perfil", "amei seu perfil",
+    "adorei o trabalho", "amei o trabalho", "adorei o feed", "amei o feed",
+    "trabalho incrivel", "trabalho incrível", "trabalho maravilhoso",
+    "trabalho sensacional", "trabalho excelente", "parabens pelo trabalho",
+    "parabéns pelo trabalho", "parabens pelo perfil", "parabéns pelo perfil",
+    "que trabalho lindo", "conteudo incrivel", "conteúdo incrível",
+    "muito top o trabalho", "seu trabalho e incrivel", "seu trabalho é incrível",
+]
+
+# Balão grande é "vendedor chato" antes da primeira palavra. As peças do Cofre
+# ficam entre 90 e 250 caracteres; 320 é o teto com folga pra nome comprido.
+GANCHO_MAX_CHARS = 320
+
+# Travessão, meia-risca e bullet são assinatura de texto gerado. Ninguém digita
+# travessão no WhatsApp — digita vírgula, ou dois pontos, ou quebra a frase.
+CARACTERES_DE_IA = {
+    "—": "travessão (—)",
+    "–": "meia-risca (–)",
+    "•": "bullet (•)",
+    "…": "reticências em caractere único (…)",
+    ";": "ponto e vírgula",
+}
+
+# Emoji e símbolos decorativos, por faixa Unicode.
+RE_EMOJI = re.compile(
+    "[" "\U0001F300-\U0001FAFF" "\U00002600-\U000027BF" "\U0001F1E6-\U0001F1FF"
+    "\U00002190-\U000021FF" "\U00002B00-\U00002BFF" "️" "]"
+)
+
+# ---------------------------------------------------------------------------
+# Arquétipos de abertura (Cofre de Abordagens)
+# ---------------------------------------------------------------------------
+# A trava de sobreposição mede PALAVRAS repetidas, e palavra diferente com a
+# mesma forma continua sendo a mesma mensagem: 40 leads recebendo "reparei que
+# [X], isso faz o cliente [Y], já tinham percebido?" é disparo em massa mesmo
+# com [X] e [Y] trocados. O arquétipo mede a FORMA — é o que a sobreposição
+# não enxerga.
+#
+# Cada entrada: (o que a mensagem faz, sinais em que ela se apoia bem).
+ARQUETIPOS = {
+    "pergunta_canal": (
+        "Pergunta por onde chega cliente novo, sem afirmar nada sobre o negócio",
+        {"so_telefone_fixo", "sem_site", "sem_instagram", "nota_alta", "muitos_reviews"},
+    ),
+    "teste_do_google": (
+        "Conta o que aconteceu quando procurou o negócio no Google",
+        {"sem_site", "site_off", "plataforma_generica", "sem_https", "sem_instagram"},
+    ),
+    "reparei_uma_coisa": (
+        "Nomeia UMA observação verificável e pergunta se já tinham percebido",
+        {"plataforma_generica", "sem_botao_whatsapp", "nao_mobile", "sem_https",
+         "so_telefone_fixo", "site_lento"},
+    ),
+    "quase_desisti": (
+        "Conta a jornada de quem tentou virar cliente e travou no caminho",
+        {"site_off", "site_lento", "nao_mobile", "sem_botao_whatsapp", "sem_https"},
+    ),
+    "elogio_e_gap": (
+        "Elogia um ponto forte REAL e pergunta o motivo do buraco ao lado dele",
+        {"nota_alta", "muitos_reviews", "sem_site", "plataforma_generica",
+         "instagram_parado", "sem_instagram"},
+    ),
+    "perfil_parado": (
+        "Aponta o tempo parado e aposta que o problema é tempo, não vontade",
+        {"instagram_parado"},
+    ),
+    "pergunta_honesta_sem_site": (
+        "Diz que procurou o site e não achou, e pergunta se é isso mesmo",
+        {"sem_site", "site_off"},
+    ),
+    "volume_sem_canal": (
+        "Parte do movimento visível e pergunta como dão conta do atendimento",
+        {"muitos_reviews", "nota_alta", "so_telefone_fixo", "nota_baixa"},
+    ),
+}
+
+# Nenhum arquétipo pode dominar a leva: forma repetida em massa é o mesmo
+# problema que a trava de palavras já barra, uma camada acima.
+ARQUETIPO_TETO = 0.40
+
+# Saudação não é pergunta: "tudo bem?" não pede nada e não conta contra o
+# limite de UMA pergunta. O crivo mira a pergunta que o dono tem que PARAR pra
+# responder, e as peças do próprio Cofre abrem com cortesia antes dela.
+RE_SAUDACAO = re.compile(
+    r"\b(tudo (bem|certo|bom|tranquilo|joia|jóia)|como vai|como (voce|você) (esta|está)|"
+    r"beleza|blz|e a(i|í)|td bem)\s*\?",
+    re.I,
+)
+
 # Sinais que o gancho pode declarar em `gancho_sinal`, e o teste que prova
 # que aquele sinal existe MESMO nos dados daquele lead.
 SINAIS = {
@@ -171,6 +277,67 @@ def marca(valor):
     return "—"
 
 
+def passar_no_crivo(gancho):
+    """Os 5 pontos do Cofre, aplicados na mensagem. Devolve lista de problemas.
+
+    Cada ponto existe porque falha nele é o que faz o dono ler a mensagem como
+    disparo em massa e não responder — ou pior, denunciar o número.
+    """
+    problemas = []
+    baixo = normalizar(gancho)
+
+    # 1. Dinheiro no primeiro contato (regra antiga, mantida).
+    achadas = [p for p in PALAVRAS_PROIBIDAS
+               if re.search(r"\b" + re.escape(normalizar(p)) + r"\b", baixo)]
+    achadas += [p for p in PROIBIDAS_LITERAIS if p in baixo]
+    if achadas:
+        problemas.append(f"gancho fala de dinheiro no 1º contato "
+                         f"({', '.join(sorted(set(achadas)))})")
+
+    # 2. Cabe numa tela. Balão que rola é "vendedor chato" antes da 1ª palavra.
+    if len(gancho) > GANCHO_MAX_CHARS:
+        problemas.append(f"gancho com {len(gancho)} caracteres, o teto é "
+                         f"{GANCHO_MAX_CHARS} — corta até caber numa tela de celular")
+
+    # 3. Uma pergunta só. Mensagem que pede duas coisas não recebe nenhuma.
+    #    Saudação ("tudo bem?") sai da conta: não pede nada de ninguém.
+    perguntas = RE_SAUDACAO.sub("", gancho).count("?")
+    if gancho.count("?") == 0:
+        problemas.append("gancho não termina em pergunta aberta")
+    elif perguntas == 0:
+        problemas.append("o único '?' do gancho é saudação ('tudo bem?') — falta a pergunta "
+                         "de verdade, a que o dono responde de cabeça")
+    elif perguntas > 1:
+        problemas.append(f"gancho tem {perguntas} perguntas (fora a saudação) — deixe UMA, "
+                         f"a que o dono responde de cabeça")
+
+    # 4. Zero cara de IA: emoji, travessão, bullet, ponto e vírgula.
+    if RE_EMOJI.search(gancho):
+        problemas.append("gancho tem emoji — no 1º contato frio, emoji é assinatura de disparo")
+    achados_ia = sorted({rotulo for c, rotulo in CARACTERES_DE_IA.items() if c in gancho})
+    if achados_ia:
+        problemas.append(f"gancho tem {', '.join(achados_ia)} — ninguém digita isso no "
+                         f"WhatsApp, é a assinatura de texto gerado")
+    if "\n" in gancho.strip():
+        problemas.append("gancho tem quebra de linha — no 1º contato vai UM balão corrido, "
+                         "sem lista e sem parágrafo")
+
+    # 5. Fala do negócio DELE, não da nossa ferramenta.
+    ferramentas = [p for p in PALAVRAS_FERRAMENTA
+                   if re.search(r"\b" + re.escape(normalizar(p)) + r"\b", baixo)]
+    if ferramentas:
+        problemas.append(f"gancho cita a ferramenta ({', '.join(sorted(set(ferramentas)))}) "
+                         f"— o dono compra o resultado, não como a gente produz")
+
+    # 6. Observação real, não elogio genérico.
+    gerais = [e for e in ELOGIOS_GENERICOS if normalizar(e) in baixo]
+    if gerais:
+        problemas.append(f"gancho usa elogio genérico ('{gerais[0]}') — elogio que serve pra "
+                         f"qualquer negócio prova que ninguém olhou este aqui")
+
+    return problemas
+
+
 # ---------------------------------------------------------------------------
 # a trava
 # ---------------------------------------------------------------------------
@@ -196,7 +363,8 @@ def validar(leads, diag):
     if len(faltando) > 40:
         erros.append(f"... e mais {len(faltando)-40} leads sem decisão")
 
-    ganchos = {}   # slug -> gancho, só dos prospectar
+    ganchos = {}     # slug -> gancho, só dos prospectar
+    arquetipos = {}  # slug -> arquétipo, pra medir variedade de FORMA na leva
 
     for d in diag:
         slug = d.get("slug", "")
@@ -240,17 +408,7 @@ def validar(leads, diag):
             erros.append(f"{nome}: sem gancho de abertura")
         else:
             ganchos[slug] = gancho
-            baixo = normalizar(gancho)
-            achadas = [p for p in PALAVRAS_PROIBIDAS
-                       if re.search(r"\b" + re.escape(normalizar(p)) + r"\b", baixo)]
-            achadas += [p for p in PROIBIDAS_LITERAIS if p in baixo]
-            if achadas:
-                erros.append(f"{nome}: gancho fala de dinheiro no 1º contato "
-                             f"({', '.join(sorted(set(achadas)))})")
-            if "?" not in gancho:
-                erros.append(f"{nome}: gancho não termina em pergunta aberta")
-            if len(gancho) > 600:
-                avisos.append(f"{nome}: gancho com {len(gancho)} caracteres — longo pra WhatsApp")
+            erros.extend(f"{nome}: {p}" for p in passar_no_crivo(gancho))
 
         sinal = (d.get("gancho_sinal") or "").strip()
         if not sinal:
@@ -262,6 +420,38 @@ def validar(leads, diag):
             erros.append(f"{nome}: gancho_sinal '{sinal}' NÃO existe nos dados deste lead "
                          f"(sinais reais: {', '.join(sinais_do_lead(lead)) or 'nenhum'})")
 
+        # Segundo toque (D5 da cadência anti-vácuo). Opcional: a cadência roda
+        # sem ele, com o agente improvisando o ângulo. Mas improviso em lead
+        # frio soa a robô insistindo, então a ausência é sempre reportada.
+        angulo2 = (d.get("gancho_angulo_2") or "").strip()
+        if not angulo2:
+            avisos.append(f"{nome}: sem 'gancho_angulo_2' — o 2º toque da cadência vai sair "
+                          f"improvisado pelo agente, sem ângulo novo preparado")
+        else:
+            erros.extend(f"{nome} (2º toque): {p}" for p in passar_no_crivo(angulo2))
+            if gancho and sobreposicao(gancho, angulo2) >= 0.45:
+                erros.append(f"{nome}: o 2º toque repete o 1º "
+                             f"({sobreposicao(gancho, angulo2):.0%} de sobreposição) — o segundo "
+                             f"toque existe pra trazer ÂNGULO NOVO, não pra insistir no mesmo")
+
+        arquetipo = (d.get("gancho_arquetipo") or "").strip()
+        if not arquetipo:
+            erros.append(f"{nome}: falta 'gancho_arquetipo'. "
+                         f"Válidos: {', '.join(sorted(ARQUETIPOS))}")
+        elif arquetipo not in ARQUETIPOS:
+            erros.append(f"{nome}: gancho_arquetipo '{arquetipo}' desconhecido. "
+                         f"Válidos: {', '.join(sorted(ARQUETIPOS))}")
+        else:
+            arquetipos[slug] = arquetipo
+            # Combinação estranha não bloqueia: o sinal manda no ASSUNTO, o
+            # arquétipo manda na FORMA, e às vezes a forma "errada" é a certa
+            # pra aquele dono. Mas fica registrado pra quem revisa.
+            _, sinais_bons = ARQUETIPOS[arquetipo]
+            if sinal and sinal in SINAIS and sinal not in sinais_bons:
+                avisos.append(f"{nome}: arquétipo '{arquetipo}' com sinal '{sinal}' é combinação "
+                              f"incomum (esse arquétipo costuma se apoiar em: "
+                              f"{', '.join(sorted(sinais_bons))})")
+
     # --- mensagem repetida em massa = número banido ---
     itens = sorted(ganchos.items())
     for i in range(len(itens)):
@@ -272,6 +462,21 @@ def validar(leads, diag):
                     f"ganchos parecidos demais ({s:.0%}): "
                     f"'{por_slug[itens[i][0]]['nome']}' x '{por_slug[itens[j][0]]['nome']}' "
                     f"— reescreva um dos dois com outra estrutura")
+
+    # --- FORMA repetida em massa: o que a conta de palavras não enxerga ---
+    # A partir de 5 leads a proporção começa a significar alguma coisa; abaixo
+    # disso, 2 de 3 no mesmo arquétipo é coincidência, não padrão.
+    if len(arquetipos) >= 5:
+        contagem = {}
+        for a in arquetipos.values():
+            contagem[a] = contagem.get(a, 0) + 1
+        for arquetipo, n in sorted(contagem.items(), key=lambda kv: (-kv[1], kv[0])):
+            fatia = n / len(arquetipos)
+            if fatia > ARQUETIPO_TETO:
+                erros.append(
+                    f"arquétipo '{arquetipo}' em {n} de {len(arquetipos)} leads ({fatia:.0%}) "
+                    f"— o teto é {ARQUETIPO_TETO:.0%}. Mesma forma em série é disparo em massa "
+                    f"mesmo com as palavras trocadas; reescreva parte deles em outro arquétipo")
 
     return erros, avisos
 
@@ -366,7 +571,14 @@ def render_card(lead, d):
         "",
         f"> {d['gancho']}",
         "",
-        f"_Apoiado no sinal:_ `{d['gancho_sinal']}`",
+        f"_Apoiado no sinal:_ `{d['gancho_sinal']}` · "
+        f"_forma:_ `{d.get('gancho_arquetipo', '—')}` · "
+        f"{len(d['gancho'])} caracteres",
+        "",
+        "### Segundo toque (D5, se der vácuo)",
+        "",
+        (f"> {d['gancho_angulo_2']}" if (d.get("gancho_angulo_2") or "").strip()
+         else "_Não preparado — o agente vai improvisar o ângulo no D5._"),
         "",
         "## 📝 Notas da R1",
         "",
@@ -452,8 +664,16 @@ def render_csv_crm(caminho, leads, por_slug_diag, etapa, status, valor, dias, co
     # guarda colunas com "gancho" no nome e mostra pra quem atende (dossiê do
     # lead, painel do inbox e nota na conversa). Antes o gancho ficava só no
     # card e a leva subia pro CRM muda.
+    # "Gancho segundo toque" alimenta o D5 da cadência anti-vácuo: o segundo
+    # toque tem que chegar com ÂNGULO NOVO, nunca repetindo o primeiro. Sem
+    # isto o agente improvisa o ângulo, e improviso em lead frio soa a robô
+    # insistindo. Casa com GANCHO_KEY_RE, então o CRM guarda sozinho.
+    # "Google Maps" dá ao SDR o caminho de volta pro anúncio original quando o
+    # telefone falha (número fora do WhatsApp, Maps desatualizado) — pedido do
+    # Mario em 06/08/2026 depois de dois leads seguidos sem WhatsApp.
     campos = ["Título", "Valor", "Etapa", "Empresa", "Contato",
-              "Gancho de abertura", "Status", "Data Prevista", "Criado em"]
+              "Gancho de abertura", "Gancho segundo toque", "Google Maps",
+              "Status", "Data Prevista", "Criado em"]
 
     linhas = []
     for l in leads:
@@ -471,6 +691,8 @@ def render_csv_crm(caminho, leads, por_slug_diag, etapa, status, valor, dias, co
             "Empresa": l["nome"],
             "Contato": tel,               # número puro, sem link e sem formatação
             "Gancho de abertura": (d.get("gancho") or "").strip(),
+            "Gancho segundo toque": (d.get("gancho_angulo_2") or "").strip(),
+            "Google Maps": (l.get("google_maps") or "").strip(),
             "Status": status,
             "Data Prevista": prevista.strftime("%d/%m/%Y"),
             "Criado em": hoje.strftime("%d/%m/%Y"),
