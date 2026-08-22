@@ -30,3 +30,7 @@ dados/*
 
 # Credenciais locais — nunca subir pro GitHub
 _config/
+
+# Python
+__pycache__/
+*.pyc

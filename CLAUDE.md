@@ -63,6 +63,9 @@ No início de toda conversa, ler os seguintes arquivos (quando existirem e estiv
 1. `_memoria/empresa.md` — quem somos, o que fazemos, como funciona o negócio
 2. `_memoria/preferencias.md` — tom de voz, estilo de escrita, o que evitar
 3. `_memoria/estrategia.md` — foco atual, prioridades, prazos
+4. `_memoria/metodologia-vendas.md` — como a Nexo vende: princípios de fechamento,
+   repertório de closes, objeções. Ler sempre que a tarefa envolver reunião, proposta,
+   prospecção ou follow-up.
 
 Usar essas informações como base pra qualquer resposta ou decisão. Não é necessário listar o que foi lido nem confirmar a leitura. Apenas usar o contexto naturalmente.
 
