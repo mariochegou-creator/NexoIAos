@@ -22,15 +22,24 @@ Só existe transcrição se ela for gerada na máquina dele. Duas rotas:
 
 | Rota | Quando usar |
 |---|---|
-| **A — Claude Code local** | Instalar o Claude Code na máquina, abrir na pasta do MazyOS e rodar `/curso` de lá. Aí ele lê `~/Downloads` direto. **É a rota boa.** |
-| **B — transcrever e trazer** | Rodar o script na máquina, subir só os `.md` de transcrição. Serve quando ele está no telemóvel ou na web. |
+| **A — curso no Google Drive** | Se o curso está no Drive com link "qualquer pessoa com o link", **a sessão da nuvem baixa e transcreve sozinha**. Não precisa de nada instalado na máquina dele. É a rota mais fácil — perguntar por isto primeiro. |
+| **B — Claude Code local** | Curso só no disco: instalar o Claude Code na máquina e rodar `/curso` de lá, que aí ele lê o `~/Downloads` direto. |
+| **C — transcrever e trazer** | Rodar o script na máquina dele e subir só os `.md`. Último recurso. |
 
-Nas duas, o motor é o mesmo:
+O motor é o mesmo nas três — o argumento é que muda:
 
 ```bash
-python3 ferramentas/transcrever-curso/transcrever.py ~/Downloads/"Nome Do Curso" \
-  --saida dados/curso-vendas
+# Drive público
+python3 ferramentas/transcrever-curso/transcrever.py \
+  "https://drive.google.com/drive/folders/ID" --saida dados/curso-vendas
+
+# pasta local
+python3 ferramentas/transcrever-curso/transcrever.py \
+  ~/Downloads/"Nome Do Curso" --saida dados/curso-vendas
 ```
+
+Na rota A, instalar as dependências na sessão antes:
+`apt-get install -y ffmpeg && pip install faster-whisper`.
 
 Instalação e opções: `ferramentas/transcrever-curso/README.md`.
 Curso de 10h no motor local leva algumas horas — o script é resumível, avisar isso.

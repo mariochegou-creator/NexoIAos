@@ -29,11 +29,26 @@ export OPENAI_API_KEY=sk-...
 
 ## Rodar
 
+Curso numa pasta local:
+
 ```bash
 python3 ferramentas/transcrever-curso/transcrever.py \
   ~/Downloads/"Nome Do Curso" \
   --saida dados/curso-vendas
 ```
+
+Curso numa pasta do Google Drive (link "qualquer pessoa com o link"):
+
+```bash
+python3 ferramentas/transcrever-curso/transcrever.py \
+  "https://drive.google.com/drive/folders/SEU_ID_AQUI" \
+  --saida dados/curso-vendas
+```
+
+A rota do Drive é a que resolve o problema de o Claude Code na web não enxergar o teu
+disco: se o curso está no Drive com link público, ele roda direto na sessão da nuvem, sem
+precisares instalar nada. Baixa uma aula de cada vez e apaga o vídeo assim que extrai o
+áudio — não acumula GB.
 
 Opções:
 
@@ -49,6 +64,7 @@ Opções:
 - **A saída cai em `dados/`, que está no `.gitignore`.** De propósito: transcrição de curso
   pago é material de terceiro, não sobe pro GitHub. O que sobe é a metodologia destilada em
   `_memoria/metodologia-vendas.md` — que é o seu jeito de trabalhar, não o material deles.
+- **Nada de vídeo fica no repositório.** Só o `.md` da transcrição.
 - **Whisper erra nome próprio e jargão.** "close" vira "clós", "rapport" vira "raport". Não
   atrapalha a extração da metodologia, mas não trate a transcrição como citação literal.
 
