@@ -43,6 +43,17 @@ Evitar: jargão de guru de marketing, termos técnicos de IA para cliente final,
 - Proposta nova → `propostas/<cliente>-<data>.html` antes de fechar
 - Casos de sucesso ficam em `clientes/<Nome>/caso.md` (reuso em pitches)
 
+## Regras de qualidade (entregas e ferramentas internas)
+
+Vale pra entrega de cliente E pra manutenção das nossas ferramentas (dashboard/Supabase, `apps/`, `ferramentas/`, `scripts/`, skills).
+
+- Antes de corrigir ou alterar qualquer coisa → seguir `_memoria/checklist-qualidade.md`
+- Bug encontrado em ferramenta interna → registrar em `_memoria/bugs.md` ANTES de corrigir; fechar o registro só com a correção validada
+- Antes de mexer em código compartilhado (tabela do Supabase, função usada por mais de uma skill) → mapear quem depende (grep) e testar todos os usos, não só o que motivou a mudança
+- Depois de qualquer correção → rodar o smoke test da ferramenta afetada (lista no fim do checklist-qualidade.md), não só a parte corrigida
+- Nada é entregue ou dado por pronto sem tentar quebrar: caminho infeliz, celular de verdade, revisão adversarial (`/code-review`)
+- "Depois eu ajusto" não anotado é proibido → vai pra `pendencias.md` do cliente ou pro `_memoria/bugs.md` na hora
+
 ## Ferramentas conectadas
 
 - [ ] Notion
