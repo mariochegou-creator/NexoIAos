@@ -24,6 +24,13 @@ Bugs de cliente ficam na pasta do cliente; aqui é só ferramenta interna (dashb
 
 ## Bugs
 
+### [ABERTO] 2026-08-26 — dashboard CRM (deploy/dashboard-nexo-ia.html) — quebra sem mensagem quando os CDNs não carregam
+- Sintoma: a página depende de 3 CDNs externos (supabase-js, chart.js, Google Fonts). Se o supabase-js não carregar (conexão lenta, CDN fora, rede corporativa bloqueando), o JS quebra com `TypeError: Cannot read properties of undefined (reading 'createClient')` — a tela de login aparece normal, mas o botão "Entrar" não funciona e o usuário não recebe NENHUM aviso. Reproduzido em smoke test com Chromium/Playwright bloqueando os CDNs.
+- Causa: nenhuma verificação de que `supabase`/`Chart` existem antes de usar; sem fallback nem mensagem de erro visível.
+- Correção: (pendente) checar se as libs carregaram ao iniciar; se não, mostrar aviso visível ("Sem conexão — recarregue a página") e desabilitar o Entrar em vez de falhar em silêncio.
+- O que mais podia quebrar: (avaliar na correção) mesmo padrão pode existir nas outras páginas de deploy/ (crm-deskcomm, crm-frappe, index.html).
+- Lição: teste de caminho infeliz "serviço externo fora do ar" pega bug que nunca aparece no teste feliz — a tela parece perfeita e está quebrada.
+
 ### [FECHADO] 2026-08-26 — CLAUDE.md (regras de qualidade) — regra de disparo do /conferir ambígua
 - Sintoma: a regra dizia "antes de qualquer commit+push → acionar /conferir". Lida ao pé da letra, todo `/salvar` de conteúdo (proposta, post, texto) dispararia conferência de código sem necessidade — atrito em toda gravação de trabalho.
 - Causa: redação genérica demais na primeira versão da regra; não distinguia push de código de push de conteúdo.
