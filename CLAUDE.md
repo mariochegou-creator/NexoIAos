@@ -47,6 +47,7 @@ Evitar: jargão de guru de marketing, termos técnicos de IA para cliente final,
 
 Vale pra entrega de cliente E pra manutenção das nossas ferramentas (dashboard/Supabase, `apps/`, `ferramentas/`, `scripts/`, skills).
 
+- **Ao concluir qualquer correção ou implementação em código, e antes de qualquer commit+push ou entrega → acionar a skill `/conferir` automaticamente, sem esperar o usuário pedir.** O usuário esquece de chamar skills; o disparo é responsabilidade da IA.
 - Antes de corrigir ou alterar qualquer coisa → seguir `_memoria/checklist-qualidade.md`
 - Bug encontrado em ferramenta interna → registrar em `_memoria/bugs.md` ANTES de corrigir; fechar o registro só com a correção validada
 - Antes de mexer em código compartilhado (tabela do Supabase, função usada por mais de uma skill) → mapear quem depende (grep) e testar todos os usos, não só o que motivou a mudança
