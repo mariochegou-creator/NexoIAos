@@ -51,9 +51,10 @@
 *(Manter atualizado conforme as ferramentas mudam. Rodar o da ferramenta afetada sempre que mexer nela.)*
 
 ### Dashboard / Supabase
-1. Dashboard abre e lista clientes e leads sem erro.
-2. `/sync` de um cliente de teste faz upsert sem erro e o dado aparece na dashboard.
-3. Modal do cliente abre e o checklist de onboarding carrega.
+1. Banco: rodar `node scripts/smoke-crm-db.js` (precisa da variável `NEXO_SB_SERVICE_KEY`) — confere API e todas as tabelas principais, só leitura.
+2. Dashboard abre e lista clientes e leads sem erro.
+3. `/sync` de um cliente de teste faz upsert sem erro e o dado aparece na dashboard.
+4. Modal do cliente abre e o checklist de onboarding carrega.
 
 ### apps/roleplay
 1. `docker-compose up` (ou o start do client/server) sobe sem erro.
