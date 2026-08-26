@@ -24,4 +24,9 @@ Bugs de cliente ficam na pasta do cliente; aqui é só ferramenta interna (dashb
 
 ## Bugs
 
-*(nenhum registrado ainda — o próximo bug encontrado estreia a lista)*
+### [FECHADO] 2026-08-26 — CLAUDE.md (regras de qualidade) — regra de disparo do /conferir ambígua
+- Sintoma: a regra dizia "antes de qualquer commit+push → acionar /conferir". Lida ao pé da letra, todo `/salvar` de conteúdo (proposta, post, texto) dispararia conferência de código sem necessidade — atrito em toda gravação de trabalho.
+- Causa: redação genérica demais na primeira versão da regra; não distinguia push de código de push de conteúdo.
+- Correção: regra reescrita pra "commit+push de código ou entrega ao cliente", com exceção explícita pro `/salvar` de conteúdo.
+- O que mais podia quebrar: fluxo do `/salvar` (verificado: descrição da skill não conflita) e o "Quando NÃO rodar" do `/conferir` (já cobria tarefa de texto puro — as duas regras agora dizem a mesma coisa).
+- Lição: encontrado pela própria conferência rodando sobre si mesma, na etapa "tentar quebrar" — regra nova também é código: testar a leitura ao pé da letra antes de subir.
