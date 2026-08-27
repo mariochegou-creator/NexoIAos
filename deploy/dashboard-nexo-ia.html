@@ -1446,6 +1446,24 @@
 // ══════════════════════════════════════
 const SB_URL = 'https://norgsipmgxbakfmkqcnl.supabase.co';
 const SB_KEY = 'sb_publishable_gr0MBRhNOI4_Kxu7ccbMfw_O0VWXR7z';
+
+// A biblioteca do Supabase vem de CDN. Se ela não carregar (conexão lenta, CDN fora,
+// rede bloqueando), o painel fica inutilizável — então avisa em vez de falhar calado.
+if (!window.supabase || !window.supabase.createClient) {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div style="position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;' +
+    'background:#05070d;color:#e2e8f0;font-family:Inter,system-ui,sans-serif;padding:24px;text-align:center">' +
+    '<div style="max-width:420px">' +
+    '<div style="font-size:34px;margin-bottom:14px">📡</div>' +
+    '<div style="font-size:19px;font-weight:600;margin-bottom:10px">Não foi possível carregar o painel</div>' +
+    '<div style="font-size:14px;line-height:1.6;color:#94a3b8;margin-bottom:22px">' +
+    'A conexão falhou ao buscar os componentes do sistema. Verifique sua internet e tente de novo.</div>' +
+    '<button onclick="location.reload()" style="background:#00c8e8;color:#05070d;border:0;border-radius:8px;' +
+    'padding:11px 26px;font-size:14px;font-weight:600;cursor:pointer">Recarregar</button>' +
+    '</div></div>');
+  throw new Error('Supabase SDK não carregou — painel interrompido com aviso ao usuário.');
+}
+
 const sb = window.supabase.createClient(SB_URL, SB_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
 });
@@ -2694,8 +2712,18 @@ const AN_CHART_OPTS = {
   scaleY: { grid:{ color:'rgba(0,200,232,0.04)' }, ticks:{ color:'#64748b', font:{size:11,family:'Inter,sans-serif'} }, beginAtZero:true },
 };
 
+// Chart.js também vem de CDN. Se faltar, o painel continua funcionando — só os
+// gráficos avisam que não carregaram, em vez de derrubar a tela inteira.
+function chartIndisponivel(ctx) {
+  if (typeof Chart !== 'undefined') return false;
+  const wrap = ctx.closest('.an-chart-card') && ctx.closest('.an-chart-card').querySelector('.an-chart-wrap');
+  if (wrap) wrap.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#475569;font-size:13px">Gráfico indisponível — sem conexão</div>';
+  return true;
+}
+
 function buildRevenueChart(revenue, impl, despesas, labels) {
   const ctx = document.getElementById('chart-revenue'); if (!ctx) return;
+  if (chartIndisponivel(ctx)) return;
   analyticsCharts.revenue = new Chart(ctx, {
     type: 'line',
     data: {
@@ -2723,6 +2751,7 @@ function buildRevenueChart(revenue, impl, despesas, labels) {
 
 function buildFunnelChart(funnel) {
   const ctx = document.getElementById('chart-funnel'); if (!ctx) return;
+  if (chartIndisponivel(ctx)) return;
   const nonZero = funnel.filter(f => f.count > 0);
   if (nonZero.length === 0) {
     ctx.closest('.an-chart-card').querySelector('.an-chart-wrap').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#475569;font-size:13px">Sem dados de pipeline</div>';
@@ -2746,6 +2775,7 @@ function buildFunnelChart(funnel) {
 
 function buildLeadsChart(leads, labels) {
   const ctx = document.getElementById('chart-leads'); if (!ctx) return;
+  if (chartIndisponivel(ctx)) return;
   analyticsCharts.leads = new Chart(ctx, {
     type: 'bar',
     data: {
