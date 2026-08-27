@@ -16,6 +16,8 @@
 
 ## 2. Antes de mexer no código (anti-regressão — o "consertei uma coisa e quebrei outra")
 
+- [ ] **CONFIRMAR QUAL ARQUIVO ESTÁ EM PRODUÇÃO antes de corrigir.** Existe mais de uma cópia do mesmo sistema no repositório. Conferir com `curl` no domínio real e comparar com o arquivo local (tamanho, trecho de código) — não confiar no nome da pasta.
+  - Dashboard/CRM: o canônico é **`saidas/dashboard-nexo-ia.html`**, publicado em `dashboard.nexoialocal.com.br`. `deploy/dashboard-nexo-ia.html` é uma cópia ANTIGA (usa tabelas em inglês `clients`; o canônico usa `clientes`).
 - [ ] **Mapear quem depende do que vou mudar.** Buscar no projeto onde a função/arquivo/tabela é usada (grep) e listar. Mudança em coisa compartilhada = testar TODOS os usos, não só o que motivou a mudança.
 - [ ] Mudança no Supabase (tabela, coluna, RLS)? → conferir tudo que lê/escreve nela: dashboard, skill /sync, skill /onboarding, scripts.
 - [ ] Mudança em skill que outra skill chama (ex: /carrossel é usada por /publicar-tema)? → testar a cadeia inteira.

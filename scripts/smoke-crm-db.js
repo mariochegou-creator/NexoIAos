@@ -19,10 +19,12 @@ const BASE = 'https://norgsipmgxbakfmkqcnl.supabase.co/rest/v1';
 const TIMEOUT_MS = 15000;
 
 const TABELAS = {
-  // usadas pela dashboard (deploy/dashboard-nexo-ia.html)
-  dashboard: ['clients', 'profiles', 'tasks', 'marketing', 'finance_entries', 'settings', 'activity_log'],
-  // usadas pelas skills /sync, /enriquecer-leads e pelo funil
-  skills: ['leads', 'clientes', 'contratos', 'projetos', 'prospeccao', 'funil_etapas', 'processo_pendencias'],
+  // usadas pela dashboard CANÔNICA (saidas/dashboard-nexo-ia.html — a publicada)
+  dashboard: ['clientes', 'contratos', 'leads', 'funil_etapas', 'prospeccao', 'influenciadores',
+              'campanhas_indicacao', 'processo_pendencias', 'profiles', 'tasks', 'marketing',
+              'finance_entries', 'settings', 'activity_log'],
+  // schema antigo, ainda consultado por deploy/dashboard-nexo-ia.html (cópia legada)
+  legado: ['clients'],
 };
 
 // Tabelas que a dashboard consulta mas cuja ausência ela já trata (cai no modo DEMO).
@@ -32,7 +34,9 @@ const OPCIONAIS = ['influencers', 'influencer_jobs'];
 // Consultas com colunas explícitas que a dashboard faz. Pegam coluna renomeada/removida,
 // coisa que um `select=*` nunca detecta. Fonte: grep "\.from('x')\.select('y')" na dashboard.
 const CONSULTAS_COLUNAS = [
-  ['clients', 'nome,valor'],
+  ['clientes', 'nome,status'],
+  ['contratos', 'valor_mensal,status'],
+  ['leads', 'nome,etapa_funil,responsavel'],
   ['profiles', 'id,name'],
   ['settings', 'value'],
 ];

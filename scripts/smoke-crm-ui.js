@@ -22,7 +22,11 @@ let chromium;
 try { ({ chromium } = require(require.resolve('playwright', { paths: BUSCA }))); }
 catch { console.error(`ERRO: playwright não encontrado. ${AJUDA}`); process.exit(1); }
 
-const PAGE = 'file://' + path.resolve(__dirname, '..', 'deploy', 'dashboard-nexo-ia.html');
+// Por padrão testa o arquivo CANÔNICO (saidas/), que é o publicado em
+// dashboard.nexoialocal.com.br. deploy/ é uma cópia antiga — passe o caminho como
+// argumento pra testar outro arquivo: node scripts/smoke-crm-ui.js deploy/dashboard-nexo-ia.html
+const ALVO = process.argv[2] || path.resolve(__dirname, '..', 'saidas', 'dashboard-nexo-ia.html');
+const PAGE = 'file://' + path.resolve(ALVO);
 const ABAS = ['overview', 'pipeline', 'clients', 'finance', 'influencer', 'marketing', 'tasks', 'handoff', 'team', 'settings'];
 const EXE = process.env.PLAYWRIGHT_CHROMIUM || '/opt/pw-browsers/chromium';
 
