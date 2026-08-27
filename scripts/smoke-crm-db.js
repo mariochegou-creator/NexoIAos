@@ -29,9 +29,17 @@ const TABELAS = {
 // Não reprovam o smoke test — só avisam. Ver pendência em _memoria/bugs.md.
 const OPCIONAIS = ['influencers', 'influencer_jobs'];
 
-async function checa(tabela) {
+// Consultas com colunas explícitas que a dashboard faz. Pegam coluna renomeada/removida,
+// coisa que um `select=*` nunca detecta. Fonte: grep "\.from('x')\.select('y')" na dashboard.
+const CONSULTAS_COLUNAS = [
+  ['clients', 'nome,valor'],
+  ['profiles', 'id,name'],
+  ['settings', 'value'],
+];
+
+async function checa(tabela, select = '*') {
   try {
-    const res = await fetch(`${BASE}/${tabela}?select=*&limit=1`, {
+    const res = await fetch(`${BASE}/${tabela}?select=${encodeURIComponent(select)}&limit=1`, {
       headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, Prefer: 'count=exact' },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
@@ -54,6 +62,13 @@ async function checa(tabela) {
       resultados.push(r);
       console.log(`  ${r.ok ? 'OK   ' : 'FALHA'} ${t}: HTTP ${r.status} — registros: ${r.total}${r.erro ? ` (${r.erro})` : ''}`);
     }
+  }
+
+  console.log('\n[colunas usadas pela dashboard]');
+  for (const [t, sel] of CONSULTAS_COLUNAS) {
+    const r = await checa(t, sel);
+    resultados.push(r);
+    console.log(`  ${r.ok ? 'OK   ' : 'FALHA'} ${t}.select('${sel}'): HTTP ${r.status}${r.erro ? ` (${r.erro})` : ''}`);
   }
 
   console.log('\n[opcionais — ausência é tratada pela dashboard (modo DEMO)]');

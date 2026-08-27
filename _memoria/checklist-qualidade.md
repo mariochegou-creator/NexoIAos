@@ -51,10 +51,11 @@
 *(Manter atualizado conforme as ferramentas mudam. Rodar o da ferramenta afetada sempre que mexer nela.)*
 
 ### Dashboard / Supabase
-1. Banco: rodar `node scripts/smoke-crm-db.js` (precisa da variável `NEXO_SB_SERVICE_KEY`) — confere API e todas as tabelas principais, só leitura.
-2. Dashboard abre e lista clientes e leads sem erro.
-3. `/sync` de um cliente de teste faz upsert sem erro e o dado aparece na dashboard.
-4. Modal do cliente abre e o checklist de onboarding carrega.
+1. Banco: `node scripts/smoke-crm-db.js` (precisa de `NEXO_SB_SERVICE_KEY`) — confere API, tabelas e as colunas que a dashboard consulta. Só leitura.
+2. Interface: `node scripts/smoke-crm-ui.js` — abre a dashboard num navegador real e renderiza todas as abas em modo DEMO, capturando erros de JS. Não toca no banco. Precisa de `npm install playwright @supabase/supabase-js chart.js`.
+3. Login real no navegador com um usuário de verdade (esse passo é manual — os scripts não autenticam).
+4. `/sync` de um cliente de teste faz upsert sem erro e o dado aparece na dashboard.
+5. Modal do cliente abre e o checklist de onboarding carrega.
 
 ### apps/roleplay
 1. `docker-compose up` (ou o start do client/server) sobe sem erro.
