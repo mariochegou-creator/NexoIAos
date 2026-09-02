@@ -32,13 +32,90 @@ export function sttSupported(): boolean {
   return getCtor() !== null;
 }
 
+export function recorderSupported(): boolean {
+  return typeof MediaRecorder !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia);
+}
+
+// Gravador pro STT do servidor (Whisper): grava webm/opus enquanto o botão está
+// pressionado; stop() devolve o áudio pra transcrever no backend.
+// O stream do microfone fica ABERTO entre os turnos (menos delay ao apertar o
+// botão); dispose() libera de vez ao sair da sessão.
+export class RecorderSTT {
+  private mr: MediaRecorder | null = null;
+  private stream: MediaStream | null = null;
+  private chunks: Blob[] = [];
+
+  async start(): Promise<void> {
+    if (!this.stream || !this.stream.active) {
+      this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    }
+    const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus'
+      : MediaRecorder.isTypeSupported('audio/mp4')
+        ? 'audio/mp4'
+        : '';
+    this.chunks = [];
+    this.mr = mime ? new MediaRecorder(this.stream, { mimeType: mime }) : new MediaRecorder(this.stream);
+    this.mr.ondataavailable = (e) => {
+      if (e.data.size > 0) this.chunks.push(e.data);
+    };
+    this.mr.start();
+  }
+
+  stop(): Promise<Blob> {
+    return new Promise((resolve) => {
+      const mr = this.mr;
+      if (!mr) return resolve(new Blob([]));
+      mr.onstop = () => {
+        const blob = new Blob(this.chunks, { type: mr.mimeType || 'audio/webm' });
+        this.mr = null;
+        this.chunks = [];
+        resolve(blob);
+      };
+      mr.stop();
+    });
+  }
+
+  cancel(): void {
+    try {
+      this.mr?.stop();
+    } catch {
+      /* já parado */
+    }
+    this.mr = null;
+    this.chunks = [];
+  }
+
+  /** Libera o microfone de vez (sair da sessão). */
+  dispose(): void {
+    this.cancel();
+    this.stream?.getTracks().forEach((t) => t.stop());
+    this.stream = null;
+  }
+}
+
 export class PushToTalk {
   private rec: SpeechRecognitionLike | null = null;
   private finalText = '';
   private interimText = '';
   private resolveStop: ((texto: string) => void) | null = null;
 
-  constructor(private onInterim: (texto: string) => void) {}
+  constructor(
+    private onInterim: (texto: string) => void,
+    private onError?: (mensagem: string) => void,
+  ) {}
+
+  private static readonly ERROS: Record<string, string> = {
+    'not-allowed':
+      'O navegador bloqueou o microfone. Clique no cadeado 🔒 na barra de endereço → Microfone → Permitir, e recarregue a página.',
+    'service-not-allowed':
+      'O navegador bloqueou o serviço de voz. Use o Google Chrome e permita o microfone no cadeado 🔒 da barra de endereço.',
+    'audio-capture':
+      'Nenhum microfone encontrado. Confira nas configurações do Windows qual é o microfone padrão.',
+    network: 'O reconhecimento de voz precisa de internet e ela falhou agora. Tente de novo.',
+    aborted: '',
+    'no-speech': '',
+  };
 
   start(): void {
     const Ctor = getCtor();
@@ -59,8 +136,9 @@ export class PushToTalk {
       this.interimText = interim;
       this.onInterim((this.finalText + interim).trim());
     };
-    rec.onerror = () => {
-      /* 'no-speech' e afins: o stop resolve com o que tiver */
+    rec.onerror = (ev) => {
+      const msg = PushToTalk.ERROS[ev.error] ?? `Erro do microfone: ${ev.error}`;
+      if (msg) this.onError?.(msg);
     };
     rec.onend = () => {
       const texto = (this.finalText + this.interimText).trim();

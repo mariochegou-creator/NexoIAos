@@ -63,6 +63,73 @@ export class BrowserTTS implements TTSProvider {
   }
 }
 
+// Voz natural via backend (/api/tts → OpenAI). Busca o áudio de cada frase em
+// paralelo, mas toca em ordem — a primeira frase começa a tocar enquanto o resto
+// da resposta ainda está chegando.
+export class BackendTTS implements TTSProvider {
+  private fila: Promise<void> = Promise.resolve();
+  private pendentes = 0;
+  private geracao = 0;
+  private audioAtual: HTMLAudioElement | null = null;
+  private idleResolvers: (() => void)[] = [];
+
+  // Aceleração aplicada NA REPRODUÇÃO — vale pra toda voz, mesmo as que ignoram
+  // o parâmetro de velocidade da API (o navegador preserva o tom, não vira desenho).
+  constructor(
+    private fetchAudio: (texto: string) => Promise<Blob>,
+    private velocidade = 1.18,
+  ) {}
+
+  speak(sentence: string): void {
+    const texto = sentence.trim();
+    if (!texto) return;
+    const g = this.geracao;
+    const audioPromise = this.fetchAudio(texto).catch(() => null);
+    this.pendentes++;
+    this.fila = this.fila.then(async () => {
+      if (g !== this.geracao) return this.terminou();
+      const blob = await audioPromise;
+      if (!blob || g !== this.geracao) return this.terminou();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.playbackRate = this.velocidade;
+      this.audioAtual = audio;
+      await new Promise<void>((resolve) => {
+        audio.onended = () => resolve();
+        audio.onerror = () => resolve();
+        audio.play().catch(() => resolve());
+      });
+      URL.revokeObjectURL(url);
+      this.audioAtual = null;
+      this.terminou();
+    });
+  }
+
+  private terminou(): void {
+    this.pendentes--;
+    if (this.pendentes <= 0) {
+      this.pendentes = 0;
+      this.idleResolvers.forEach((r) => r());
+      this.idleResolvers = [];
+    }
+  }
+
+  waitIdle(): Promise<void> {
+    if (this.pendentes <= 0) return Promise.resolve();
+    return new Promise((resolve) => this.idleResolvers.push(resolve));
+  }
+
+  cancel(): void {
+    this.geracao++;
+    this.audioAtual?.pause();
+    this.audioAtual = null;
+    this.pendentes = 0;
+    this.idleResolvers.forEach((r) => r());
+    this.idleResolvers = [];
+    this.fila = Promise.resolve();
+  }
+}
+
 /** Corta frases completas de um buffer de streaming; retorna [frases, resto]. */
 export function extractSentences(buffer: string): [string[], string] {
   const sentences: string[] = [];

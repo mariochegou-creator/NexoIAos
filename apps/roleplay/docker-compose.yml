@@ -1,12 +1,16 @@
-# Nexo Treino na VPS — convive com o nexo_crm (Traefik do easy-install em 80/443).
+# Nexo Treino na VPS (145.223.94.63) — convive com o DeskcommCRM.
+# O proxy de lá é o CADDY do CRM (deskcommcrm-caddy-1), que ocupa 80/443 com SSL
+# automático. Este container só entra na MESMA rede docker (deskcommcrm_internal),
+# sem publicar porta no host; o roteamento é um bloco no Caddyfile do CRM:
 #
-# ANTES DO PRIMEIRO DEPLOY, confirmar na VPS (ver README, passo 0):
-#   1. O nome da rede do Traefik:      docker network ls
-#   2. O nome do certresolver:         docker inspect <container-frontend-do-crm> | grep -i traefik
-# e ajustar os dois marcadores <CONFIRMAR-*> abaixo. Não mexer na config do CRM —
-# este container só se ANEXA à rede existente via labels.
+#   treino.nexoialocal.com.br {
+#       encode gzip
+#       reverse_proxy nexo_treino:8787
+#   }
 #
 # Subir:  docker compose -p nexo_treino up -d --build
+# Recarregar o Caddy depois de editar o Caddyfile:
+#   docker exec deskcommcrm-caddy-1 caddy reload --config /etc/caddy/Caddyfile
 
 services:
   roleplay:
@@ -14,15 +18,9 @@ services:
     container_name: nexo_treino
     restart: unless-stopped
     env_file: .env
-    networks: [traefik-net]
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.treino.rule=Host(`treino.nexoia.app`)
-      - traefik.http.routers.treino.entrypoints=websecure
-      - traefik.http.routers.treino.tls.certresolver=<CONFIRMAR-RESOLVER>
-      - traefik.http.services.treino.loadbalancer.server.port=8787
+    networks: [crmnet]
 
 networks:
-  traefik-net:
+  crmnet:
     external: true
-    name: <CONFIRMAR-REDE>
+    name: deskcommcrm_internal

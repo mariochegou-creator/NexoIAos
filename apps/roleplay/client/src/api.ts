@@ -7,19 +7,22 @@ import type {
   SessionSummary,
 } from '../../shared/types.ts';
 
-const CODE_KEY = 'nexo_treino_code';
+const TOKEN_KEY = 'nexo_treino_token';
 
-export function getAccessCode(): string {
-  return localStorage.getItem(CODE_KEY) ?? '';
+export function getToken(): string {
+  return localStorage.getItem(TOKEN_KEY) ?? '';
 }
-export function setAccessCode(code: string): void {
-  localStorage.setItem(CODE_KEY, code);
+export function setToken(token: string): void {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+export function clearToken(): void {
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 function headers(): Record<string, string> {
   const h: Record<string, string> = { 'content-type': 'application/json' };
-  const code = getAccessCode();
-  if (code) h['x-access-code'] = code;
+  const token = getToken();
+  if (token) h.authorization = `Bearer ${token}`;
   return h;
 }
 
@@ -36,7 +39,34 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  health: () =>
+    req<{ ok: boolean; anthropic: boolean; supabase: boolean; voz: boolean }>('/api/health'),
   personas: () => req<Persona[]>('/api/personas'),
+  login: async (email: string, senha: string): Promise<void> => {
+    const res = await req<{ token: string }>('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, senha }),
+    });
+    setToken(res.token);
+  },
+  stt: async (audio: Blob): Promise<string> => {
+    const h: Record<string, string> = { 'content-type': audio.type || 'audio/webm' };
+    const token = getToken();
+    if (token) h.authorization = `Bearer ${token}`;
+    const res = await fetch('/api/stt', { method: 'POST', headers: h, body: audio });
+    if (!res.ok) throw new Error('não consegui transcrever sua fala — tente de novo');
+    const json = (await res.json()) as { texto: string };
+    return json.texto;
+  },
+  tts: async (texto: string, voz?: string): Promise<Blob> => {
+    const res = await fetch('/api/tts', {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({ texto, voz }),
+    });
+    if (!res.ok) throw new Error('TTS falhou');
+    return res.blob();
+  },
   createSession: (body: CreateSessionRequest) =>
     req<CreateSessionResponse>('/api/sessions', { method: 'POST', body: JSON.stringify(body) }),
   finishSession: (id: string, abandonar = false) =>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Scorecard as ScorecardType, Persona, CreateSessionRequest } from '../../shared/types.ts';
-import { api, getAccessCode, setAccessCode, UnauthorizedError } from './api.ts';
+import { api, UnauthorizedError } from './api.ts';
 import Setup from './screens/Setup.tsx';
 import Session from './screens/Session.tsx';
 import Scorecard from './screens/Scorecard.tsx';
@@ -15,14 +15,21 @@ type Tela =
 export default function App() {
   const [tela, setTela] = useState<Tela>({ nome: 'setup' });
   const [autorizado, setAutorizado] = useState<boolean | null>(null);
-  const [codigo, setCodigo] = useState(getAccessCode());
-  const [erroCodigo, setErroCodigo] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [entrando, setEntrando] = useState(false);
+  const [erroLogin, setErroLogin] = useState('');
+  const [vozApi, setVozApi] = useState(false);
 
   useEffect(() => {
     api
       .personas()
       .then(() => setAutorizado(true))
       .catch((e) => setAutorizado(!(e instanceof UnauthorizedError)));
+    api
+      .health()
+      .then((h) => setVozApi(h.voz))
+      .catch(() => setVozApi(false));
   }, []);
 
   if (autorizado === null) return <div className="center-page">Carregando…</div>;
@@ -32,27 +39,40 @@ export default function App() {
       <div className="center-page">
         <div className="card gate">
           <h1>Nexo Treino</h1>
-          <p>Digite o código de acesso:</p>
+          <p>Entre com seu e-mail e senha do CRM:</p>
+          <input
+            type="email"
+            placeholder="e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input
             type="password"
-            value={codigo}
-            onChange={(e) => setCodigo(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && tentar()}
+            placeholder="senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && entrar()}
           />
-          {erroCodigo && <p className="erro">{erroCodigo}</p>}
-          <button className="btn primary" onClick={tentar}>
-            Entrar
+          {erroLogin && <p className="erro">{erroLogin}</p>}
+          <button className="btn primary" onClick={entrar} disabled={entrando}>
+            {entrando ? 'Entrando…' : 'Entrar'}
           </button>
         </div>
       </div>
     );
 
-    function tentar() {
-      setAccessCode(codigo);
-      api
-        .personas()
-        .then(() => setAutorizado(true))
-        .catch(() => setErroCodigo('Código inválido.'));
+    async function entrar() {
+      setErroLogin('');
+      setEntrando(true);
+      try {
+        await api.login(email.trim(), senha);
+        await api.personas();
+        setAutorizado(true);
+      } catch (e) {
+        setErroLogin(e instanceof Error ? e.message : 'não consegui entrar');
+      } finally {
+        setEntrando(false);
+      }
     }
   }
 
@@ -73,6 +93,7 @@ export default function App() {
           persona={tela.persona}
           abertura={tela.abertura}
           req={tela.req}
+          vozApi={vozApi}
           onFinish={(scorecard, duracao) => setTela({ nome: 'scorecard', scorecard, duracao, req: tela.req })}
           onAbandon={() => setTela({ nome: 'setup' })}
         />
