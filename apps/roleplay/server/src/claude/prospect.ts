@@ -31,6 +31,21 @@ function personaBlock(persona: Persona, modo: Modo, dificuldade: Dificuldade): s
       `- O que ficou combinado: ${persona.memoria_r1.combinado}`,
     );
   }
+  if (modo === 'reuniao_unica' && persona.varredura) {
+    const v = persona.varredura;
+    linhas.push(
+      ``,
+      `## O que existe DE VERDADE quando alguém pesquisa seu negócio no Google`,
+      `(você não sabe esse dado de cor — só reage a ele nos momentos certos, ver regras do modo)`,
+      `- Termo que um cliente pesquisaria: "${v.termo_busca}"`,
+      `- Sua posição: ${v.posicao}`,
+      `- Quem aparece na frente:`,
+      ...v.concorrentes_na_frente.map((c) => `  - ${c}`),
+      `- Você tem site próprio: ${v.tem_site ? 'sim' : 'não'}`,
+      `- Você tem Instagram: ${v.tem_instagram ? 'sim' : 'não'}`,
+      `- Sua nota no Google: ${v.nota_google}`,
+    );
+  }
   return linhas.join('\n');
 }
 
@@ -91,6 +106,8 @@ export async function streamProspectTurn(
     max_tokens: 300,
     system: buildProspectSystem(modo, persona, dificuldade),
     messages: toMessages(turns),
+    // Sem thinking: resposta começa a sair na hora (latência de voz)
+    thinking: { type: 'disabled' },
     output_config: { effort: 'low' },
   });
   stream.on('text', (delta) => onDelta(delta));

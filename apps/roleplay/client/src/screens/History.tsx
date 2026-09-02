@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { SessionDetail, SessionSummary } from '../../../shared/types.ts';
+import { MODO_LABEL } from '../../../shared/types.ts';
 import { api } from '../api.ts';
-
-const MODO_LABEL: Record<string, string> = { cold_call: 'Cold Call', r1: 'R1', r2: 'R2' };
 
 function corNota(n: number): string {
   if (n >= 7) return 'boa';
@@ -86,6 +85,7 @@ export default function History({ onVoltar }: { onVoltar: () => void }) {
             <option value="cold_call">Cold Call</option>
             <option value="r1">R1</option>
             <option value="r2">R2</option>
+            <option value="reuniao_unica">Reunião Única</option>
           </select>
           {media !== null && (
             <span className={`badge ${corNota(media)}`}>média {media.toFixed(1)}</span>

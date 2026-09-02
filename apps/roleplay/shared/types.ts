@@ -1,7 +1,7 @@
 // Tipos compartilhados entre client e server do Nexo Treino.
 
 export type Vendedor = 'david' | 'mario';
-export type Modo = 'cold_call' | 'r1' | 'r2';
+export type Modo = 'cold_call' | 'r1' | 'r2' | 'reuniao_unica';
 export type Dificuldade = 'facil' | 'media' | 'dificil';
 export type Personalidade = 'falante' | 'seco' | 'desconfiado' | 'apressado';
 
@@ -18,6 +18,19 @@ export interface MemoriaR1 {
   combinado: string; // o que ficou acertado no fim da R1
 }
 
+// A varredura de posição que o vendedor já fez ANTES da reunião única (equivalente
+// ao que a skill /reuniao levanta de verdade) — o "gabarito" do teste ao vivo no
+// Google. O prospect nunca entrega isso de bandeja: só confirma/reage ao que o
+// vendedor narrar, e corrige se ele errar o dado.
+export interface Varredura {
+  termo_busca: string; // ex.: "marcenaria em Guanambi"
+  posicao: string; // ex.: "não aparece na 1ª página" ou "6º lugar, atrás de catálogo de terceiro"
+  concorrentes_na_frente: string[]; // 2-3, cada um já com nota/tipo embutido no texto
+  tem_site: boolean;
+  tem_instagram: boolean;
+  nota_google: string; // ex.: "3,8 (12 avaliações, a maioria antiga)"
+}
+
 export interface Persona {
   slug: string | null; // null quando gerada dinamicamente
   nome: string; // nome do dono
@@ -29,6 +42,8 @@ export interface Persona {
   personalidade: Personalidade;
   orcamento_implicito: string; // faixa que ele revelaria sob pressão
   memoria_r1?: MemoriaR1; // presente nas fixas (usada no modo r2)
+  varredura?: Varredura; // presente nas fixas (usada no modo reuniao_unica)
+  voz?: string; // voz do TTS (OpenAI); default 'ash'
 }
 
 export interface Turn {
@@ -97,6 +112,15 @@ export const LIMITES: Record<Modo, { maxTurnos: number; maxMinutos: number }> = 
   cold_call: { maxTurnos: 30, maxMinutos: 6 },
   r1: { maxTurnos: 80, maxMinutos: 25 },
   r2: { maxTurnos: 80, maxMinutos: 25 },
+  reuniao_unica: { maxTurnos: 160, maxMinutos: 60 },
+};
+
+// Rótulo amigável por modo — fonte única (client tinha 3 cópias divergentes)
+export const MODO_LABEL: Record<Modo, string> = {
+  cold_call: 'Cold Call',
+  r1: 'R1',
+  r2: 'R2',
+  reuniao_unica: 'Reunião Única',
 };
 
 export const MARCADOR_DESLIGOU = '[DESLIGOU]';

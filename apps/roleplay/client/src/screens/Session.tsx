@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CreateSessionRequest, Persona, Scorecard, Turn } from '../../../shared/types.ts';
-import { LIMITES, MARCADOR_DESLIGOU } from '../../../shared/types.ts';
+import { LIMITES, MARCADOR_DESLIGOU, MODO_LABEL } from '../../../shared/types.ts';
 import { api, streamTurn } from '../api.ts';
-import { PushToTalk, sttSupported } from '../voice/stt.ts';
-import { BrowserTTS, extractSentences } from '../voice/tts.ts';
+import { PushToTalk, RecorderSTT, recorderSupported, sttSupported } from '../voice/stt.ts';
+import { BackendTTS, BrowserTTS, extractSentences, type TTSProvider } from '../voice/tts.ts';
 
 type Estado = 'idle' | 'listening' | 'thinking' | 'speaking' | 'avaliando';
 
@@ -12,6 +12,7 @@ export default function Session({
   persona,
   abertura,
   req,
+  vozApi,
   onFinish,
   onAbandon,
 }: {
@@ -19,6 +20,7 @@ export default function Session({
   persona: Persona;
   abertura: string | null;
   req: CreateSessionRequest;
+  vozApi: boolean;
   onFinish: (scorecard: Scorecard, duracao: number) => void;
   onAbandon: () => void;
 }) {
@@ -31,9 +33,17 @@ export default function Session({
   const [desligou, setDesligou] = useState(false);
   const [erro, setErro] = useState('');
   const [segundos, setSegundos] = useState(0);
+  const [chamando, setChamando] = useState(Boolean(abertura));
 
-  const tts = useMemo(() => new BrowserTTS(), []);
-  const ptt = useMemo(() => new PushToTalk(setInterim), []);
+  // Voz do servidor (OpenAI) quando disponível; senão, a do navegador
+  const usaGravador = vozApi && recorderSupported();
+  const tts = useMemo<TTSProvider>(
+    () => (vozApi ? new BackendTTS((t) => api.tts(t, persona.voz)) : new BrowserTTS()),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+  const ptt = useMemo(() => new PushToTalk(setInterim, setErro), []);
+  const recorder = useMemo(() => new RecorderSTT(), []);
   const scrollRef = useRef<HTMLDivElement>(null);
   const estadoRef = useRef(estado);
   estadoRef.current = estado;
@@ -46,12 +56,20 @@ export default function Session({
       clearInterval(t);
       tts.cancel();
       ptt.cancel();
+      recorder.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Cold call: toca o "tuuu... tuuu" visual antes do prospect atender
   useEffect(() => {
-    if (abertura) tts.speak(abertura);
+    if (!abertura) return;
+    const t1 = setTimeout(() => tts.speak(abertura), 1400);
+    const t2 = setTimeout(() => setChamando(false), 2000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,22 +100,50 @@ export default function Session({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [desligou]);
 
-  function comecarFala() {
+  async function comecarFala() {
     if (estadoRef.current !== 'idle' || desligou) return;
     setErro('');
     tts.cancel(); // half-duplex: mic abre, prospect cala
     try {
-      ptt.start();
-      setEstado('listening');
+      if (usaGravador) {
+        setEstado('listening');
+        await recorder.start();
+      } else {
+        ptt.start();
+        setEstado('listening');
+      }
     } catch (e) {
-      setErro(e instanceof Error ? e.message : 'erro no microfone');
+      setEstado('idle');
+      setErro(
+        e instanceof Error && e.name === 'NotAllowedError'
+          ? 'O navegador bloqueou o microfone. Clique no cadeado 🔒 na barra de endereço → Microfone → Permitir.'
+          : e instanceof Error
+            ? e.message
+            : 'erro no microfone',
+      );
     }
   }
 
   async function terminarFala() {
     if (estadoRef.current !== 'listening') return;
     setEstado('thinking');
-    const texto = await ptt.stop();
+    let texto = '';
+    try {
+      if (usaGravador) {
+        const audio = await recorder.stop();
+        if (audio.size < 1000) {
+          setEstado('idle');
+          return;
+        }
+        texto = await api.stt(audio);
+      } else {
+        texto = await ptt.stop();
+      }
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : 'não consegui entender — tente de novo');
+      setEstado('idle');
+      return;
+    }
     setInterim('');
     if (!texto.trim()) {
       setEstado('idle');
@@ -111,6 +157,18 @@ export default function Session({
     try {
       const completo = await streamTurn(sessionId, texto, (delta) => {
         buffer += delta;
+        // pra primeira fala sair mais cedo, corta também na primeira vírgula
+        if (!comecouFalar) {
+          const clausula = buffer.match(/^([^,.!?…]{18,}?,)\s/);
+          if (clausula) {
+            const limpa = clausula[1].replaceAll(MARCADOR_DESLIGOU, '').trim();
+            tts.speak(limpa);
+            comecouFalar = true;
+            mostrado += limpa;
+            buffer = buffer.slice(clausula[0].length);
+            setEstado('speaking');
+          }
+        }
         // corta frases completas e já manda pro TTS (latência percebida cai)
         const [frases, resto] = extractSentences(buffer);
         for (const f of frases) {
@@ -147,6 +205,7 @@ export default function Session({
   async function encerrar(abandonar: boolean) {
     tts.cancel();
     ptt.cancel();
+    recorder.dispose();
     if (abandonar) {
       await api.finishSession(sessionId, true).catch(() => undefined);
       onAbandon();
@@ -170,10 +229,29 @@ export default function Session({
   const rotuloEstado: Record<Estado, string> = {
     idle: desligou ? 'Ligação encerrada' : 'Segure pra falar',
     listening: '🎙️ Ouvindo você…',
-    thinking: '…',
+    thinking: '● ● ●',
     speaking: `${persona.nome} falando`,
     avaliando: 'Avaliando a sessão…',
   };
+
+  if (chamando) {
+    return (
+      <div className="page sessao chamando-tela">
+        <div className="chamando-box">
+          <div className="chamando-icone">📞</div>
+          <h2>Chamando {persona.nome}…</h2>
+          <div className="sub">
+            {persona.negocio} · {persona.cidade}
+          </div>
+          <div className="chamando-pontos">
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page sessao">
@@ -181,8 +259,7 @@ export default function Session({
         <div>
           <b>{persona.nome}</b> · {persona.negocio}
           <div className="sub">
-            {persona.cidade} · {req.modo === 'cold_call' ? 'Cold Call' : req.modo.toUpperCase()} ·{' '}
-            {req.dificuldade}
+            {persona.cidade} · {MODO_LABEL[req.modo] ?? req.modo} · {req.dificuldade}
           </div>
         </div>
         <div className={`timer ${estourouTempo ? 'estourou' : ''}`}>
@@ -190,6 +267,24 @@ export default function Session({
           {estourouTempo && <span className="sub"> passou do alvo ({limite.maxMinutos}min)</span>}
         </div>
       </header>
+
+      {req.modo === 'reuniao_unica' && persona.varredura && (
+        <details className="card varredura">
+          <summary>📋 Sua pesquisa antes da call — pra narrar o teste ao vivo</summary>
+          <div className="sub">
+            Termo: <b>{persona.varredura.termo_busca}</b> · Posição: <b>{persona.varredura.posicao}</b>
+          </div>
+          <ul>
+            {persona.varredura.concorrentes_na_frente.map((c, i) => (
+              <li key={i}>{c}</li>
+            ))}
+          </ul>
+          <div className="sub">
+            Site próprio: {persona.varredura.tem_site ? 'sim' : 'não'} · Instagram:{' '}
+            {persona.varredura.tem_instagram ? 'sim' : 'não'} · Nota Google: {persona.varredura.nota_google}
+          </div>
+        </details>
+      )}
 
       <div className="transcricao" ref={scrollRef}>
         {turns.map((t, i) => (
@@ -207,7 +302,7 @@ export default function Session({
         {estado === 'listening' && (
           <div className="fala vendedor parcial">
             <span className="quem">Você</span>
-            {interim || '…'}
+            {interim || (usaGravador ? '🎙️ gravando…' : '…')}
           </div>
         )}
       </div>

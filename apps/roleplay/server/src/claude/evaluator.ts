@@ -12,7 +12,7 @@ const SCORECARD_SCHEMA = {
     desfecho: {
       type: ['string', 'null'],
       description:
-        'cold_call: agendou|nao_agendou|desligou. r2: pedido|avanco|continuacao|nao_venda. r1: null ou breve rótulo do próximo passo.',
+        'cold_call: agendou|nao_agendou|desligou. r2 e reuniao_unica: pedido|avanco|continuacao|nao_venda. r1: null ou breve rótulo do próximo passo.',
     },
     etapas: {
       type: 'array',
@@ -78,6 +78,17 @@ export async function evaluateSession(
     `- Prospect simulado: ${persona.nome}, ${persona.negocio} (${persona.nicho}), ${persona.cidade}`,
     `- Números reais do card: faturamento ${persona.numeros.faturamento_mes}; ticket ${persona.numeros.ticket_medio}; movimento ${persona.numeros.movimento}; meta ${persona.numeros.meta}`,
     `- Duração: ${Math.round(duracaoSegundos / 60)} min`,
+    ...(modo === 'reuniao_unica' && persona.varredura
+      ? [
+          ``,
+          `## Gabarito real da varredura do Google (pra conferir o teste ao vivo)`,
+          `- Termo: "${persona.varredura.termo_busca}"`,
+          `- Posição real: ${persona.varredura.posicao}`,
+          `- Concorrentes reais na frente: ${persona.varredura.concorrentes_na_frente.join('; ')}`,
+          `- Tem site: ${persona.varredura.tem_site ? 'sim' : 'não'} · Tem Instagram: ${persona.varredura.tem_instagram ? 'sim' : 'não'} · Nota Google: ${persona.varredura.nota_google}`,
+          `- Se o vendedor citou concorrente ou posição diferente disso no teste ao vivo, é dado inventado — marque como erro grave (flag), não como estilo.`,
+        ]
+      : []),
     ``,
     `## Transcrição`,
     renderTranscricao(turns),

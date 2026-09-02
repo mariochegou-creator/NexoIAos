@@ -25,7 +25,7 @@ export function registerSessionRoutes(app: FastifyInstance): void {
       persona = getPersonaFixa(persona_slug);
       if (!persona) return reply.code(400).send({ error: `persona "${persona_slug}" não existe` });
     } else if (nicho) {
-      persona = await generatePersona(nicho, dificuldade);
+      persona = await generatePersona(nicho, dificuldade, modo);
     } else {
       return reply.code(400).send({ error: 'informe persona_slug ou nicho' });
     }

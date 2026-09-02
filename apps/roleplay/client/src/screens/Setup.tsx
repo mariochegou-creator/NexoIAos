@@ -6,13 +6,18 @@ import type {
   Persona,
   Vendedor,
 } from '../../../shared/types.ts';
-import { api } from '../api.ts';
+import { api, clearToken } from '../api.ts';
 import { sttSupported } from '../voice/stt.ts';
 
 const MODOS: { valor: Modo; titulo: string; desc: string }[] = [
   { valor: 'cold_call', titulo: 'Cold Call', desc: 'Ligação fria: ganhar 30s, gerar curiosidade, agendar a R1' },
   { valor: 'r1', titulo: 'R1 — Diagnóstico', desc: 'SPIN: situação, problema, implicação em R$, necessidade' },
   { valor: 'r2', titulo: 'R2 — Fechamento', desc: 'Pits: escala 0-10, extração de investimento, tier único' },
+  {
+    valor: 'reuniao_unica',
+    titulo: 'Reunião Única',
+    desc: '~55-60 min: diagnóstico + teste ao vivo no Google + os 3 cards, terminando em "fechamos?"',
+  },
 ];
 
 export default function Setup({
@@ -61,9 +66,20 @@ export default function Setup({
     <div className="page">
       <header className="topo">
         <h1>Nexo Treino</h1>
-        <button className="btn ghost" onClick={onHistorico}>
-          Histórico
-        </button>
+        <div className="opcoes">
+          <button className="btn ghost" onClick={onHistorico}>
+            Histórico
+          </button>
+          <button
+            className="btn ghost"
+            onClick={() => {
+              clearToken();
+              location.reload();
+            }}
+          >
+            Sair
+          </button>
+        </div>
       </header>
 
       {!sttSupported() && (

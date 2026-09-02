@@ -1,4 +1,5 @@
 import type { CreateSessionRequest, Scorecard as ScorecardType } from '../../../shared/types.ts';
+import { MODO_LABEL } from '../../../shared/types.ts';
 
 function corNota(n: number): string {
   if (n >= 7) return 'boa';
@@ -35,7 +36,7 @@ export default function Scorecard({
       <header className="topo">
         <h1>Scorecard</h1>
         <div className="sub">
-          {req.modo === 'cold_call' ? 'Cold Call' : req.modo.toUpperCase()} · {Math.round(duracao / 60)}
+          {MODO_LABEL[req.modo] ?? req.modo} · {Math.round(duracao / 60)}
           min
         </div>
       </header>

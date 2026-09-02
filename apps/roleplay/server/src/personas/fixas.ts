@@ -8,6 +8,7 @@ import type { Persona } from '../../../shared/types.ts';
 export const PERSONAS_FIXAS: Persona[] = [
   {
     slug: 'pizzaria-toni',
+    voz: 'ash',
     nome: 'Toni',
     negocio: 'Forno do Toni Pizzaria',
     nicho: 'pizzaria/delivery',
@@ -36,9 +37,21 @@ export const PERSONAS_FIXAS: Persona[] = [
       combinado:
         'ficou de receber uma proposta focada primeiro em destravar o WhatsApp e arrumar o Google, com conteúdo entrando depois; segunda reunião marcada pra apresentar',
     },
+    varredura: {
+      termo_busca: 'pizzaria em Serra Dourada',
+      posicao: 'não aparece na 1ª página',
+      concorrentes_na_frente: [
+        'Pizzaria Dona Rosa — nota 4,2, tem site próprio com cardápio',
+        'Point da Pizza — nota 4,5, só Instagram, mas ativo',
+      ],
+      tem_site: false,
+      tem_instagram: true,
+      nota_google: '3,8 (12 avaliações, a maioria de mais de um ano atrás)',
+    },
   },
   {
     slug: 'academia-carla',
+    voz: 'coral',
     nome: 'Carla',
     negocio: 'Academia Corpo em Forma',
     nicho: 'academia',
@@ -67,9 +80,21 @@ export const PERSONAS_FIXAS: Persona[] = [
       combinado:
         'proposta focada em segurar aluno (réguas de contato/recompra) e prova social pra brigar com o concorrente; ela pediu pra ver preço porque "tá apertado"',
     },
+    varredura: {
+      termo_busca: 'academia em Tabocas do Brejo Velho',
+      posicao: 'aparece em 4º lugar',
+      concorrentes_na_frente: [
+        'Academia Evolution (a concorrente nova) — nota 4,7, site próprio com tabela de planos',
+        'Espaço Fit — nota 4,0, só Instagram',
+      ],
+      tem_site: false,
+      tem_instagram: true,
+      nota_google: '4,1 (34 avaliações)',
+    },
   },
   {
     slug: 'stand-ze',
+    voz: 'echo',
     nome: 'Zé Roberto',
     negocio: 'Zé Veículos',
     nicho: 'stand de carros',
@@ -98,9 +123,21 @@ export const PERSONAS_FIXAS: Persona[] = [
       combinado:
         'proposta de organizar o atendimento do WhatsApp (respostas, catálogo, follow-up) e anúncio dos carros parados; irmão sócio talvez participe da segunda conversa',
     },
+    varredura: {
+      termo_busca: 'carros seminovos em Santa Maria da Vitória',
+      posicao: 'não aparece',
+      concorrentes_na_frente: [
+        'Multimarcas Bahia — nota 4,3, site com catálogo de fotos',
+        'Garagem do Betinho — nota 3,9, só grupo de WhatsApp',
+      ],
+      tem_site: false,
+      tem_instagram: false,
+      nota_google: 'sem avaliação nenhuma no Google ainda',
+    },
   },
   {
     slug: 'hamburgueria-dudu',
+    voz: 'ballad',
     nome: 'Dudu',
     negocio: 'Braseiro Burguer',
     nicho: 'hamburgueria/delivery',
@@ -129,9 +166,21 @@ export const PERSONAS_FIXAS: Persona[] = [
       combinado:
         'pausar o anúncio até arrumar a base, montar canal direto no WhatsApp com cardápio decente e campanha pra migrar cliente do iFood; ficou animado mas quer ver o preço',
     },
+    varredura: {
+      termo_busca: 'hamburgueria em Serra Dourada',
+      posicao: 'aparece em 7º lugar',
+      concorrentes_na_frente: [
+        'Brasa & Cia — nota 4,6, site com cardápio digital',
+        'Hot Burguer — nota 4,4, bem avaliado no perfil do iFood',
+      ],
+      tem_site: false,
+      tem_instagram: true,
+      nota_google: '4,0 (19 avaliações)',
+    },
   },
   {
     slug: 'academia-brito',
+    voz: 'onyx',
     nome: 'Brito',
     negocio: 'Brito Fitness Center',
     nicho: 'academia',
@@ -159,6 +208,17 @@ export const PERSONAS_FIXAS: Persona[] = [
         '500 alunos a R$ 110, perdendo 15/mês líquido (~R$ 1.650/mês de receita recorrente indo embora, há 6 meses — mais de R$ 9 mil acumulados); a experiência anterior com agência custou R$ 800/mês por 6 meses sem resultado medido',
       combinado:
         'ele topou uma segunda conversa com MUITA ressalva: quer ver plano com resultado mensurável e sem contrato longo; qualquer cheiro de papo de agência ele desliga',
+    },
+    varredura: {
+      termo_busca: 'academia em Bom Jesus da Lapa',
+      posicao: 'não aparece',
+      concorrentes_na_frente: [
+        'Shopping Fitness (a academia nova do shopping) — nota 4,8, site + app próprio',
+        'Corpo & Saúde Lapa — nota 4,2, site simples',
+      ],
+      tem_site: false,
+      tem_instagram: true,
+      nota_google: '3,5 (41 avaliações, várias reclamando de cobrança indevida da agência antiga)',
     },
   },
 ];

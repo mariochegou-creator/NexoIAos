@@ -15,6 +15,7 @@ export const PROSPECT_MODO: Record<Modo, string> = {
   cold_call: load('modo-coldcall.md'),
   r1: load('modo-r1.md'),
   r2: load('modo-r2.md'),
+  reuniao_unica: load('modo-reuniao-unica.md'),
 };
 
 export const AVALIADOR_BASE = load('avaliador-base.md');
@@ -23,4 +24,5 @@ export const AVALIADOR_MODO: Record<Modo, string> = {
   cold_call: load('avaliador-coldcall.md'),
   r1: load('avaliador-r1.md'),
   r2: load('avaliador-r2.md'),
+  reuniao_unica: load('avaliador-reuniao-unica.md'),
 };
