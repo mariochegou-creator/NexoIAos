@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario Brandao — Gestor de Tráfego</title>
+<meta name="description" content="Gestor de tráfego para negócios locais. Meta Ads, Google Ads e estrutura de conversão que move o faturamento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050e1f; --bg-alt:#081422; --card:#0a1830;
+  --cyan:#00c8e8; --orange:#f97316;
+  --text:#e2e8f0; --muted:#64748b;
+  --line:rgba(0,200,232,0.12); --line-hover:rgba(0,200,232,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,sans-serif; font-weight:400;
+  line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.mono{font-family:'JetBrains Mono',monospace}
+.cy{color:var(--cyan)}
+
+/* ---------- HEADER ---------- */
+header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(5,14,31,0.86); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.hd{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;letter-spacing:1px}
+.nav{display:flex;gap:28px;font-size:14px}
+.nav a{color:var(--muted);text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--cyan)}
+.btn{
+  display:inline-block;background:var(--cyan);color:var(--bg);
+  font-weight:700;font-size:14px;padding:11px 20px;border-radius:8px;
+  text-decoration:none;box-shadow:0 0 24px rgba(0,200,232,0.3);transition:transform .2s
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-ghost{
+  display:inline-block;border:1px solid var(--cyan);color:var(--text);
+  background:transparent;font-weight:600;font-size:14px;
+  padding:11px 20px;border-radius:8px;text-decoration:none;transition:background .2s
+}
+.btn-ghost:hover{background:rgba(0,200,232,0.08)}
+
+/* ---------- SECTIONS ---------- */
+section{padding:92px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.kicker{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:16px;display:block
+}
+h1{font-size:clamp(34px,6vw,58px);font-weight:800;line-height:1.1;letter-spacing:-1.5px}
+h2{font-size:clamp(26px,3.6vw,38px);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:18px}
+h3{font-size:19px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px}
+.lead{font-size:18px;color:#94a3b8;max-width:640px;margin-top:20px}
+.sub{color:var(--muted);max-width:660px;margin-bottom:44px}
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:110px 0 92px;
+  background:
+    radial-gradient(900px 480px at 78% -10%, rgba(0,200,232,0.13), transparent 62%),
+    radial-gradient(600px 400px at 5% 100%, rgba(0,200,232,0.05), transparent 60%);
+}
+.tag{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);
+  border:1px solid var(--line);background:rgba(0,200,232,0.05);
+  padding:7px 15px;border-radius:999px;margin-bottom:28px
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+
+/* ---------- STATS ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:66px}
+.stat{background:var(--bg-alt);padding:26px 22px}
+.stat .n{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--cyan);line-height:1}
+.stat .l{font-size:13px;color:var(--muted);margin-top:9px}
+
+/* ---------- GRID / CARDS ---------- */
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{
+  background:var(--bg-alt);border:1px solid var(--line);
+  border-radius:16px;padding:30px 26px;transition:border-color .25s,transform .25s
+}
+.card:hover{border-color:var(--line-hover);transform:translateY(-3px)}
+.card p{color:var(--muted);font-size:15px}
+.ic{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(0,200,232,0.09);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--cyan)
+}
+
+/* ---------- MÉTODO ---------- */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:10px}
+.step{background:var(--bg-alt);border:1px solid var(--line);border-radius:12px;padding:24px 20px;position:relative}
+.step .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:12px;display:block}
+.step h3{font-size:16px}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.55}
+
+/* ---------- SKILLS ---------- */
+.skillbox{background:var(--bg-alt);border:1px solid var(--line);border-radius:16px;padding:30px 28px}
+.skillbox h3{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;
+  background:rgba(0,200,232,0.06);border:1px solid var(--line);
+  color:#cbd5e1;padding:7px 13px;border-radius:7px
+}
+
+/* ---------- CASES ---------- */
+.case{background:var(--bg-alt);border:1px solid var(--line);border-radius:16px;padding:32px 28px}
+.case .seg{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:block}
+.case-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:22px}
+.case-row div{background:var(--card);padding:16px 14px}
+.case-row .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--cyan)}
+.case-row .k{font-size:12px;color:var(--muted);margin-top:5px}
+.bullets{list-style:none;margin-top:18px}
+.bullets li{color:var(--muted);font-size:14.5px;padding-left:20px;position:relative;margin-bottom:9px}
+.bullets li::before{content:"—";position:absolute;left:0;color:var(--cyan)}
+
+/* ---------- TODO ---------- */
+.todo{
+  border:1px dashed rgba(249,115,22,0.45);background:rgba(249,115,22,0.05);
+  border-radius:12px;padding:18px 20px;margin-top:22px
+}
+.todo .t{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--orange);margin-bottom:8px;display:block
+}
+.todo p{font-size:13.5px;color:#94a3b8;margin:0}
+
+/* ---------- CTA ---------- */
+.cta{
+  text-align:center;
+  background:radial-gradient(700px 320px at 50% 0%, rgba(0,200,232,0.12), transparent 65%);
+  border-bottom:none
+}
+.cta .lead{margin:20px auto 0}
+footer{padding:34px 0;border-top:1px solid var(--line)}
+.ft{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+@media(max-width:900px){
+  .stats,.g3,.steps{grid-template-columns:repeat(2,1fr)}
+  .nav{display:none}
+}
+@media(max-width:600px){
+  section{padding:64px 0}
+  .stats,.g2,.g3,.steps,.case-row{grid-template-columns:1fr}
+  .hero{padding:72px 0 64px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <div class="logo"><span class="cy">MARIO</span> BRANDAO</div>
+    <nav class="nav">
+      <a href="#servicos">O que eu faço</a>
+      <a href="#metodo">Método</a>
+      <a href="#skills">Habilidades</a>
+      <a href="#cases">Resultados</a>
+    </nav>
+    <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <span class="tag"><span class="dot"></span> Gestor de tráfego · Negócios locais</span>
+    <h1>Anúncio não é custo.<br>É a máquina que <span class="cy">traz cliente</span> todo dia.</h1>
+    <p class="lead">
+      Sou Mario Brandao. Coloco academias, deliverys e lojas de carro na frente de quem
+      já está procurando por eles — e monto a estrutura que transforma esse clique em venda.
+      Sem promessa de viralizar. Com número na mesa toda semana.
+    </p>
+    <div class="hero-cta">
+      <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Quero um diagnóstico gratuito</a>
+      <a class="btn-ghost" href="#cases">Ver resultados</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">Meta + Google</div><div class="l">Plataformas que opero no dia a dia</div></div>
+      <div class="stat"><div class="n">15 dias</div><div class="l">Do diagnóstico à campanha no ar</div></div>
+      <div class="stat"><div class="n">3 nichos</div><div class="l">Academia, delivery e stand de carros</div></div>
+      <div class="stat"><div class="n">Semanal</div><div class="l">Relatório de performance, sempre</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="wrap">
+    <span class="kicker">O que eu faço</span>
+    <h2>Tráfego é o motor.<br>O resto é o que faz o motor render.</h2>
+    <p class="sub">
+      Subir campanha qualquer um sobe. O que separa a verba que volta da verba que queima
+      é o que acontece antes e depois do clique.
+    </p>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="ic">M</div>
+        <h3>Meta Ads</h3>
+        <p>Campanhas de mensagem, conversão e alcance local no Instagram e Facebook. Públicos por raio, remarketing de quem visitou e não comprou, teste de criativo rodando sempre.</p>
+      </div>
+      <div class="card">
+        <div class="ic">G</div>
+        <h3>Google Ads</h3>
+        <p>Campanhas de busca montadas por cluster de palavra-chave, anúncios responsivos, extensões e lista de negativas — pra você não pagar por clique que nunca ia comprar.</p>
+      </div>
+      <div class="card">
+        <div class="ic">SEO</div>
+        <h3>SEO local e GEO</h3>
+        <p>Google Meu Negócio otimizado, on-page e conteúdo pra aparecer no Google sem pagar por clique — e também quando o cliente pergunta ao ChatGPT ou ao Gemini.</p>
+      </div>
+      <div class="card">
+        <div class="ic">LP</div>
+        <h3>Página de conversão</h3>
+        <p>Landing page e site feitos pro anúncio ter onde cair. Carregamento rápido, uma oferta clara e o WhatsApp sempre à mão. Anúncio bom em página ruim é dinheiro no lixo.</p>
+      </div>
+      <div class="card">
+        <div class="ic">DB</div>
+        <h3>Dashboard e relatório</h3>
+        <p>Painel com o que interessa ao dono: quanto entrou, quanto custou o lead, o que cada campanha trouxe. Relatório semanal com o que fazer na semana seguinte.</p>
+      </div>
+      <div class="card">
+        <div class="ic">WA</div>
+        <h3>Automação de WhatsApp</h3>
+        <p>O lead chega e é respondido na hora, não no dia seguinte. Atendimento automatizado, qualificação e follow-up — porque lead esfriado é verba perdida duas vezes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section id="metodo">
+  <div class="wrap">
+    <span class="kicker">Como eu trabalho</span>
+    <h2>Cinco etapas. Sem pular nenhuma.</h2>
+    <p class="sub">
+      A maior parte da verba desperdiçada não morre na campanha — morre antes dela,
+      em quem subiu anúncio sem saber o que estava vendendo e pra quem.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Diagnóstico</h3>
+        <p>Entendo o negócio, o ticket, a margem e de onde vem cliente hoje. Sem isso, qualquer campanha é chute.</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>Estrutura</h3>
+        <p>Página, pixel, conversões e WhatsApp organizados. É o encanamento — feio de mostrar, mas sem ele nada segura água.</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Tráfego no ar</h3>
+        <p>Campanhas e criativos no ar em até 15 dias, começando pela rota mais barata que já traz resultado.</p>
+      </div>
+      <div class="step">
+        <span class="num">04</span>
+        <h3>Leitura</h3>
+        <p>Toda semana: o que trouxe cliente, o que só trouxe clique, o que corta. Decisão por número, não por achismo.</p>
+      </div>
+      <div class="step">
+        <span class="num">05</span>
+        <h3>Escala</h3>
+        <p>O que provou que paga recebe mais verba. Só sobe orçamento o que já demonstrou retorno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <span class="kicker">Habilidades</span>
+    <h2>O que eu opero</h2>
+    <p class="sub">Ferramenta é meio. Mas é bom você saber que eu mexo nelas todo dia.</p>
+
+    <div class="grid g2">
+      <div class="skillbox">
+        <h3>Mídia paga</h3>
+        <div class="chips">
+          <span class="chip">Meta Ads Manager</span>
+          <span class="chip">Google Ads</span>
+          <span class="chip">Google Ads Editor</span>
+          <span class="chip">Campanhas de busca</span>
+          <span class="chip">Performance Max</span>
+          <span class="chip">Remarketing</span>
+          <span class="chip">Públicos lookalike</span>
+          <span class="chip">Segmentação por raio</span>
+          <span class="chip">Teste A/B de criativo</span>
+          <span class="chip">Palavras-chave negativas</span>
+          <span class="chip">Gestão de orçamento</span>
+        </div>
+      </div>
+      <div class="skillbox">
+        <h3>Medição e dados</h3>
+        <div class="chips">
+          <span class="chip">Meta Pixel</span>
+          <span class="chip">API de Conversões</span>
+          <span class="chip">Google Analytics 4</span>
+          <span class="chip">Google Tag Manager</span>
+          <span class="chip">Google Search Console</span>
+          <span class="chip">Rastreio de conversão</span>
+          <span class="chip">CPL e CAC</span>
+          <span class="chip">ROAS</span>
+          <span class="chip">Dashboards personalizados</span>
+          <span class="chip">Relatório semanal</span>
+        </div>
+      </div>
+      <div class="skillbox">
+        <h3>Orgânico e presença</h3>
+        <div class="chips">
+          <span class="chip">SEO local</span>
+          <span class="chip">Google Meu Negócio</span>
+          <span class="chip">Pesquisa de palavra-chave</span>
+          <span class="chip">SEO on-page</span>
+          <span class="chip">Estratégia de conteúdo</span>
+          <span class="chip">GEO (ChatGPT, Gemini, Perplexity)</span>
+          <span class="chip">Gestão de avaliações</span>
+          <span class="chip">Conteúdo para Instagram</span>
+        </div>
+      </div>
+      <div class="skillbox">
+        <h3>Criativo e estrutura</h3>
+        <div class="chips">
+          <span class="chip">Copy de anúncio</span>
+          <span class="chip">Roteiro de Reels</span>
+          <span class="chip">Canva</span>
+          <span class="chip">CapCut</span>
+          <span class="chip">Imagem por IA</span>
+          <span class="chip">Landing page</span>
+          <span class="chip">CRO</span>
+          <span class="chip">Automação de WhatsApp</span>
+          <span class="chip">CRM e pipeline</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="wrap">
+    <span class="kicker">Resultados</span>
+    <h2>Número na mesa</h2>
+    <p class="sub">
+      Case sem número é propaganda. Aqui vai o que a conta mostrou — período, verba e retorno.
+    </p>
+
+    <div class="grid g2">
+      <div class="case">
+        <span class="seg">Case 01 · Nicho</span>
+        <h3>Título do resultado</h3>
+        <p style="color:var(--muted);font-size:15px;margin-top:8px">
+          Onde o negócio estava antes, o que foi feito e o que mudou.
+        </p>
+        <div class="case-row">
+          <div><div class="v">—</div><div class="k">Investido</div></div>
+          <div><div class="v">—</div><div class="k">Custo por lead</div></div>
+          <div><div class="v">—</div><div class="k">Retorno</div></div>
+        </div>
+        <ul class="bullets">
+          <li>O que estava travando o negócio</li>
+          <li>A virada que destravou</li>
+          <li>Em quanto tempo apareceu</li>
+        </ul>
+        <div class="todo">
+          <span class="t">Preencher</span>
+          <p>Bloco reservado. Precisa de: nicho, período, verba investida, CPL, retorno e o antes/depois em uma frase.</p>
+        </div>
+      </div>
+
+      <div class="case">
+        <span class="seg">Case 02 · Nicho</span>
+        <h3>Título do resultado</h3>
+        <p style="color:var(--muted);font-size:15px;margin-top:8px">
+          Onde o negócio estava antes, o que foi feito e o que mudou.
+        </p>
+        <div class="case-row">
+          <div><div class="v">—</div><div class="k">Investido</div></div>
+          <div><div class="v">—</div><div class="k">Custo por lead</div></div>
+          <div><div class="v">—</div><div class="k">Retorno</div></div>
+        </div>
+        <ul class="bullets">
+          <li>O que estava travando o negócio</li>
+          <li>A virada que destravou</li>
+          <li>Em quanto tempo apareceu</li>
+        </ul>
+        <div class="todo">
+          <span class="t">Preencher</span>
+          <p>Bloco reservado. Precisa de: nicho, período, verba investida, CPL, retorno e o antes/depois em uma frase.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="wrap">
+    <span class="kicker">Quem fala com você</span>
+    <h2>Mario Brandao</h2>
+    <div class="grid g2" style="align-items:start">
+      <div>
+        <p style="color:#94a3b8;font-size:16.5px">
+          Toco a operação da <span class="cy">NEXO IA</span>, onde aplico tráfego pago e
+          tecnologia pra mover o faturamento de negócios locais. Atendo principalmente
+          academias, deliverys e lojas de carro — negócios que faturam até 100 mil por mês
+          e não têm tempo de virar especialistas em anúncio.
+        </p>
+        <p style="color:#94a3b8;font-size:16.5px;margin-top:18px">
+          Meu trabalho não é entregar relatório bonito. É fazer o dono do negócio
+          saber, no fim do mês, quanto ele colocou e quanto voltou. Quando o número não
+          fecha, eu falo — e mudo a rota.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Como começa</h3>
+        <p>Uma conversa sem compromisso. Eu olho seu negócio, digo o que está vazando cliente hoje e qual é a rota mais barata pra resolver. Se não fizer sentido investir em anúncio agora, eu falo isso também.</p>
+        <div style="margin-top:24px">
+          <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <h2>Seu concorrente já está anunciando.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto">
+      A diferença é que ele provavelmente não sabe quanto está voltando. Você pode saber.
+    </p>
+    <div style="margin-top:34px">
+      <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Quero um diagnóstico gratuito</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap ft">
+    <div class="mono"><span class="cy">MARIO</span> BRANDAO · Gestor de tráfego</div>
+    <div>NEXO IA — nexoialocal.com.br</div>
+  </div>
+</footer>
+
+</body>
+</html>
