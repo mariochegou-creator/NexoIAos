@@ -3,640 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mario Brandao — Gestor de Tráfego e Dev de IA</title>
-<meta name="description" content="Gestor de tráfego e desenvolvedor de IA para negócios locais. Meta Ads, Google Ads, automações e sistemas que transformam clique em cliente.">
+<title>Mario Brandao</title>
+<meta name="description" content="Mario Brandao — gestor de tráfego e desenvolvedor de IA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#050e1f; --bg-alt:#081422; --card:#0a1830;
-  --cyan:#00c8e8; --orange:#f97316;
-  --text:#e2e8f0; --muted:#64748b;
-  --line:rgba(0,200,232,0.12); --line-hover:rgba(0,200,232,0.3);
+  --bg:#050e1f; --bg-alt:#081422; --cyan:#00c8e8; --orange:#f97316;
+  --text:#e2e8f0; --muted:#64748b; --line:rgba(0,200,232,0.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg); color:var(--text);
-  font-family:'Inter',system-ui,sans-serif; font-weight:400;
-  line-height:1.65; -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-.mono{font-family:'JetBrains Mono',monospace}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.65}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px}
 .cy{color:var(--cyan)}
+.mono{font-family:'JetBrains Mono',monospace}
+section{padding:80px 0}
+h1{font-size:clamp(32px,6vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.5px}
+h2{font-size:clamp(24px,3.4vw,32px);font-weight:800;letter-spacing:-.8px;margin-bottom:14px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:block}
+.sub{color:var(--muted);margin-bottom:36px;max-width:620px}
+.btn{display:inline-block;background:var(--cyan);color:var(--bg);font-weight:700;font-size:15px;padding:13px 24px;border-radius:8px;text-decoration:none;box-shadow:0 0 24px rgba(0,200,232,0.3)}
 
-/* ---------- HEADER ---------- */
-header{
-  position:sticky; top:0; z-index:50;
-  background:rgba(5,14,31,0.86); backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
+/* TOPO */
+.topo{
+  padding:90px 0 70px;
+  background:radial-gradient(800px 420px at 70% 0%, rgba(0,200,232,0.13), transparent 62%);
 }
-.hd{display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;letter-spacing:1px}
-.nav{display:flex;gap:28px;font-size:14px}
-.nav a{color:var(--muted);text-decoration:none;transition:color .2s}
-.nav a:hover{color:var(--cyan)}
-.btn{
-  display:inline-block;background:var(--cyan);color:var(--bg);
-  font-weight:700;font-size:14px;padding:11px 20px;border-radius:8px;
-  text-decoration:none;box-shadow:0 0 24px rgba(0,200,232,0.3);transition:transform .2s
+.perfil{display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.foto{
+  width:148px;height:148px;border-radius:50%;flex-shrink:0;overflow:hidden;
+  border:2px solid var(--cyan);box-shadow:0 0 30px rgba(0,200,232,0.25);
+  background:var(--bg-alt);display:flex;align-items:center;justify-content:center;position:relative
 }
-.btn:hover{transform:translateY(-2px)}
-.btn-ghost{
-  display:inline-block;border:1px solid var(--cyan);color:var(--text);
-  background:transparent;font-weight:600;font-size:14px;
-  padding:11px 20px;border-radius:8px;text-decoration:none;transition:background .2s
-}
-.btn-ghost:hover{background:rgba(0,200,232,0.08)}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto .ph{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);text-align:center;padding:0 12px;line-height:1.5}
+.cargo{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:14px;letter-spacing:1px;margin-top:14px}
+.bio{color:#94a3b8;font-size:17px;margin-top:22px;max-width:620px}
 
-/* ---------- SECTIONS ---------- */
-section{padding:92px 0;border-bottom:1px solid rgba(255,255,255,0.04);scroll-margin-top:68px}
-.kicker{
-  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--cyan);margin-bottom:16px;display:block
+/* O QUE FAÇO */
+.lista{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.item{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:26px 24px}
+.item h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.item p{color:var(--muted);font-size:14.5px}
+
+/* PROVA SOCIAL */
+.galeria{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gitem{
+  aspect-ratio:4/5;border-radius:12px;overflow:hidden;position:relative;
+  background:var(--bg-alt);border:1px solid var(--line)
 }
-h1{font-size:clamp(34px,6vw,58px);font-weight:800;line-height:1.1;letter-spacing:-1.5px}
-h2{font-size:clamp(26px,3.6vw,38px);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:18px}
-h3{font-size:19px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px}
-.lead{font-size:18px;color:#94a3b8;max-width:640px;margin-top:20px}
-.sub{color:var(--muted);max-width:660px;margin-bottom:44px}
-
-/* ---------- HERO ---------- */
-.hero{
-  padding:110px 0 92px;
-  background:
-    radial-gradient(900px 480px at 78% -10%, rgba(0,200,232,0.13), transparent 62%),
-    radial-gradient(600px 400px at 5% 100%, rgba(0,200,232,0.05), transparent 60%);
+.gitem img{width:100%;height:100%;object-fit:cover;display:block}
+.gitem .vazio{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;border:1px dashed rgba(249,115,22,0.4);border-radius:12px;background:rgba(249,115,22,0.04);
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--orange);text-align:center;padding:14px;line-height:1.6
 }
-.tag{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);
-  border:1px solid var(--line);background:rgba(0,200,232,0.05);
-  padding:7px 15px;border-radius:999px;margin-bottom:28px
-}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
-.hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+.gitem img[src=""],.gitem img:not([src]){display:none}
 
-/* ---------- STATS ---------- */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:66px}
-.stat{background:var(--bg-alt);padding:26px 22px;display:flex;flex-direction:column;min-height:132px}
-.stat .n{font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;color:var(--cyan);line-height:1.15}
-.stat .l{font-size:13px;color:var(--muted);margin-top:auto;padding-top:12px}
+/* NÚMEROS */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.num{background:var(--bg-alt);padding:26px 20px;text-align:center}
+.num .v{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--cyan)}
+.num .k{font-size:13px;color:var(--muted);margin-top:8px}
 
-/* ---------- GRID / CARDS ---------- */
-.grid{display:grid;gap:20px}
-.g2{grid-template-columns:repeat(2,1fr)}
-.g3{grid-template-columns:repeat(3,1fr)}
-.card{
-  background:var(--bg-alt);border:1px solid var(--line);
-  border-radius:16px;padding:30px 26px;transition:border-color .25s,transform .25s
-}
-.card:hover{border-color:var(--line-hover);transform:translateY(-3px)}
-.card p{color:var(--muted);font-size:15px}
-.ic{
-  width:42px;height:42px;border-radius:10px;
-  background:rgba(0,200,232,0.09);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
-  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--cyan)
-}
-
-/* ---------- MÉTODO ---------- */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:10px}
-.step{background:var(--bg-alt);border:1px solid var(--line);border-radius:12px;padding:24px 20px;position:relative}
-.step .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:12px;display:block}
-.step h3{font-size:16px}
-.step p{font-size:13.5px;color:var(--muted);line-height:1.55}
-
-/* ---------- SKILLS ---------- */
-.skillbox{background:var(--bg-alt);border:1px solid var(--line);border-radius:16px;padding:30px 28px}
-.skillbox h3{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
-.chips{display:flex;flex-wrap:wrap;gap:9px}
-.chip{
-  font-family:'JetBrains Mono',monospace;font-size:12.5px;
-  background:rgba(0,200,232,0.06);border:1px solid var(--line);
-  color:#cbd5e1;padding:7px 13px;border-radius:7px
-}
-
-/* ---------- CASES ---------- */
-.case{background:var(--bg-alt);border:1px solid var(--line);border-radius:16px;padding:32px 28px}
-.case .seg{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:block}
-.case-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:22px}
-.case-row div{background:var(--card);padding:16px 14px}
-.case-row .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--cyan)}
-.case-row .k{font-size:12px;color:var(--muted);margin-top:5px}
-.bullets{list-style:none;margin-top:18px}
-.bullets li{color:var(--muted);font-size:14.5px;padding-left:20px;position:relative;margin-bottom:9px}
-.bullets li::before{content:"—";position:absolute;left:0;color:var(--cyan)}
-
-/* ---------- TODO ---------- */
-.todo{
+.aviso{
   border:1px dashed rgba(249,115,22,0.45);background:rgba(249,115,22,0.05);
-  border-radius:12px;padding:18px 20px;margin-top:22px
+  border-radius:12px;padding:18px 20px;margin-top:26px
 }
-.todo .t{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
-  text-transform:uppercase;color:var(--orange);margin-bottom:8px;display:block
-}
-.todo p{font-size:13.5px;color:#94a3b8;margin:0}
+.aviso .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);display:block;margin-bottom:8px}
+.aviso p{font-size:13.5px;color:#94a3b8}
 
-/* ---------- CTA ---------- */
-.cta{
-  text-align:center;
-  background:radial-gradient(700px 320px at 50% 0%, rgba(0,200,232,0.12), transparent 65%);
-  border-bottom:none
-}
-.cta .lead{margin:20px auto 0}
-footer{padding:34px 0;border-top:1px solid var(--line)}
-.ft{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+/* CONTATO */
+.contato{text-align:center;background:radial-gradient(600px 300px at 50% 0%, rgba(0,200,232,0.1), transparent 65%)}
+footer{padding:30px 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
 
-@media(max-width:900px){
-  .stats,.g3,.steps{grid-template-columns:repeat(2,1fr)}
-  .nav{display:none}
-}
-@media(max-width:600px){
-  section{padding:64px 0}
-  .stats,.g2,.g3,.steps,.case-row{grid-template-columns:1fr}
-  .hero{padding:72px 0 64px}
+@media(max-width:680px){
+  .lista,.nums{grid-template-columns:1fr}
+  .galeria{grid-template-columns:repeat(2,1fr)}
+  .perfil{gap:22px}
+  section{padding:56px 0}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap hd">
-    <div class="logo"><span class="cy">MARIO</span> BRANDAO</div>
-    <nav class="nav">
-      <a href="#trafego">Tráfego</a>
-      <a href="#ia">Dev de IA</a>
-      <a href="#metodo">Método</a>
-      <a href="#skills">Habilidades</a>
-      <a href="#cases">Projetos</a>
-    </nav>
-    <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Falar no WhatsApp</a>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap">
-    <span class="tag"><span class="dot"></span> Gestor de tráfego · Dev de IA · Negócios locais</span>
-    <h1>Eu trago o cliente<br>e <span class="cy">construo o sistema</span><br>que dá conta dele.</h1>
-    <p class="lead">
-      Sou Mario Brandao. De um lado, subo o anúncio que coloca academias, deliverys e
-      lojas de carro na frente de quem já está procurando. Do outro, programo a IA que
-      responde esse lead, organiza o atendimento e mostra pro dono quanto voltou.
-      Uma coisa sem a outra vira verba queimada.
-    </p>
-    <div class="hero-cta">
-      <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Quero um diagnóstico gratuito</a>
-      <a class="btn-ghost" href="#cases">Ver resultados</a>
+<!-- TOPO -->
+<section class="topo">
+  <div class="wrap perfil">
+    <div class="foto">
+      <img src="portfolio-assets/perfil.jpg" alt="Mario Brandao"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="ph" style="display:none">SUA<br>FOTO<br>AQUI</span>
     </div>
-
-    <div class="stats">
-      <div class="stat"><div class="n">Meta + Google</div><div class="l">Plataformas de mídia que opero todo dia</div></div>
-      <div class="stat"><div class="n">Ponta a ponta</div><div class="l">Do anúncio ao sistema que atende o lead</div></div>
-      <div class="stat"><div class="n">15 dias</div><div class="l">Do diagnóstico à primeira entrega no ar</div></div>
-      <div class="stat"><div class="n">Semanal</div><div class="l">Relatório com número, sempre</div></div>
+    <div>
+      <h1>Mario Brandao</h1>
+      <div class="cargo">Gestor de tráfego · Desenvolvedor de IA</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="bio">
+      Eu faço negócio local vender mais usando duas coisas: anúncio que traz cliente
+      e sistema que dá conta dele. Subo a campanha no Meta e no Google, e programo a
+      IA que responde o lead, organiza o atendimento e mostra pro dono quanto voltou.
+    </p>
+    <div style="margin-top:32px">
+      <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Falar comigo</a>
     </div>
   </div>
 </section>
 
-<!-- DUAS FRENTES -->
-<section id="frentes">
+<!-- O QUE EU FAÇO -->
+<section id="faco">
   <div class="wrap">
-    <span class="kicker">Duas frentes</span>
-    <h2>Quem só anuncia perde o lead.<br>Quem só programa não tem lead.</h2>
-    <p class="sub">
-      A maioria contrata dois fornecedores que não se falam: um sobe anúncio, outro mexe no
-      sistema, e ninguém responde por que o dinheiro não voltou. Aqui as duas pontas são a
-      mesma pessoa — então o anúncio já nasce sabendo pra onde o lead vai cair.
-    </p>
+    <span class="kicker">O que eu faço</span>
+    <h2>Quatro coisas, bem feitas</h2>
+    <p class="sub">Sem enrolação: é isso que eu entrego pro dono do negócio.</p>
 
-    <div class="grid g2">
-      <div class="card">
-        <div class="ic">01</div>
+    <div class="lista">
+      <div class="item">
         <h3>Tráfego pago</h3>
-        <p>Meta Ads e Google Ads pra colocar o negócio na frente de quem já está procurando.
-        Verba controlada, criativo testado e leitura semanal do que trouxe cliente de verdade.</p>
-        <div style="margin-top:20px"><a class="btn-ghost" href="#trafego">Ver o que entrego</a></div>
+        <p>Meta Ads e Google Ads. Verba controlada, criativo testado e leitura toda semana do que trouxe cliente de verdade — não do que só trouxe curtida.</p>
       </div>
-      <div class="card">
-        <div class="ic">02</div>
-        <h3>Desenvolvimento com IA</h3>
-        <p>Programo o que acontece depois do clique: atendimento automático no WhatsApp,
-        agentes que qualificam lead, CRM, dashboard e integrações entre as ferramentas que
-        o negócio já usa.</p>
-        <div style="margin-top:20px"><a class="btn-ghost" href="#ia">Ver o que construo</a></div>
+      <div class="item">
+        <h3>Atendimento com IA</h3>
+        <p>O lead chega e é respondido na hora, a qualquer hora. A IA entende o que ele quer, qualifica e só passa pro humano o que vale o tempo dele.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRÁFEGO -->
-<section id="trafego">
-  <div class="wrap">
-    <span class="kicker">Frente 01 · Tráfego pago</span>
-    <h2>Tráfego é o motor.<br>O resto é o que faz o motor render.</h2>
-    <p class="sub">
-      Subir campanha qualquer um sobe. O que separa a verba que volta da verba que queima
-      é o que acontece antes e depois do clique.
-    </p>
-
-    <div class="grid g3">
-      <div class="card">
-        <div class="ic">M</div>
-        <h3>Meta Ads</h3>
-        <p>Campanhas de mensagem, conversão e alcance local no Instagram e Facebook. Públicos por raio, remarketing de quem visitou e não comprou, teste de criativo rodando sempre.</p>
-      </div>
-      <div class="card">
-        <div class="ic">G</div>
-        <h3>Google Ads</h3>
-        <p>Campanhas de busca montadas por cluster de palavra-chave, anúncios responsivos, extensões e lista de negativas — pra você não pagar por clique que nunca ia comprar.</p>
-      </div>
-      <div class="card">
-        <div class="ic">SEO</div>
-        <h3>SEO local e GEO</h3>
-        <p>Google Meu Negócio otimizado, on-page e conteúdo pra aparecer no Google sem pagar por clique — e também quando o cliente pergunta ao ChatGPT ou ao Gemini.</p>
-      </div>
-      <div class="card">
-        <div class="ic">LP</div>
-        <h3>Página de conversão</h3>
-        <p>Landing page e site feitos pro anúncio ter onde cair. Carregamento rápido, uma oferta clara e o WhatsApp sempre à mão. Anúncio bom em página ruim é dinheiro no lixo.</p>
-      </div>
-      <div class="card">
-        <div class="ic">DB</div>
-        <h3>Dashboard e relatório</h3>
-        <p>Painel com o que interessa ao dono: quanto entrou, quanto custou o lead, o que cada campanha trouxe. Relatório semanal com o que fazer na semana seguinte.</p>
-      </div>
-      <div class="card">
-        <div class="ic">CR</div>
-        <h3>Criativo e copy</h3>
-        <p>Anúncio que para o dedo: roteiro de Reels, foto, vídeo e texto escritos pra oferta do negócio. Criativo cansa rápido — por isso sempre tem próximo teste na fila.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DEV DE IA -->
-<section id="ia">
-  <div class="wrap">
-    <span class="kicker">Frente 02 · Desenvolvimento com IA</span>
-    <h2>O lead chega. E aí?</h2>
-    <p class="sub">
-      Na maioria dos negócios locais a resposta é: alguém vê o WhatsApp quando dá, responde
-      no dia seguinte e o cliente já comprou do concorrente. É esse buraco que eu programo.
-    </p>
-
-    <div class="grid g3">
-      <div class="card">
-        <div class="ic">WA</div>
-        <h3>Atendimento automatizado</h3>
-        <p>O lead é respondido em segundos, a qualquer hora. A IA entende o que ele quer, responde, qualifica e só passa pro humano o que vale o tempo dele.</p>
-      </div>
-      <div class="card">
-        <div class="ic">AG</div>
-        <h3>Agentes de IA</h3>
-        <p>Agentes que fazem tarefa repetitiva de gente: triagem de lead, follow-up, resposta de avaliação, geração de conteúdo e relatório. Rodam sozinhos, todo dia.</p>
-      </div>
-      <div class="card">
-        <div class="ic">API</div>
-        <h3>Integrações e APIs</h3>
-        <p>Fazer as ferramentas que o negócio já usa conversarem entre si: WhatsApp, Meta, Google Calendar, CRM, banco de dados e planilha. Sem digitar a mesma coisa duas vezes.</p>
-      </div>
-      <div class="card">
-        <div class="ic">DB</div>
-        <h3>CRM e dashboard</h3>
-        <p>Painel com o que o dono precisa ver: leads que entraram, em que etapa pararam, quanto custou cada um e quanto entrou. Dado em tempo real, não planilha de fim de mês.</p>
-      </div>
-      <div class="card">
-        <div class="ic">APP</div>
-        <h3>Aplicações sob medida</h3>
-        <p>Quando nenhuma ferramenta de prateleira resolve, eu construo. Aplicação web completa, do banco de dados à tela, com IA por dentro onde ela faz diferença.</p>
-      </div>
-      <div class="card">
-        <div class="ic">WEB</div>
+      <div class="item">
         <h3>Site e landing page</h3>
-        <p>Site rápido, que carrega no 4G da rua, aparece no Google e tem uma oferta clara. É onde o anúncio cai — e onde a maior parte da verba costuma morrer.</p>
+        <p>Onde o anúncio cai. Rápido, com oferta clara e WhatsApp à mão. É aqui que a maior parte da verba costuma morrer.</p>
+      </div>
+      <div class="item">
+        <h3>Painel de controle</h3>
+        <p>Dashboard e relatório com o que o dono precisa ver: quantos leads entraram, quanto custou cada um e quanto entrou no caixa.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MÉTODO -->
-<section id="metodo">
+<!-- PROVA SOCIAL -->
+<section id="prova">
   <div class="wrap">
-    <span class="kicker">Como eu trabalho</span>
-    <h2>Cinco etapas. Sem pular nenhuma.</h2>
-    <p class="sub">
-      Vale pras duas frentes. A maior parte da verba desperdiçada não morre na campanha
-      nem no código — morre antes, em quem começou a fazer sem saber o que estava
-      resolvendo e pra quem.
+    <span class="kicker">Prova social</span>
+    <h2>O que já rodou</h2>
+    <p class="sub">Prints, bastidor e resultado de cliente — direto do Instagram.</p>
+
+    <div class="galeria">
+      <div class="gitem"><img src="portfolio-assets/prova-01.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 01<br>do Instagram</div></div>
+      <div class="gitem"><img src="portfolio-assets/prova-02.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 02<br>do Instagram</div></div>
+      <div class="gitem"><img src="portfolio-assets/prova-03.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 03<br>do Instagram</div></div>
+      <div class="gitem"><img src="portfolio-assets/prova-04.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 04<br>do Instagram</div></div>
+      <div class="gitem"><img src="portfolio-assets/prova-05.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 05<br>do Instagram</div></div>
+      <div class="gitem"><img src="portfolio-assets/prova-06.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="vazio" style="display:none">FOTO 06<br>do Instagram</div></div>
+    </div>
+
+    <div class="aviso">
+      <span class="t">Faltando</span>
+      <p>Os espaços viram foto sozinhos assim que os arquivos entrarem em <span class="mono">saidas/portfolio-assets/</span> com os nomes <span class="mono">perfil.jpg</span> e <span class="mono">prova-01.jpg</span> até <span class="mono">prova-06.jpg</span>. É só me mandar o material do Instagram que eu escolho os melhores e coloco no lugar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<section id="numeros">
+  <div class="wrap">
+    <span class="kicker">Resultados</span>
+    <h2>Número na mesa</h2>
+    <p class="sub">Case sem número é propaganda.</p>
+
+    <div class="nums">
+      <div class="num"><div class="v">—</div><div class="k">Clientes atendidos</div></div>
+      <div class="num"><div class="v">—</div><div class="k">Verba gerenciada</div></div>
+      <div class="num"><div class="v">—</div><div class="k">Leads gerados</div></div>
+    </div>
+
+    <div class="aviso">
+      <span class="t">Faltando</span>
+      <p>Me passa esses três números e eu preencho. Se preferir não expor valor de verba, troco por outro indicador.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contato">
+  <div class="wrap">
+    <h2>Vamos conversar?</h2>
+    <p class="sub" style="margin:0 auto 32px">
+      Me conta como está seu negócio hoje que eu te digo, sem compromisso, onde está vazando cliente.
     </p>
-
-    <div class="steps">
-      <div class="step">
-        <span class="num">01</span>
-        <h3>Diagnóstico</h3>
-        <p>Entendo o negócio, o ticket, a margem e de onde vem cliente hoje. Sem isso, qualquer campanha é chute.</p>
-      </div>
-      <div class="step">
-        <span class="num">02</span>
-        <h3>Construção</h3>
-        <p>Página, rastreio, atendimento automático e painel. É o encanamento — feio de mostrar, mas sem ele nada segura água.</p>
-      </div>
-      <div class="step">
-        <span class="num">03</span>
-        <h3>No ar</h3>
-        <p>Campanha e sistema no ar em até 15 dias, começando pela rota mais barata que já traz resultado.</p>
-      </div>
-      <div class="step">
-        <span class="num">04</span>
-        <h3>Leitura</h3>
-        <p>Toda semana: o que trouxe cliente, o que só trouxe clique, o que corta. Decisão por número, não por achismo.</p>
-      </div>
-      <div class="step">
-        <span class="num">05</span>
-        <h3>Escala</h3>
-        <p>O que provou que paga recebe mais verba. Só sobe orçamento o que já demonstrou retorno.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="wrap">
-    <span class="kicker">Habilidades</span>
-    <h2>O que eu opero</h2>
-    <p class="sub">Ferramenta é meio, não argumento de venda. Mas é bom você saber que eu mexo nelas todo dia — nas duas frentes.</p>
-
-    <div class="grid g2">
-      <div class="skillbox">
-        <h3>Mídia paga</h3>
-        <div class="chips">
-          <span class="chip">Meta Ads Manager</span>
-          <span class="chip">Google Ads</span>
-          <span class="chip">Google Ads Editor</span>
-          <span class="chip">Campanhas de busca</span>
-          <span class="chip">Performance Max</span>
-          <span class="chip">Remarketing</span>
-          <span class="chip">Públicos lookalike</span>
-          <span class="chip">Segmentação por raio</span>
-          <span class="chip">Teste A/B de criativo</span>
-          <span class="chip">Palavras-chave negativas</span>
-          <span class="chip">Gestão de orçamento</span>
-        </div>
-      </div>
-      <div class="skillbox">
-        <h3>Medição e dados</h3>
-        <div class="chips">
-          <span class="chip">Meta Pixel</span>
-          <span class="chip">API de Conversões</span>
-          <span class="chip">Google Analytics 4</span>
-          <span class="chip">Google Tag Manager</span>
-          <span class="chip">Google Search Console</span>
-          <span class="chip">Rastreio de conversão</span>
-          <span class="chip">CPL e CAC</span>
-          <span class="chip">ROAS</span>
-          <span class="chip">Dashboards personalizados</span>
-          <span class="chip">Relatório semanal</span>
-        </div>
-      </div>
-      <div class="skillbox">
-        <h3>Orgânico e presença</h3>
-        <div class="chips">
-          <span class="chip">SEO local</span>
-          <span class="chip">Google Meu Negócio</span>
-          <span class="chip">Pesquisa de palavra-chave</span>
-          <span class="chip">SEO on-page</span>
-          <span class="chip">Estratégia de conteúdo</span>
-          <span class="chip">GEO (ChatGPT, Gemini, Perplexity)</span>
-          <span class="chip">Gestão de avaliações</span>
-          <span class="chip">Conteúdo para Instagram</span>
-        </div>
-      </div>
-      <div class="skillbox">
-        <h3>Criativo</h3>
-        <div class="chips">
-          <span class="chip">Copy de anúncio</span>
-          <span class="chip">Roteiro de Reels</span>
-          <span class="chip">Canva</span>
-          <span class="chip">CapCut</span>
-          <span class="chip">Imagem por IA</span>
-          <span class="chip">Vídeo por IA</span>
-          <span class="chip">CRO</span>
-        </div>
-      </div>
-
-      <div class="skillbox">
-        <h3>Desenvolvimento e IA</h3>
-        <div class="chips">
-          <span class="chip">TypeScript</span>
-          <span class="chip">Node.js</span>
-          <span class="chip">React</span>
-          <span class="chip">Vite</span>
-          <span class="chip">Fastify</span>
-          <span class="chip">Python</span>
-          <span class="chip">API da Anthropic (Claude)</span>
-          <span class="chip">API da OpenAI</span>
-          <span class="chip">Agentes de IA</span>
-          <span class="chip">Engenharia de prompt</span>
-          <span class="chip">MCP</span>
-          <span class="chip">Automação de navegador</span>
-        </div>
-      </div>
-
-      <div class="skillbox">
-        <h3>Dados e integração</h3>
-        <div class="chips">
-          <span class="chip">Supabase</span>
-          <span class="chip">PostgreSQL</span>
-          <span class="chip">Edge Functions</span>
-          <span class="chip">APIs REST</span>
-          <span class="chip">Webhooks</span>
-          <span class="chip">OAuth 2.0</span>
-          <span class="chip">Meta Graph API</span>
-          <span class="chip">API do WhatsApp</span>
-          <span class="chip">Google Calendar API</span>
-          <span class="chip">Deploy em VPS</span>
-          <span class="chip">Git e GitHub</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJETOS -->
-<section id="cases">
-  <div class="wrap">
-    <span class="kicker">Projetos</span>
-    <h2>Coisas que eu construí</h2>
-    <p class="sub">
-      Sistemas em produção, rodando todo dia na operação. Não é protótipo de portfólio.
-    </p>
-
-    <div class="grid g2">
-      <div class="case">
-        <span class="seg">Produto próprio · IA por voz</span>
-        <h3>Nexo Treino</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Aplicação web onde a IA interpreta um dono de negócio e o vendedor treina a reunião
-          de vendas falando, por voz. No fim, um avaliador gera nota por etapa, aponta as
-          perguntas que faltaram citando a própria conversa e devolve o coaching.
-        </p>
-        <ul class="bullets">
-          <li>Conversa por voz em tempo real, direto no navegador</li>
-          <li>Quatro modos de treino, cada um com sua rubrica de avaliação</li>
-          <li>Histórico salvo em banco pra acompanhar a evolução do vendedor</li>
-          <li>TypeScript, React, Fastify, Supabase e API da Anthropic</li>
-        </ul>
-      </div>
-
-      <div class="case">
-        <span class="seg">Sistema interno · CRM e dados</span>
-        <h3>CRM e dashboard da operação</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Painel único com lead, cliente, contrato, tarefa e financeiro no mesmo lugar —
-          integrado com as ferramentas que o time já usava, em vez de substituir todas elas.
-        </p>
-        <ul class="bullets">
-          <li>Sincronização automática com agenda e gestor de tarefas via OAuth e webhook</li>
-          <li>Funções serverless para a integração rodar sem servidor pra manter</li>
-          <li>Lead entra pela prospecção e caminha até o contrato sem redigitação</li>
-          <li>Supabase, PostgreSQL, Edge Functions e deploy próprio em VPS</li>
-        </ul>
-      </div>
-
-      <div class="case">
-        <span class="seg">Automação · Conteúdo</span>
-        <h3>Publicação automatizada</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Fluxo que pega um tema e devolve o conteúdo pronto: artigo, carrossel renderizado
-          em imagem e legendas por rede. Aprovado, ele mesmo publica no Instagram e no
-          Facebook e sobe o artigo no site.
-        </p>
-        <ul class="bullets">
-          <li>Geração de imagem e renderização automática dos carrosséis</li>
-          <li>Publicação direta via Meta Graph API, sem passar pelo celular</li>
-          <li>Deploy do site disparado no mesmo comando</li>
-        </ul>
-      </div>
-
-      <div class="case">
-        <span class="seg">Automação · Prospecção</span>
-        <h3>Enriquecimento de leads</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Lista crua de negócios entra; do outro lado sai o dossiê de cada um — o que ele já
-          tem de presença digital, onde está vazando cliente e qual é o gancho de abertura
-          da conversa. Pronto pra importar no CRM.
-        </p>
-        <ul class="bullets">
-          <li>Varredura automática de site, redes e ficha do Google</li>
-          <li>Diagnóstico e gancho de abordagem gerados por IA, lead a lead</li>
-          <li>Saída direta no formato do CRM, sem trabalho manual</li>
-        </ul>
-      </div>
-    </div>
-
-    <h2 style="margin-top:80px">Resultados em tráfego</h2>
-    <p class="sub">
-      Case sem número é propaganda. Aqui vai o que a conta mostrou — período, verba e retorno.
-    </p>
-
-    <div class="grid g2">
-      <div class="case">
-        <span class="seg">Case 01 · Nicho</span>
-        <h3>Título do resultado</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Onde o negócio estava antes, o que foi feito e o que mudou.
-        </p>
-        <div class="case-row">
-          <div><div class="v">—</div><div class="k">Investido</div></div>
-          <div><div class="v">—</div><div class="k">Custo por lead</div></div>
-          <div><div class="v">—</div><div class="k">Retorno</div></div>
-        </div>
-        <div class="todo">
-          <span class="t">Preencher</span>
-          <p>Bloco reservado. Precisa de: nicho, período, verba investida, CPL, retorno e o antes/depois em uma frase.</p>
-        </div>
-      </div>
-
-      <div class="case">
-        <span class="seg">Case 02 · Nicho</span>
-        <h3>Título do resultado</h3>
-        <p style="color:var(--muted);font-size:15px;margin-top:8px">
-          Onde o negócio estava antes, o que foi feito e o que mudou.
-        </p>
-        <div class="case-row">
-          <div><div class="v">—</div><div class="k">Investido</div></div>
-          <div><div class="v">—</div><div class="k">Custo por lead</div></div>
-          <div><div class="v">—</div><div class="k">Retorno</div></div>
-        </div>
-        <div class="todo">
-          <span class="t">Preencher</span>
-          <p>Bloco reservado. Precisa de: nicho, período, verba investida, CPL, retorno e o antes/depois em uma frase.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SOBRE -->
-<section id="sobre">
-  <div class="wrap">
-    <span class="kicker">Quem fala com você</span>
-    <h2>Mario Brandao</h2>
-    <div class="grid g2" style="align-items:start">
-      <div>
-        <p style="color:#94a3b8;font-size:16.5px">
-          Toco a operação da <span class="cy">NEXO IA</span>. Faço as duas pontas: subo e
-          gerencio o tráfego, e programo os sistemas de IA que sustentam o que o tráfego
-          traz. Atendo principalmente academias, deliverys e lojas de carro — negócios que
-          faturam até 100 mil por mês e não têm tempo de virar especialistas em nada disso.
-        </p>
-        <p style="color:#94a3b8;font-size:16.5px;margin-top:18px">
-          Aprendi a programar porque a campanha travava em coisas que nenhuma ferramenta de
-          prateleira resolvia: lead sem resposta, dado espalhado em três lugares, relatório
-          feito na mão. Hoje, quando o gargalo aparece, eu construo a solução em vez de
-          sugerir que o cliente contrate mais alguém.
-        </p>
-        <p style="color:#94a3b8;font-size:16.5px;margin-top:18px">
-          Meu trabalho não é entregar relatório bonito. É fazer o dono do negócio saber, no
-          fim do mês, quanto ele colocou e quanto voltou. Quando o número não fecha, eu falo
-          — e mudo a rota.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Como começa</h3>
-        <p>Uma conversa sem compromisso. Eu olho seu negócio, digo o que está vazando cliente hoje e qual é a rota mais barata pra resolver — pode ser anúncio, pode ser sistema, pode ser os dois. Se não fizer sentido investir agora, eu falo isso também.</p>
-        <div style="margin-top:24px">
-          <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Falar no WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-  <div class="wrap">
-    <h2>Seu concorrente já está anunciando.</h2>
-    <p class="lead" style="margin-left:auto;margin-right:auto">
-      A diferença é que ele provavelmente não sabe quanto está voltando — e perde metade dos
-      leads sem responder. Você pode fazer diferente.
-    </p>
-    <div style="margin-top:34px">
-      <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Quero um diagnóstico gratuito</a>
-    </div>
+    <a class="btn" href="https://wa.me/55SEUNUMERO" target="_blank" rel="noopener">Chamar no WhatsApp</a>
   </div>
 </section>
 
 <footer>
-  <div class="wrap ft">
-    <div class="mono"><span class="cy">MARIO</span> BRANDAO · Tráfego pago e desenvolvimento com IA</div>
-    <div>NEXO IA — nexoialocal.com.br</div>
-  </div>
+  <div class="wrap mono">MARIO BRANDAO · Gestor de tráfego e desenvolvedor de IA</div>
 </footer>
 
 </body>
