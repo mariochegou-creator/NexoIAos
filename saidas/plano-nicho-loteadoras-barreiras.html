@@ -1,0 +1,422 @@
+<title>Máquina de Visitas</title>
+<meta name="description" content="Nicho escolhido para a NEXO IA em Barreiras: loteadoras e lançamentos imobiliários, com anúncio, atendente de IA no WhatsApp e painel de visitas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #050e1f;
+    --card: #081422;
+    --card-2: #0b1a2c;
+    --line: rgba(0,200,232,0.12);
+    --line-strong: rgba(0,200,232,0.3);
+    --cyan: #00c8e8;
+    --cyan-dim: rgba(0,200,232,0.10);
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.12);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.12);
+    --text: #e2e8f0;
+    --muted: #8193ab;
+    --faint: #64748b;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: 0 64px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  a { color: var(--cyan); }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  h1 { font-weight: 900; font-size: clamp(30px, 5.4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; }
+  h2 { font-weight: 800; font-size: clamp(22px, 3vw, 28px); line-height: 1.2; letter-spacing: -0.01em; }
+  h3 { font-weight: 700; font-size: 16px; line-height: 1.35; }
+  p { margin: 0; }
+  .hl { color: var(--cyan); }
+  .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+
+  /* Header */
+  header.hero { padding-block: 48px 28px; display: grid; gap: 18px; }
+  .hero .lede { font-size: 18px; color: var(--muted); max-width: 64ch; }
+  .hero .lede strong { color: var(--text); font-weight: 600; }
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 8px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 4px; align-content: start; }
+  .tile .v { font-family: var(--mono); font-size: clamp(22px, 3vw, 30px); font-weight: 600; color: var(--text); line-height: 1.1; }
+  .tile .v.c { color: var(--cyan); }
+  .tile .k { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+  /* Nav */
+  nav.toc {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    background: rgba(5,14,31,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    margin-inline: -16px; padding: 10px 16px;
+    overflow-x: auto; white-space: nowrap; scrollbar-width: none;
+  }
+  nav.toc::-webkit-scrollbar { display: none; }
+  nav.toc .in { max-width: 1080px; margin: 0 auto; display: flex; gap: 6px; }
+  nav.toc a { font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 8px; border: 1px solid transparent; }
+  nav.toc a:hover { color: var(--text); border-color: var(--line); }
+
+  section { padding-block: 44px 8px; display: grid; gap: 18px; scroll-margin-top: 56px; }
+  .sec-head { display: grid; gap: 6px; }
+  .sec-head p { color: var(--muted); max-width: 70ch; }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 14px; align-content: start; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+  /* Tables */
+  .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--card-2); }
+  tr:last-child td { border-bottom: 0; }
+  td.r, th.r { text-align: right; }
+  td.num, td .num { white-space: nowrap; }
+  tr.total td { font-weight: 700; background: var(--cyan-dim); }
+  tr.neg td { color: var(--muted); }
+  .col-base { background: rgba(0,200,232,0.05); }
+
+  /* Chips */
+  .chip { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--cyan); white-space: nowrap; }
+  .chip.o { border-color: rgba(249,115,22,0.4); color: var(--orange); }
+  .chip.g { border-color: rgba(34,197,94,0.4); color: var(--green); }
+  .chip.m { border-color: var(--line); color: var(--muted); }
+
+  /* Ladder */
+  .ladder { display: grid; gap: 8px; }
+  .step { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: start; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .step .n { font-family: var(--mono); font-size: 13px; color: var(--cyan); padding-top: 2px; }
+  .step .body { display: grid; gap: 4px; }
+  .step .body p { color: var(--muted); font-size: 14px; }
+  .step .price { text-align: right; display: grid; gap: 4px; justify-items: end; }
+  .step .price .v { font-family: var(--mono); font-weight: 600; font-size: 16px; white-space: nowrap; }
+  .step.entry { border-color: var(--line-strong); box-shadow: 0 0 24px rgba(0,200,232,0.08); }
+
+  /* Composition bar */
+  .bar { display: flex; height: 34px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+  .bar span { display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: #050e1f; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+  /* Weeks */
+  .weeks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .week { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+  .week .when { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .week ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+  .meter { display: grid; gap: 4px; }
+  .meter .track { height: 6px; background: var(--card-2); border-radius: 99px; overflow: hidden; }
+  .meter .fill { height: 100%; background: var(--cyan); border-radius: 99px; }
+  .meter .lbl { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; }
+
+  /* Timeline */
+  .tl { display: grid; gap: 0; border-left: 1px solid var(--line-strong); margin-left: 8px; }
+  .tl-item { position: relative; padding: 0 0 22px 24px; display: grid; gap: 6px; }
+  .tl-item::before { content: ""; position: absolute; left: -6px; top: 4px; width: 11px; height: 11px; border-radius: 50%; background: var(--bg); border: 2px solid var(--cyan); }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-top { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; }
+  .tl-day { font-family: var(--mono); font-weight: 600; color: var(--cyan); font-size: 15px; }
+  .quote { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--text); }
+  .quote::before { content: "Frase"; display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+
+  /* Script */
+  .script { display: grid; gap: 10px; }
+  .beat { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .beat:last-child { border-bottom: 0; }
+  .beat .t { font-family: var(--mono); font-size: 12px; color: var(--cyan); padding-top: 3px; }
+  .beat .say { font-size: 15px; }
+  .beat .note { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  details + details { margin-top: 8px; }
+  summary { cursor: pointer; padding: 14px 16px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-family: var(--mono); color: var(--cyan); }
+  details[open] summary::after { content: "−"; }
+  details .dbody { padding: 0 16px 16px; color: var(--muted); font-size: 14px; display: grid; gap: 8px; }
+  details .dbody strong { color: var(--text); }
+
+  /* Rules */
+  .rules { display: grid; gap: 8px; }
+  .rule { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .rule > div { padding: 12px 14px; font-size: 14px; }
+  .rule .no { background: var(--orange-dim); color: var(--text); }
+  .rule .no::before { content: "Nunca"; display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); margin-bottom: 2px; }
+  .rule .yes { background: var(--card); }
+  .rule .yes::before { content: "Assim"; display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 2px; }
+
+  .todo { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .todo li { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px; padding: 12px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-size: 14px; }
+  .todo .who { font-family: var(--mono); font-size: 12px; color: var(--cyan); padding-top: 2px; }
+
+  .callout { border: 1px solid rgba(249,115,22,0.35); background: var(--orange-dim); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+  .callout strong { color: var(--orange); }
+
+  ul.clean { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); font-size: 14px; }
+  ul.clean strong { color: var(--text); }
+
+  footer { padding-block: 48px 0; color: var(--faint); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; }
+
+  @media (max-width: 860px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .weeks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .weeks { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 32px minmax(0, 1fr); }
+    .step .price { grid-column: 2; justify-items: start; text-align: left; }
+    .beat { grid-template-columns: 1fr; gap: 4px; }
+    .rule { grid-template-columns: 1fr; }
+    .todo li { grid-template-columns: 1fr; gap: 2px; }
+    header.hero { padding-block: 32px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  html { scroll-behavior: smooth; }
+</style>
+
+<style>
+  .flow { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+  .flow .f { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 6px; align-content: start; }
+  .flow .f .k { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--cyan); }
+  .flow .f p { color: var(--muted); font-size: 14px; }
+  @media (max-width: 860px) { .flow { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 600px) { .flow { grid-template-columns: 1fr; } }
+</style>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">NEXO IA · Barreiras-BA · nicho escolhido · 28/09/2026</span>
+    <h1>Loteadoras e lançamentos: <span class="hl">Máquina de Visitas</span></h1>
+    <p class="lede"><strong>Barreiras tem mais de 14 mil lotes em loteamentos novos e quase ninguém cuidando do lead que chega no WhatsApp.</strong> O anúncio traz a pessoa, o corretor demora horas para responder e ela esfria. A NEXO entrega anúncio, atendente de IA 24 horas que qualifica e agenda a visita, e um painel que mostra ao dono quantas visitas e vendas saíram de cada real investido.</p>
+    <div class="tiles">
+      <div class="tile"><span class="v c">6 clientes</span><span class="k">bastam para R$10,8 mil/mês de mensalidade</span></div>
+      <div class="tile"><span class="v">R$2.500</span><span class="k">de implantação + R$1.800/mês por cliente</span></div>
+      <div class="tile"><span class="v">1 lote</span><span class="k">vendido paga mais de 1 ano do serviço para a loteadora</span></div>
+      <div class="tile"><span class="v">90 dias</span><span class="k">para chegar aos 6 clientes, sozinho</span></div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Seções">
+    <div class="in">
+      <a href="#porque">Por que esse nicho</a>
+      <a href="#ranking">Os outros nichos</a>
+      <a href="#oferta">A oferta</a>
+      <a href="#validar">Validar em 10 dias</a>
+      <a href="#vender">Como vender</a>
+      <a href="#entregar">Como entregar</a>
+      <a href="#conta">A conta</a>
+      <a href="#riscos">Riscos</a>
+      <a href="#depois">Depois</a>
+    </div>
+  </nav>
+
+  <section id="porque">
+    <div class="sec-head">
+      <span class="eyebrow">A escolha</span>
+      <h2>Por que loteadoras e lançamentos</h2>
+      <p>Não existe nicho com certeza de resultado. Este é o que junta mais sinais a favor, e dá para testar em 10 dias sem gastar nada.</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel"><h3>Demanda comprovada</h3><ul class="clean">
+        <li>O consórcio de loteamentos com a Embasa reúne <strong>10 loteamentos e cerca de 14 mil lotes</strong> ao longo da BR-242 e do anel viário.</li>
+        <li>O grupo VCA anunciou <strong>R$270 milhões</strong>: bairro planejado com mais de 1.000 lotes e 1.000 apartamentos.</li>
+        <li>A Feira de Imóveis do Oeste movimentou <strong>mais de R$20 milhões</strong>. O emprego formal na construção subiu ~40% em 4 anos.</li>
+        <li>A população cresce ~2% ao ano, e muita gente chega de fora pelo agro sem conhecer a cidade.</li>
+      </ul></div>
+      <div class="panel"><h3>Pouca gente atendendo</h3><ul class="clean">
+        <li>As agências locais vendem post, site e impulsionamento. <strong>Nenhuma oferece atendimento com IA no WhatsApp</strong> medido em visitas.</li>
+        <li>Os CRMs de imobiliária (Kenlo, Jetimob) cuidam do portal, não da resposta rápida ao lead de anúncio de lançamento.</li>
+        <li>As loteadoras locais costumam depender de “corretor + Instagram”.</li>
+      </ul></div>
+      <div class="panel"><h3>A IA entrega bem</h3><ul class="clean">
+        <li>Responder na hora, a qualquer hora, é exatamente o que a IA faz melhor.</li>
+        <li>As perguntas se repetem: preço, metragem, entrada, parcela, FGTS, localização, “posso visitar?”.</li>
+        <li>O mesmo sistema serve para todas as loteadoras. Muda a tabela de lotes e as fotos.</li>
+      </ul></div>
+      <div class="panel"><h3>O resultado se mede</h3><ul class="clean">
+        <li>Lead → conversa → qualificado → visita → proposta → venda. Tudo contado no painel.</li>
+        <li>Um lote de R$80 a 150 mil paga mais de um ano de serviço. A conta de retorno fecha fácil na frente do dono.</li>
+        <li>Para uma pessoa só, o ticket alto resolve: <strong>6 clientes, não 60</strong>.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section id="ranking">
+    <div class="sec-head">
+      <span class="eyebrow">Como cheguei aqui</span>
+      <h2>Os nichos que ficaram para trás</h2>
+      <p>Notas de 0 a 10 vindas de 3 pesquisas: nichos do agro, nichos da cidade e concorrência na região. As contagens de empresas são estimativas.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Nicho</th><th class="r">Demanda</th><th class="r">Pouca oferta</th><th class="r">IA entrega</th><th class="r">Ticket</th><th>Veredito</th></tr></thead>
+        <tbody>
+          <tr class="total"><td>Loteadoras e lançamentos</td><td class="r num">9</td><td class="r num">7</td><td class="r num">8</td><td class="r num">9</td><td>Escolhido</td></tr>
+          <tr><td>Peças pesadas e oficinas diesel</td><td class="r num">9</td><td class="r num">8</td><td class="r num">7</td><td class="r num">7</td><td><span class="chip g">2º nicho</span> Estoque em sistema fechado e pico de safra atrapalham a implantação</td></tr>
+          <tr><td>Contabilidade</td><td class="r num">8</td><td class="r num">8</td><td class="r num">7</td><td class="r num">6</td><td><span class="chip">reserva</span> Contador é desconfiado e a venda é lenta</td></tr>
+          <tr><td>Transportadoras de grãos</td><td class="r num">8</td><td class="r num">7</td><td class="r num">6</td><td class="r num">6</td><td>Processo bagunçado, informal e sazonal</td></tr>
+          <tr><td>Imobiliárias</td><td class="r num">8</td><td class="r num">6</td><td class="r num">7</td><td class="r num">6</td><td>Entra como expansão da loteadora</td></tr>
+          <tr><td>Clínicas odonto e estética</td><td class="r num">9</td><td class="r num">2</td><td class="r num">8</td><td class="r num">6</td><td><span class="chip o">evitar</span> Dezenas de softwares prontos e agências</td></tr>
+          <tr><td>Energia solar</td><td class="r num">6</td><td class="r num">2</td><td class="r num">8</td><td class="r num">6</td><td><span class="chip o">evitar</span> Nicho mais disputado do país</td></tr>
+          <tr><td>Autoescolas</td><td class="r num">3</td><td class="r num">6</td><td class="r num">7</td><td class="r num">3</td><td><span class="chip o">evitar</span> Setor em colapso desde que a autoescola deixou de ser obrigatória</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="oferta">
+    <div class="sec-head">
+      <span class="eyebrow">A oferta</span>
+      <h2>Máquina de Visitas</h2>
+      <p>Na conversa com o dono não se fala em IA. Fala-se em lead perdido e visita agendada.</p>
+    </div>
+    <div class="flow">
+      <div class="f"><span class="k">1 · Anúncio</span><h3>Traz gente certa</h3><p>Campanha no Instagram e Facebook para quem mora ou trabalha em Barreiras e região, com o lote, a parcela e o “agende sua visita”.</p></div>
+      <div class="f"><span class="k">2 · Atendente 24h</span><h3>Responde em segundos</h3><p>Tira as dúvidas com a tabela real de lotes e pergunta renda, entrada, FGTS e prazo. Nunca inventa preço nem condição.</p></div>
+      <div class="f"><span class="k">3 · Visita</span><h3>Agenda e lembra</h3><p>Marca a visita no plantão, avisa o corretor com o resumo do cliente, lembra na véspera e retoma quem sumiu.</p></div>
+      <div class="f"><span class="k">4 · Painel</span><h3>Mostra o dinheiro</h3><p>Leads, qualificados, visitas, propostas e vendas por semana e por corretor, com o custo por visita.</p></div>
+    </div>
+    <div class="ladder">
+      <div class="step entry"><span class="n">A</span><div class="body"><h3>Máquina de Visitas</h3><p>Implantação em até 15 dias: atendente, painel, campanha e treino dos corretores. Mínimo de 3 meses. A verba de anúncio (mínimo R$1.500/mês) é paga pela loteadora direto na plataforma.</p></div><div class="price"><span class="v">R$2.500 + R$1.800/mês</span><span class="chip">produto principal</span></div></div>
+      <div class="step"><span class="n">B</span><div class="body"><h3>Piloto de fundador</h3><p>Só para os 2 primeiros clientes, em troca de virar caso de sucesso com números e depoimento. Mesmo serviço completo.</p></div><div class="price"><span class="v">R$1.500 + R$1.800/mês</span><span class="chip g">2 vagas</span></div></div>
+      <div class="step"><span class="n">C</span><div class="body"><h3>Atendente para imobiliária</h3><p>Sem anúncio: a IA atende quem chega pelo portal, pelo Instagram e pela placa, com catálogo e agendamento de visita.</p></div><div class="price"><span class="v">R$1.500 + R$900/mês</span><span class="chip m">mês 3 em diante</span></div></div>
+    </div>
+    <div class="callout"><strong>Garantia que dá para cumprir:</strong> “Se em 30 dias o atendente não responder 100% dos leads em menos de 1 minuto e a campanha não gerar pelo menos [meta combinada] visitas agendadas, o 2º mês é por minha conta.” A meta de visitas é definida no fim da validação, com os números reais de custo por lead.</div>
+  </section>
+
+  <section id="validar">
+    <div class="sec-head">
+      <span class="eyebrow">Antes de apostar</span>
+      <h2>Validar em 10 dias, sem gastar</h2>
+      <p>Se a validação não mostrar a dor, você perdeu 10 dias, não 3 meses. Nesse caso, o plano B é o 2º nicho (peças e oficinas diesel).</p>
+    </div>
+    <ul class="todo">
+      <li><span class="who">Dias 1–2</span><span><strong>Lista completa:</strong> loteadoras, incorporadoras e imobiliárias com lançamento em Barreiras e LEM. Fontes: Google Maps (<span class="mono">/enriquecer-leads</span>), anúncios ativos na Biblioteca de Anúncios da Meta (buscar “lotes Barreiras”), placas na BR-242 e no anel viário, e expositores da Feira de Imóveis do Oeste. Meta: 25 a 40 nomes com decisor.</span></li>
+      <li><span class="who">Dias 2–4</span><span><strong>Teste de resposta:</strong> mande uma mensagem de interessado real para cada anúncio ativo, em horários variados, incluindo 20h e domingo. Anote quanto tempo levam para responder, se perguntam algo e se chamam para visitar. Esse print é a abertura da sua conversa de venda.</span></li>
+      <li><span class="who">Dias 3–5</span><span><strong>Montar a demonstração:</strong> com o Claude, um atendente de WhatsApp com uma tabela de lotes de exemplo, mais o painel. Tem que funcionar no seu celular, na frente do dono, em 2 minutos.</span></li>
+      <li><span class="who">Dias 5–10</span><span><strong>10 conversas presenciais com donos ou gerentes comerciais.</strong> Mostrar o teste de resposta da empresa deles e a demonstração, e oferecer as 2 vagas de fundador.</span></li>
+    </ul>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Sinal no dia 10</th><th>Decisão</th></tr></thead>
+        <tbody>
+          <tr><td>Metade ou mais dos anúncios demorou mais de 1 hora (ou nunca respondeu) <strong>e</strong> pelo menos 1 piloto foi fechado</td><td><span class="chip g">seguir</span> Nicho validado. Executar o plano de 90 dias</td></tr>
+          <tr><td>A resposta foi lenta, mas ninguém fechou</td><td><span class="chip">ajustar</span> Anotar as objeções, rever preço e garantia e fazer mais 10 conversas</td></tr>
+          <tr><td>A maioria respondeu rápido e bem</td><td><span class="chip o">trocar</span> A dor não é essa aqui. Rodar a mesma validação com peças e oficinas diesel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="vender">
+    <div class="sec-head">
+      <span class="eyebrow">Como vender</span>
+      <h2>A conversa com o dono</h2>
+      <p>Presencial, no escritório ou no plantão de vendas. É uma venda consultiva: <span class="mono">/roteiro-r1</span> para a primeira conversa, <span class="mono">/apn</span> para a proposta e <span class="mono">/r2</span> para o fechamento.</p>
+    </div>
+    <div class="panel script">
+      <div class="beat"><span class="t">Abrir</span><div><p class="say">“Na quinta às 20h eu mandei mensagem no anúncio de vocês como se fosse comprador. <strong>A resposta chegou no dia seguinte, às 11h.</strong> Nesse tempo eu já tinha falado com outros dois loteamentos.”</p><p class="note">Mostrar o print. Não criticar a equipe: “É normal, ninguém fica no WhatsApp às 20h.”</p></div></div>
+      <div class="beat"><span class="t">Conta</span><div><p class="say">“Quantos contatos chegam por mês pelo anúncio? E quantos viram visita? Se 1 em cada 10 dos que esfriaram tivesse visitado, e 1 em cada 5 visitas fechasse, quantos lotes seriam a mais por mês?”</p><p class="note">Deixar o dono fazer a conta com os números dele. Um lote a mais por trimestre já paga o ano.</p></div></div>
+      <div class="beat"><span class="t">Mostrar</span><div><p class="say">Demonstração no seu celular: “Pergunta qualquer coisa como se fosse cliente.” O atendente responde, qualifica e oferece horário de visita. Depois mostrar o painel.</p></div></div>
+      <div class="beat"><span class="t">Fechar</span><div><p class="say">“Eu tenho 2 vagas de fundador com implantação de R$1.500 em vez de R$2.500, em troca de usar os números de vocês como caso. Em 15 dias está rodando. Começo pelo loteamento que mais precisa de visita agora?”</p></div></div>
+    </div>
+    <div>
+      <details><summary>“Meus corretores já respondem”</summary><div class="dbody"><p>“Ótimo. O atendente não substitui o corretor: ele responde nos primeiros segundos, separa quem tem renda e entrada, e entrega a visita marcada. O corretor passa a gastar tempo só com quem pode comprar.”</p></div></details>
+      <details><summary>“Cliente não gosta de robô”</summary><div class="dbody"><p>“Ele se apresenta como assistente do loteamento e chama o corretor sempre que a pessoa pedir. O que o cliente não gosta é de esperar até amanhã.”</p></div></details>
+      <details><summary>“Já tenho agência de anúncio”</summary><div class="dbody"><p>“Então mantém a agência e eu cuido do que vem depois do clique. Ou compara: quanto custa cada visita hoje? No painel você vai ver isso toda semana.”</p></div></details>
+      <details><summary>“Tá caro”</summary><div class="dbody"><p>“Quanto vale um lote? R$1.800 por mês é uma fração da comissão de uma única venda. Se não sair visita, a garantia cobre o 2º mês.”</p></div></details>
+    </div>
+  </section>
+
+  <section id="entregar">
+    <div class="sec-head">
+      <span class="eyebrow">Como entregar sozinho</span>
+      <h2>Implantação em 15 dias, manutenção em ~4 horas por mês</h2>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Quando</th><th>O quê</th></tr></thead>
+        <tbody>
+          <tr><td class="num">Dia 1</td><td>Reunião de entrada: tabela de lotes e condições, fotos, mapa, perguntas frequentes, corretores e horário do plantão. Acesso à conta de anúncios e ao WhatsApp</td></tr>
+          <tr><td class="num">Dias 2–6</td><td>Atendente montado com o Claude e testado com 50 perguntas reais. Regra fixa: preço e condição só da tabela. Na dúvida, passa para o corretor</td></tr>
+          <tr><td class="num">Dias 5–8</td><td>WhatsApp pela API oficial da Meta (provedor oficial), número verificado. Painel ligado</td></tr>
+          <tr><td class="num">Dias 8–12</td><td>Campanha: 3 a 5 criativos com os lotes reais, público da região, formulário ou clique para o WhatsApp</td></tr>
+          <tr><td class="num">Dias 13–15</td><td>Treino dos corretores (como recebem o lead e marcam o resultado da visita) e ativação</td></tr>
+          <tr><td class="num">Toda semana</td><td>Relatório de 1 página: leads, visitas, propostas, vendas e custo por visita. Ajuste dos anúncios e das respostas do atendente</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="clean">
+      <li><strong>Custo por cliente:</strong> provedor de WhatsApp oficial + mensagens + IA ≈ R$200–350 por mês. Margem de ~R$1.450–1.600 por cliente.</li>
+      <li><strong>Limite sozinho:</strong> no máximo 2 implantações ao mesmo tempo e 8 clientes ativos.</li>
+      <li><strong>Contrato:</strong> mínimo de 3 meses, horas de ajuste incluídas por mês, os dados e o número pertencem ao cliente, e a LGPD com opt-in do lead.</li>
+    </ul>
+  </section>
+
+  <section id="conta">
+    <div class="sec-head">
+      <span class="eyebrow">A conta</span>
+      <h2>De 0 a R$10,8 mil por mês de recorrência em 90 dias</h2>
+      <p>Estimativa: 1 fechamento a cada ~5 conversas com o decisor, depois que houver o primeiro caso com números.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Mês</th><th>O que acontece</th><th class="r">Clientes ativos</th><th class="r">Recebido no mês</th><th class="r">Recorrência</th></tr></thead>
+        <tbody>
+          <tr><td class="num">Out</td><td>Validação (10 dias) + 2 pilotos de fundador implantados</td><td class="r num">2</td><td class="r num">6.600</td><td class="r num">3.600</td></tr>
+          <tr><td class="num">Nov</td><td>Primeiros números dos pilotos viram argumento. +2 clientes</td><td class="r num">4</td><td class="r num">12.200</td><td class="r num">7.200</td></tr>
+          <tr><td class="num">Dez</td><td>+2 clientes, incluindo LEM</td><td class="r num">6</td><td class="r num">15.800</td><td class="r num">10.800</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="clean">
+      <li><strong>Com 6 clientes</strong>, a recorrência é de R$10.800/mês, com ~R$9 mil de margem depois das ferramentas, antes do imposto.</li>
+      <li><strong>No cenário lento</strong> (metade das vendas), chega a R$10 mil por mês perto de março.</li>
+      <li><strong>Perda de cliente:</strong> contar com 1 cancelamento a cada 6 meses. O painel semanal com custo por visita é o que segura o cliente.</li>
+      <li>Se quiser caixa rápido enquanto isso, a placa de avaliação continua valendo. Mas ela disputa o seu tempo: a validação vem primeiro.</li>
+    </ul>
+  </section>
+
+  <section id="riscos">
+    <div class="sec-head">
+      <span class="eyebrow">Sem ilusão</span>
+      <h2>O que pode dar errado</h2>
+    </div>
+    <div class="rules">
+      <div class="rule"><div class="no">Mercado pequeno: ~20–25 loteadoras e incorporadoras locais</div><div class="yes">Você só precisa de 6. Depois, LEM, São Desidério e as imobiliárias com a oferta C.</div></div>
+      <div class="rule"><div class="no">O imobiliário do oeste segue o agro. Safra ruim ou juros altos cortam a verba de anúncio</div><div class="yes">O painel prova o custo por visita. Quem mede corta por último. Tenha o 2º nicho pronto.</div></div>
+      <div class="rule"><div class="no">A IA inventar preço, desconto ou condição</div><div class="yes">Responde só a partir da tabela. Na dúvida, passa para o corretor. Revisão semanal das conversas.</div></div>
+      <div class="rule"><div class="no">WhatsApp não oficial derruba o número do cliente</div><div class="yes">Só a API oficial da Meta, com o custo das mensagens previsto no preço.</div></div>
+      <div class="rule"><div class="no">O corretor não marca o resultado da visita e o painel fica sem venda</div><div class="yes">Campo obrigatório de 1 toque para o corretor, e cobrança semanal no relatório ao dono.</div></div>
+    </div>
+  </section>
+
+  <section id="depois">
+    <div class="sec-head">
+      <span class="eyebrow">Começar hoje</span>
+      <h2>Os próximos 3 passos</h2>
+    </div>
+    <ul class="todo">
+      <li><span class="who">Hoje</span><span>Abrir a Biblioteca de Anúncios da Meta, buscar “lote Barreiras” e “loteamento Barreiras” e anotar todo anunciante ativo.</span></li>
+      <li><span class="who">Amanhã</span><span>Começar o teste de resposta nos anúncios encontrados, anotando o horário de envio e o de resposta.</span></li>
+      <li><span class="who">Esta semana</span><span>Montar comigo a demonstração do atendente e do painel, para levar à primeira conversa.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    NEXO IA · 28/09/2026. Fatos de mercado com base em fontes públicas (Prefeitura de Barreiras, IBGE, Feira de Imóveis do Oeste). Contagens de empresas, conversões e custos são estimativas a confirmar na validação.
+  </footer>
+</div>
