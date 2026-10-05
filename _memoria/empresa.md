@@ -8,7 +8,7 @@
 **Posicionamento:** Não vendemos tecnologia. Entregamos resultado. A tecnologia é o instrumento.
 **Perfil:** Consultoria orientada a resultado
 **Atende clientes:** Donos de negócio local que querem crescer e sabem que tecnologia pode ajudar, mas não sabem por onde começar.
-**Equipe:** 2 pessoas — Mario Brandao (operacional), Rian (financeiro)
+**Equipe:** 1 pessoa — Mario Brandao (comercial, entrega e financeiro) + IA (MazyOS). Operação solo desde outubro de 2026.
 **Ferramentas:** Canva (design), Gemini / Veo 3 (geração de imagem), CapCut (vídeo/motion), MazyOS (operação interna)
 **Principais entregas:** Sites profissionais, dashboards com métricas personalizadas, automações de processo
 **Canal Instagram:** @nexo.iabr — Nome do perfil: "NEXO IA | IA que gera resultado"
@@ -38,8 +38,9 @@ Diagnóstico → implementação em **até 15 dias** → suporte contínuo.
 - Abertura de dor: "Você perde cliente sem perceber"
 - Promessa: "A NEXO IA faz o diagnóstico, implementa e você acompanha o resultado"
 
-### Equipa — atualização pendente de confirmação
+### Equipe *(atualizado em 05/10/2026)*
 
-Em 29/07/2026 o Mario referiu **David, SDR responsável pela prospeção fria**, que não constava
-aqui. Fica registado. Confirmar se o **Rian (financeiro)** continua na operação — a lista acima
-pode estar desatualizada.
+Rian (financeiro) e David (SDR) não fazem mais parte da operação. O Mario toca tudo sozinho,
+com a IA cobrindo lista, mensagens, follow-up, relatórios e o que mais for repetível.
+Cobrança é automática por plataforma de recorrência. Planos e rotinas nunca devem atribuir
+tarefa a outra pessoa.

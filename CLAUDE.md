@@ -19,7 +19,7 @@ Aplicamos IA para mover o ponteiro de faturamento de negócios locais. Não vend
 
 Nossa IA analisa o negócio do cliente e implementa o que vai gerar resultado. Sites, dashboards e automações são os meios — nunca o argumento de venda.
 
-Time: 2 pessoas — Mario Brandao (operacional), Rian (financeiro).
+Time: 1 pessoa — Mario Brandao faz comercial, entrega e financeiro, com a IA (MazyOS) como segundo par de mãos. Não existe mais SDR nem financeiro separado: todo plano e toda skill assumem operação solo.
 
 ## Clientes ativos
 

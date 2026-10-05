@@ -16,7 +16,7 @@ Candidata a virar skill via `/mapear-rotinas`.
 **Alvo da prospeção *(definido em 29/07/2026)*:** academias, delivery e stands/lojas de carros,
 com faturação até 100 mil/mês. Prospetar dentro destes três nichos em vez de "negócio local" em
 geral — a mensagem fica mais afiada e a lista de leads mais fácil de construir.
-O David (SDR) trata da fria.
+A prospecção fria é do próprio Mario, com a IA preparando a fila do dia (lista enriquecida + mensagem pronta por lead). Sem SDR.
 
 ## Posicionamento de venda
 
@@ -43,5 +43,10 @@ Otimizações internas de processo — foco primeiro em encher o pipeline.
 3. ⬜ "Dashboard Reveal" — imagem única (produto)
 
 **Conteúdo pronto em:** `saidas/instagram-lancamento.md`
+
+## Mapa dos 10 mil *(05/10/2026)*
+
+Meta: R$ 10 mil de recorrência até junho de 2027 com o produto de avaliações no Google
+(plaquinha + IA no WhatsApp, R$ 197/mês). Plano em `saidas/plano-10k-recorrencia/`.
 
 ## Contexto com prazo
